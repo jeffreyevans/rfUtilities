@@ -1,0 +1,76 @@
+rfUtilities_1.0-1
+=================
+
+* Fixed bug, in functions requiring randomForest class object, where stop error is issued when 
+    model is specified using formula interface.
+	
+* Added new function "rf.partial.ci" for Random Forests regression partial dependency plot with 
+    confidence intervals.
+	
+* Added new function "rf.class.sensitivity" for sensitivity test of class to cross-assignment. 
+
+rfUtilities_1.0-2
+=================
+
+* Fixed bug, in rf.modelSel where no model was returned when final=TRUE.
+
+* Added new function  rf.imp.freq that prints/plots frequency of variable selection 
+    across classes.
+
+rfUtilities_2.0-0
+=================
+
+* Major restructuring of the package, adding object classes along with print, plot and  
+    summary functions for classes.
+	
+* Added new function "accuracy" for a variety of classification accuracy statistics.  
+    Function is also called from rf.crossValidation. 
+	
+* Added new function "occurrence.threshold" for testing the sensitivity of probability 
+     thresholds.
+	 
+* Added new function "rf.effect.size" for calculating "parameter" effect size on  
+    classification or regression models using the Cohen's f2 statistic. 
+	
+* Added new function "rf.regression.fit" providing fit statistics for random forests 
+    regression models. 
+	
+* Rewrote and added class attribute to rf.significance function along with print, 
+    summary and plot generics.
+	
+* Rewrote and added class attribute to rf.crossValidation function along with print, 
+    summary and plot generics.
+	
+* Added users accuracy, producers accuracy and kappa to rf.crossValidation output.
+
+rfUtilities_2.0-1
+=================
+* Bug fix - Thanks to Patrick Fekety for pointing out that the seed argument in rf.modelSel was not being honoured,
+              This fix will stabilize stochasticity in the model selection.
+
+rfUtilities_2.1-0
+=================
+
+* The rf.crossValidation now supports regression 
+
+* Major changes to the multi.collinear function. Now performs column order and leave-one-out permutation test.
+
+* Print and plot generics support change in rf.crossValidation
+
+* rf.modelSel print generic now returns additional test statistics (test threshold, OOB, class error and number of parameters) and associated, sorted parameters 
+
+rfUtilities_2.1-1
+=================
+* Fixed bug in rf.crossValidation where the rmse for regression was being reported incorrectly (thanks to Patrick Fekety for finding error)
+
+* Added Mean Absolute Error (mae) and Mean Bias Error (mbe) to validation statistics in rf.crossValidation for regression
+
+* Added additional information to print and summary for rf.crossValidation
+
+* Added additional print capacity for "mae" and "mbe" statistics in rf.crossValidation
+
+rfUtilities_2.1-2
+=================
+* Added new function "log.loss" for evaluation of estimate quality in binomial models using cross-entropy or log likelihood loss 
+* Added new function "probabily.calibration" for performing an isotonic regression calibration of posterior probabilities
+* Added new function "rf.effectSize" for deriving parameter effect size based on partial dependency (Cafri & Bailey, 2016)

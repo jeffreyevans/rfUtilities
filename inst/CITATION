@@ -1,0 +1,54 @@
+citHeader("To cite rfUtilities package in publications please use:")
+   bibentry(
+     bibtype = "Manual",
+     title = "rfUtilities",
+     author = c(
+	    person(c("Jeffrey", "S."), "Evans", role = c("aut", "cre")),
+ 	    person(c("Melanie", "A."), "Murphy", role = c("aut"))
+     ),
+     year = "2017",
+     note = "R package version 2.1-2",
+	 url = "https://cran.r-project.org/package=rfUtilities",
+     key = "rfUtilities-package"
+   )
+
+citHeader("citation for class balance Evans & Cushman 2009")   
+   bibentry(
+    bibtype = "Article",
+	author = as.person("Jeffrey S. Evans, Sammual A. Cushman"),
+	title = "Gradient Modeling of Conifer Species Using Random Forest",
+	journal = "Landscape Ecology",
+	number = "5",
+	pages="673-683",
+    year = "2009",
+	key = "class balance",
+   )   
+   
+citHeader("citation for model selection and significance test Murphy et al., 2010")   
+   bibentry(
+    bibtype = "Article",
+	author = as.person("Melanie A. Murphy, Jeffrey S. Evans, Andrew Storfer"),
+	title = "Quantifying Bufo boreas connectivity in Yellowstone National Park with landscape genetics",
+	journal = "Ecology",
+	number = "71",
+	pages="252-261",
+    year = "2010",
+	key = "model selection",
+   )
+
+citHeader("citation for other methods Evans et al., 2011")  
+   bibentry(
+    bibtype = "InBook",
+	author = as.person("Jeffrey S. Evans, Melanie A. Murphy, 
+	                     Zachory A. Holden, Sammual A. Cushman"),
+	title = "Modeling species distribution and change using Random Forests",
+	chapter = "8",
+	pages="139-159",
+	booktitle = "Predictive species and habitat modeling in landscape ecology: concepts and applications",
+    editor = as.person("C. A. Drew, Y. F. Wiersma, F. Huettmann"),
+    year = "2011",
+    publisher = "Springer",
+    address = "New York",
+    isbn = "978-1-4419-7390-0",
+	key = "general methods",
+   )
