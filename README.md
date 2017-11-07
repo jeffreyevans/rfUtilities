@@ -1,7 +1,9 @@
 rfUtilities
 ===========
 
-R package for random forests model selection, class balance and validation
+*R package for random forests model selection, class balance and validation*
+
+Random Forests Model Selection, inference, fit and performance evaluation
 
 New release of of "rfUtilities" 2.1-2 includes new functions for calculating Log Loss performance evaluation a function implementing an Isotonic regression for calibration of the estimated posterior probabilities of a model. There is also a new function for deriving parameter effect size based on partial dependency (Cafri & Bailey, 2016). The statistics Mean Absolute Error (mae) and Mean Bias Error (mbe) were added to the rf.crossValidation function.  
 
@@ -23,3 +25,12 @@ Available functions in rfUtilities are:
           rf.partial.prob - Random Forest probability scaled partial dependency plots
           rf.regression.fit - Evaluates fit and overfit of random forests regression models
           rf.significance - Significance test for classification or regression random forests models
+          
+**Bugs**: Bug reports or suggestions for the `rfUtilities` package should be directed to <jeffrey_evans@tnc.org>.
+
+**To install and load `rfUtilities` in R use install.packages() to download curent stable release from CRAN** 
+
+**or, for the development version, run the following (requires the devtools package):**
+`devtools::install_github("jeffreyevans/rfUtilities")`
+
+**Tutorial**: See (http://evansmurphy.wixsite.com/evansspatial/random-forest-sdm).
