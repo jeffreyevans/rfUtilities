@@ -7,6 +7,9 @@
 #' @param v2            Variable 2 used in partial dependency
 #' @param grid.size     Number of grid cells (NxN) to integrate partial dependency for 
 #' @param which.class   Index of class probability (only if classification) 
+#' @param plot          (TRUE/FALSE) Plot 3D surface
+#' @param col.ramp      Colors used in building color ramp
+#' @param ncols         Number of colors in color ramp
 #' @param ...           Arguments passed to persp
 #'
 #' @return A list object with vectors of v1 (p1) and v2 (p2) and a matrix (estimate), estimate of the averaged estimates.
@@ -38,14 +41,15 @@
 #'  ( rf.mdl <- randomForest(x=x, y=factor(y)) )
 #'  
 #'  bvpd <- bivariate.partialDependence(rf.mdl, iris, 
-#'                    v1 = "Petal.Length", v2 = "Petal.Width",
-#'                    grid.size = 20)   
+#'                    v1 = "Petal.Length", v2 = "Petal.Width", shade = 0.6,
+#'                    grid.size = 60, ncols=200, border=NA, col.ramp=c("green","blue") )   
 #'		
 #' @seealso \code{\link[graphics]{persp}} for persp ... plotting options
 #'
 #' @export
 bivariate.partialDependence <- function(x, pred.data, v1, v2, grid.size = 20, which.class = 2, 
-                                        plot = TRUE, ...) {
+                                        plot = TRUE, col.ramp = c("#ffffff", "#2a2a2a"), 
+										ncols = 20, ...) {
   if(class(x) != "randomForest") stop("x is not a randomForest object")
     	dots <- as.list(match.call(expand.dots = TRUE)[-1])
     s1 <- seq(from = min(pred.data[,v1]), to = max(pred.data[,v1]),
@@ -61,7 +65,7 @@ bivariate.partialDependence <- function(x, pred.data, v1, v2, grid.size = 20, wh
       vrep$pred <- stats::predict(rf.mdl, vrep[,which(names(vrep) %in% rownames(x$importance))], 
 	                              type="prob")[,which.class]
     } else {
-      vrep$pred <- predict(rf.mdl, vrep[,which(names(vrep) %in% rownames(x$importance))])
+      vrep$pred <- stats::predict(rf.mdl, vrep[,which(names(vrep) %in% rownames(x$importance))])
     }  
     idx <- sort(rep(1:nrow(v), length.out=nrow(vrep)))   
       idx.med <- as.numeric(tapply(vrep$pred, idx, FUN=stats::median)) 
@@ -76,12 +80,11 @@ bivariate.partialDependence <- function(x, pred.data, v1, v2, grid.size = 20, wh
 	    if (is.null(dots[["theta"]]) & "theta" %in% names(dots) == FALSE) dots[["theta"]] <- -45
       if (is.null(dots[["cex.lab"]]) & "cex.lab" %in% names(dots) == FALSE) dots[["cex.lab"]] <- 1
 	    if (is.null(dots[["col"]]) & "col" %in% names(dots) == FALSE) {
-          nbcol <- 100
-          jet.colors <- colorRampPalette( c("#ffffff", "#2a2a2a") ) 
-          color <- jet.colors(nbcol)
+          jet.colors <- grDevices::colorRampPalette( col.ramp ) 
+            color <- jet.colors(ncols)
             zfacet <- z[-1, -1] + z[-1, -1 * length(s1)] + 
                       z[-1 * length(s2), -1] + z[-1 * length(s1), -1 * length(s2)]
-          facetcol <- cut(zfacet, nbcol)
+          facetcol <- cut(zfacet, ncols)
           dots[["col"]] <- color[facetcol]
 	    }
 	  options(warn=-1)
