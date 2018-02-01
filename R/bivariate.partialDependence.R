@@ -50,7 +50,7 @@
 bivariate.partialDependence <- function(x, pred.data, v1, v2, grid.size = 20, which.class = 2, 
                                         plot = TRUE, col.ramp = c("#ffffff", "#2a2a2a"), 
 										ncols = 20, ...) {
-  if(class(x) != "randomForest") stop("x is not a randomForest object")
+  if(!any(class(x) %in% c("randomForest","list"))) stop("x is not a randomForest object")
     	dots <- as.list(match.call(expand.dots = TRUE)[-1])
     s1 <- seq(from = min(pred.data[,v1]), to = max(pred.data[,v1]),
                by = (max(pred.data[,v1]) - min(pred.data[,v1]))/(grid.size-1))
@@ -62,10 +62,10 @@ bivariate.partialDependence <- function(x, pred.data, v1, v2, grid.size = 20, wh
         vrep[,v1] <- rep(v$Var1, each = nrow(pred.data))
         vrep[,v2] <- rep(v$Var2, each = nrow(pred.data))	
     if(x$type == "classification") {	
-      vrep$pred <- stats::predict(rf.mdl, vrep[,which(names(vrep) %in% rownames(x$importance))], 
+      vrep$pred <- stats::predict(x, vrep[,which(names(vrep) %in% rownames(x$importance))], 
 	                              type="prob")[,which.class]
     } else {
-      vrep$pred <- stats::predict(rf.mdl, vrep[,which(names(vrep) %in% rownames(x$importance))])
+      vrep$pred <- stats::predict(x, vrep[,which(names(vrep) %in% rownames(x$importance))])
     }  
     idx <- sort(rep(1:nrow(v), length.out=nrow(vrep)))   
       idx.med <- as.numeric(tapply(vrep$pred, idx, FUN=stats::median)) 
