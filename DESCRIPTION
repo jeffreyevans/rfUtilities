@@ -11,7 +11,8 @@ Description: Utilities for Random Forest model selection, class balance
 Depends:
     R (>= 3.3)
 Imports:
-    randomForest (>= 4.6-12)
+    randomForest (>= 4.6-12),
+	cluster
 Maintainer: Jeffrey S. Evans <jeffrey_evans@tnc.org>
 License: GPL-3
 NeedsCompilation: no
