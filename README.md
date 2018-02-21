@@ -5,7 +5,9 @@ rfUtilities
 
 Random Forests Model Selection, inference, fit and performance evaluation
 
-New release of of "rfUtilities" 2.1-2 includes new functions for calculating Log Loss performance evaluation a function implementing an Isotonic regression for calibration of the estimated posterior probabilities of a model. There is also a new function for deriving parameter effect size based on partial dependency (Cafri & Bailey, 2016). The statistics Mean Absolute Error (mae) and Mean Bias Error (mbe) were added to the rf.crossValidation function.  
+New release of of "rfUtilities" 2.1-3 includes new functions for combining random forests ensembles, bivariate partial dependence plots and unsupervised classification using random forests.   
+
+New release of of "rfUtilities" 2.1-2 includes new functions for calculating Log Loss performance evaluation a function implementing an Isotonic regression for calibration of the estimated posterior probabilities of a model. There is also a new function for deriving parameter effect size based on partial dependency (Cafri & Bailey, 2016). The statistics Mean Absolute Error (mae) and Mean Bias Error (mbe) were added to the rf.crossValidation function. 
 
 Available functions in rfUtilities are:
 
