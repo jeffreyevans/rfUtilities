@@ -5,20 +5,22 @@
 \title{Random Forest Classification or Regression Model Cross-validation}
 \usage{
 rf.crossValidation(x, xdata, p = 0.1, n = 99, seed = NULL,
-  normalize = FALSE, ...)
+  normalize = FALSE, bootstrap = FALSE, ...)
 }
 \arguments{
 \item{x}{random forest object}
 
 \item{xdata}{x data used in model}
 
-\item{p}{Proportion data withhold}
+\item{p}{Proportion data withhold (default p=0.10)}
 
-\item{n}{Number of cross validations}
+\item{n}{Number of cross validations (default n=99)}
 
 \item{seed}{Sets random seed in R global environment}
 
 \item{normalize}{(FALSE/TRUE) For regression, should rmse, mbe and mae be normalized using (max(y) - min(y))}
+
+\item{bootstrap}{(FALSE/TRUE) Should a bootstrap sampling be applied. If FALSE, an n-th percent withold will be conducted}
 
 \item{...}{Additional arguments passed to Random Forests}
 }
@@ -101,6 +103,9 @@ Evans, J.S. and S.A. Cushman (2009) Gradient Modeling of Conifer Species Using R
 Murphy M.A., J.S. Evans, and A.S. Storfer (2010) Quantify Bufo boreas connectivity in Yellowstone National Park with landscape genetics. Ecology 91:252-261
 
 Evans J.S., M.A. Murphy, Z.A. Holden, S.A. Cushman (2011). Modeling species distribution and change using Random Forests CH.8 in Predictive Modeling in Landscape Ecology eds Drew, CA, Huettmann F, Wiersma Y. Springer
+}
+\seealso{
+\code{\link[randomForest]{randomForest}} for randomForest ... options
 }
 \author{
 Jeffrey S. Evans <jeffrey_evans<at>tnc.org>

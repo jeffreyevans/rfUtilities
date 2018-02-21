@@ -7,7 +7,7 @@
 probability.calibration(y, p, regularization = FALSE)
 }
 \arguments{
-\item{y}{Binominal response varible used to fit model}
+\item{y}{Binomial response variable used to fit model}
 
 \item{p}{Estimated probabilities from fit model}
 
@@ -47,7 +47,7 @@ pmax = ( n1 + 1) / (n1 + 2), pmin = 1 / ( n0 + 2); where n1 = number of prevalen
  # Calibrate probabilities
  calibrated.y.hat <- probability.calibration(y, y.hat, regularization = TRUE) 
 
- # Plot calibrated aganist origianl probability estimate
+ # Plot calibrated against original probability estimate
  plot(density(y.hat), col="red", xlim=c(0,1), ylab="Density", xlab="probabilities",
       main="Calibrated probabilities" )
         lines(density(calibrated.y.hat), col="blue")

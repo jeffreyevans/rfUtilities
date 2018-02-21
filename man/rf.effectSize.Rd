@@ -119,6 +119,8 @@ Cafri, G., B.A. Bailey (2016) Understanding Variable Effects from Black Box Pred
 }
 \seealso{
 \code{\link[randomForest]{partialPlot}} for ... options
+
+\code{\link[randomForest]{randomForest}} for randomForest details
 }
 \author{
 Jeffrey S. Evans    <jeffrey_evans<at>tnc.org>

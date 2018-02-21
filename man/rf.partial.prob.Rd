@@ -5,8 +5,8 @@
 \title{Random Forest probability scaled partial dependency plots}
 \usage{
 rf.partial.prob(x, pred.data, xname, which.class, w, prob = TRUE,
-  plot = TRUE, smooth = FALSE, raw = FALSE, rug = FALSE, n.pt, xlab,
-  ylab, main, ...)
+  plot = TRUE, smooth, conf = TRUE, smooth.parm = NULL, pts = FALSE,
+  raw.line = FALSE, rug = FALSE, n.pt, xlab, ylab, main, ...)
 }
 \arguments{
 \item{x}{Object of class randomForest}
@@ -21,11 +21,17 @@ rf.partial.prob(x, pred.data, xname, which.class, w, prob = TRUE,
 
 \item{prob}{Scale distances to probabilities}
 
-\item{plot}{Plot results (TRUE/FALSE)}
+\item{plot}{(TRUE/FALSE) Plot results}
 
-\item{smooth}{Apply spline.smooth to y}
+\item{smooth}{c(spline, loess) Apply spline.smooth or loess to}
 
-\item{raw}{Plot unsmoothed values}
+\item{conf}{(TRUE/FALSE) Should confidence intervals be calculated for smoothing}
+
+\item{smooth.parm}{An appropriate smoothing parameter passed to loess or smooth.spline}
+
+\item{pts}{(FALSE/TRUE) Add raw points}
+
+\item{raw.line}{(FALSE/TRUE) Plot raw line (non-smoothed)}
 
 \item{rug}{Draw hash marks on plot representing deciles of x}
 
@@ -40,25 +46,43 @@ rf.partial.prob(x, pred.data, xname, which.class, w, prob = TRUE,
 \item{...}{Additional graphical parameters passed to plot}
 }
 \value{
-A list class object with fit x,y. If smooth=TRUE y represents smoothed scaled margin distance values
+A list class object with fit x,y. If smooth=c("spline","loess") y represents smoothed scaled margin distance values
 }
 \description{
 Produces partial dependency plots with probability distribution based on scaled margin distances.
 }
 \examples{
-require(randomForest)
-  data(iris)
-    iris.rf <- randomForest(iris[,1:4], iris[,5])
-      par(mfrow=c(2,2))
-        for(i in names(iris)[1:4]) {     
-          rf.partial.prob(iris.rf, iris, i, "setosa", smooth=TRUE, raw=TRUE, rug=FALSE)
-         }
+ require(randomForest)
+   data(iris)
+   iris.rf <- randomForest(iris[,1:4], iris[,5])		
+ 	 
+ # plot all parameters	 
+ par(mfrow=c(2,2))
+   for(i in names(iris)[1:4]) {     
+     rf.partial.prob(iris.rf, iris, i, "setosa", smooth="spline", 
+                     n.pt=70, smooth.parm = 0.5)
+    }
+
+ # Plot spline and loess smoothing for one parameter, with raw points and line
+ par(mfrow=c(1,2))	 
+   rf.partial.prob(x = iris.rf, pred.data = iris, xname = "Sepal.Length", 
+                   which.class = "setosa", smooth = "spline", smooth.parm = 0.5,
+   				  n.pt = 70, pts = TRUE, raw.line = TRUE, rug = TRUE)
+   				
+   rf.partial.prob(x = iris.rf, pred.data = iris, xname = "Sepal.Length", 
+                   which.class = "setosa", smooth = "loess", smooth.parm = 0.20,
+   				  n.pt = 70, pts = TRUE, raw.line = TRUE, rug = TRUE)
 
 }
 \references{
 Evans J.S., M.A. Murphy, Z.A. Holden, S.A. Cushman (2011). Modeling species distribution and change using Random Forests CH.8 in Predictive Modeling in Landscape Ecology eds Drew, CA, Huettmann F, Wiersma Y. Springer
 
 Baruch-Mordo, S., J.S. Evans, J. Severson, J. D. Naugle, J. Kiesecker, J. Maestas, & M.J. Falkowski (2013) Saving sage-grouse from the trees: A proactive solution to reducing a key threat to a candidate species Biological Conservation 167:233-241
+}
+\seealso{
+\code{\link[stats]{smooth.spline}} for smooth.spline details on spar smoothing argument
+
+\code{\link[stats]{loess}} for loess details of span smoothing argument
 }
 \author{
 Jeffrey S. Evans    <jeffrey_evans<at>tnc.org>
