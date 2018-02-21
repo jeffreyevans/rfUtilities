@@ -42,21 +42,21 @@
 #'  # Plot spline and loess smoothing for one parameter, with raw points and line
 #'  par(mfrow=c(1,2))	 
 #'    rf.partial.prob(x = iris.rf, pred.data = iris, xname = "Sepal.Length", 
-#'                    which.class = "setosa", smooth = "spline", smooth.parm = 0.5,  
-#'    				  n.pt = 70, pts = TRUE, raw.line = TRUE, rug = TRUE)	 
+#'                    which.class = "setosa", smooth = "spline", smooth.parm = 0.5,
+#'    				  n.pt = 70, pts = TRUE, raw.line = TRUE, rug = TRUE)
 #'    				
 #'    rf.partial.prob(x = iris.rf, pred.data = iris, xname = "Sepal.Length", 
-#'                    which.class = "setosa", smooth = "loess", smooth.parm = 0.20,  
-#'    				  n.pt = 70, pts = TRUE, raw.line = TRUE, rug = TRUE)	 		
+#'                    which.class = "setosa", smooth = "loess", smooth.parm = 0.20,
+#'    				  n.pt = 70, pts = TRUE, raw.line = TRUE, rug = TRUE)
 #'
-#' @seealso \code{\link[stats]{smooth.spline}} for smooth.spline details on spar smoothing argument 
+#' @seealso \code{\link[stats]{smooth.spline}} for smooth.spline details on spar smoothing argument
 #' @seealso \code{\link[stats]{loess}} for loess details of span smoothing argument 
 #'
 #' @export
 rf.partial.prob <- function(x, pred.data, xname, which.class, w, prob=TRUE, plot=TRUE,
                             smooth, conf = TRUE, smooth.parm = NULL, pts = FALSE, 
 							raw.line = FALSE, rug=FALSE, n.pt, xlab, ylab, main, ...) {  
-    if (!inherits(x, "randomForest")) stop("x is not randomForest class object")
+    if(!any(class(x) %in% c("randomForest","list"))) stop("x is not a randomForest object")
 	  if (is.null(x$forest)) stop("Object does not contain an ensemble \n")
 	    if(!x$type != "regression")	stop("Regression not supported \n")	   
 	      if (missing(which.class)) stop("Class name missing \n")
@@ -67,7 +67,7 @@ rf.partial.prob <- function(x, pred.data, xname, which.class, w, prob=TRUE, plot
     if (is.na(focus)) stop(which.class, "is not one of the class labels")
     xv <- pred.data[, xname]
 	n <- nrow(pred.data)
-	  if(missing(n.pt)) n.pt <- min(length(unique(pred.data[, xname])), 51)  
+	  if(missing(n.pt)) n.pt <- min(length(unique(pred.data[, xname])), 51)
 	  if (missing(w)) w <- rep(1, n)
 	scale.dist <- function(d) { return( (exp(d) - min(exp(d))) / (max(exp(d)) - min(exp(d))) ) }
  
@@ -78,14 +78,16 @@ rf.partial.prob <- function(x, pred.data, xname, which.class, w, prob=TRUE, plot
           x.data <- pred.data
           x.data[, xname] <- factor(rep(x.pt[i], n), levels = x.pt)
           pr <- stats::predict(x, x.data, type = "prob")
-          y.pt[i] <- stats::weighted.mean(log(ifelse(pr[, focus] > 0, pr[, focus], .Machine$double.eps)) -
-                                          rowMeans(log(ifelse(pr > 0, pr, .Machine$double.eps))), w, na.rm=TRUE)
+          y.pt[i] <- stats::weighted.mean(log(ifelse(pr[, focus] > 0, pr[, focus],
+		              .Machine$double.eps)) - rowMeans(log(ifelse(pr > 0, pr, 
+					  .Machine$double.eps))), 
+					  w, na.rm=TRUE)
       }  
       if( prob == TRUE) { y.pt <- scale.dist(y.pt) } 
       if (plot) {
         if(missing(xlab)) xlab=xname
 	    if(missing(ylab)) ylab=which.class
-	    if(missing(main)) main="Partial Dependency Plot"	
+	    if(missing(main)) main="Partial Dependency Plot"
 	      graphics::barplot(y.pt, width=rep(1,length(y.pt)), col="blue",
                             xlab=xlab, ylab=ylab, main=main,
                             names.arg=x.pt, ...)
@@ -99,16 +101,17 @@ rf.partial.prob <- function(x, pred.data, xname, which.class, w, prob=TRUE, plot
           x.data <- pred.data
           x.data[, xname] <- rep(x.pt[i], n)
           pr <- stats::predict(x, x.data, type = "prob")
-          y.pt[i] <- stats::weighted.mean(log(ifelse(pr[, focus] == 0, .Machine$double.eps, 
+          y.pt[i] <- stats::weighted.mean(log(ifelse(pr[, focus] == 0, .Machine$double.eps,
                pr[, focus])) - rowMeans(log(ifelse(pr == 0, .Machine$double.eps, pr))),
                w, na.rm=TRUE)
         }
 		
-    if(prob == TRUE) { y.pt <- scale.dist(y.pt) } 
+    if(prob == TRUE) { y.pt <- scale.dist(y.pt) }
 	if (plot == TRUE) {
       if(missing(xlab)) xlab = xname
 	    if(missing(ylab)) ylab = "probability"
-	      if(missing(main)) main = paste("Partial Dependency Plot for Class", which.class, sep=" - ")
+	      if(missing(main)) main = paste("Partial Dependency Plot for Class",
+		                                 which.class, sep=" - ")
       if(!missing(smooth)) {
 	    if(smooth == "spline") {	
 	      fit <- stats::smooth.spline(x.pt, y.pt, spar = smooth.parm, all.knots = TRUE)
@@ -118,25 +121,26 @@ rf.partial.prob <- function(x, pred.data, xname, which.class, w, prob=TRUE, plot
 		      fit.y[fit.y > 1] <- 1
             }			  
             if(conf == TRUE) {
-	          # Using jackknifed residuals for upper and lower 95% confidence interval 
+	# Using jackknifed residuals for upper and lower 95% confidence interval 
                 res <- (fit$yin - fit$y)/(1-fit$lev)    
-                  sigma <- sqrt(var(res))              
+                  sigma <- sqrt(stats::var(res))              
                     upper <- fit$y + 2.0 * sigma * sqrt(fit$lev)   
                     lower <- fit$y - 2.0 * sigma * sqrt(fit$lev)  
 		  }
 	  } else if (smooth == "loess") {
         options(warn=-1)
           if(is.null(smooth.parm)) smooth.parm = 0.75		
-		    fit <- predict(stats::loess(y.pt ~ x.pt, span = smooth.parm), se = TRUE, degree = 2)
+		    fit <- stats::predict(stats::loess(y.pt ~ x.pt, span = smooth.parm), 
+			                      se = TRUE, degree = 2)
 		options(warn=0)
 		fit.y <- fit$fit
 		  if(prob == TRUE) {
-            fit.y[fit.y < 0] <- 0		
+            fit.y[fit.y < 0] <- 0
 		    fit.y[fit.y > 1] <- 1
           }		  
 	      if(conf == TRUE) {	
-            lower <- fit$fit - qt(0.975, fit$df) * fit$se 
-            upper <- fit$fit + qt(0.975, fit$df) * fit$se
+            lower <- fit$fit - stats::qt(0.975, fit$df) * fit$se 
+            upper <- fit$fit + stats::qt(0.975, fit$df) * fit$se
           }		  
 	  } else {
 	    warning("Not a valid option for smoothing type, options are: spline or loess")
@@ -145,7 +149,7 @@ rf.partial.prob <- function(x, pred.data, xname, which.class, w, prob=TRUE, plot
 	      graphics::plot(x.pt, fit.y, type = "l", xlab=xlab, lwd=0.75, lty=2, ylab=ylab, 
 		                 main=main)
 		} else {
-          graphics::plot(x.pt, y.pt, type = "n", xlab=xlab, ylab=ylab, main=main)		
+          graphics::plot(x.pt, y.pt, type = "n", xlab=xlab, ylab=ylab, main=main)
 	        graphics::polygon(c(x.pt, rev(x.pt)), c(upper, rev(lower)),  
 	                          col=grDevices::rgb(0.85, 0.85, 0.85, 0.5))
 		    graphics::lines(x.pt, fit.y, lty=3, col="gray42")
@@ -154,8 +158,8 @@ rf.partial.prob <- function(x, pred.data, xname, which.class, w, prob=TRUE, plot
 	    fit.y <- y.pt
         graphics::plot(x.pt, y.pt, type = "l", xlab=xlab, ylab=ylab, main=main)
 	  }  
-    if( raw.line == TRUE) { lines(x.pt, y.pt, lty = 1, lwd=0.5, col="red") }
-      if( pts == TRUE) { points(x.pt, y.pt, pch=19, cex=0.35, col="black") }		
+    if( raw.line == TRUE) { graphics::lines(x.pt, y.pt, lty = 1, lwd=0.5, col="red") }
+      if( pts == TRUE) { graphics::points(x.pt, y.pt, pch=19, cex=0.35, col="black") }
         if (rug == TRUE) {
           if (n.pt > 10) {
             graphics::rug(stats::quantile(xv, seq(0.1, 0.9, by=0.1)), side = 1)
@@ -167,4 +171,3 @@ rf.partial.prob <- function(x, pred.data, xname, which.class, w, prob=TRUE, plot
     }	
   invisible(list(x=x.pt, y=fit.y))
 }
-

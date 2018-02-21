@@ -1,7 +1,7 @@
 #' @title Combine Random Forests Ensembles
 #' @description Combine two more more random forests models into a single ensemble.
 #'
-#' @parm ...  two or more randomForest class objects
+#' @param ...  two or more randomForest class objects
 #'
 #' @return An object of class randomForest 
 #'
@@ -49,7 +49,7 @@ rf.combine <- function(...) {
          rf$ntree <- ntree
        nforest <- length(rflist)
      haveTest <- ! any(sapply(rflist, function(x) is.null(x$test)))
-   vlist <- lapply(rflist, function(x) rownames(importance(x)))
+   vlist <- lapply(rflist, function(x) rownames(randomForest::importance(x)))
      numvars <- sapply(vlist, length)
    if (! all(numvars[1] == numvars[-1]))
        stop("Unequal number of predictor variables in the randomForest objects.")
@@ -180,6 +180,6 @@ rf.combine <- function(...) {
       }	  
    	}
 	  rf$nrf <- length(rflist)
-      class(rf) <- c("rf.ensembles", class(rf))
+	class(rf) <- c("rf.ensembles", class(rf))
   return( rf )
 }
