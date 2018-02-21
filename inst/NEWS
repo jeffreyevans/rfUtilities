@@ -74,3 +74,9 @@ rfUtilities_2.1-2
 * Added new function "log.loss" for evaluation of estimate quality in binomial models using cross-entropy or log likelihood loss 
 * Added new function "probabily.calibration" for performing an isotonic regression calibration of posterior probabilities
 * Added new function "rf.effectSize" for deriving parameter effect size based on partial dependency (Cafri & Bailey, 2016)
+
+rfUtilities_2.1-3
+=================
+* Added new function "bivariate.partialDependence" for deriving bivariate partial dependence providing a graphical depiction of the marginal effect of two variables on the class probability (classification) or response (regression)
+* Added new function "rf.combine" that is an extension of the randomForest::combine function, providing model fit statistics (with associated print and summary methods)
+* Added optional confidence intervals to "rf.partial.prob" function. 
