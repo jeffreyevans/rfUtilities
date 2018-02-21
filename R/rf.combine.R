@@ -180,6 +180,6 @@ rf.combine <- function(...) {
       }	  
    	}
 	  rf$nrf <- length(rflist)
-	class(rf) <- "rf.ensembles"
+      class(rf) <- c("rf.ensembles", class(rf))
   return( rf )
 }
