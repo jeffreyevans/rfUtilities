@@ -1,7 +1,7 @@
 Package: rfUtilities
 Title: Random Forests Model Selection and Performance Evaluation
-Version: 2.1-2
-Date: 2017-10-26
+Version: 2.1-3
+Date: 2018-02-21
 Authors@R: c(
 	person("Jeffrey S.", "Evans", role = c("cre", "aut"),  email = "jeffrey_evans@tnc.org"),
 	person("Melanie A.", "Murphy", role = "ctb") )
