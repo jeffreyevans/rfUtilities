@@ -11,12 +11,14 @@ Available functions in rfUtilities are:
 
           accuracy - A function, called by the rf.crossValidation function or independently, that provides validation statistics for    
                      binomial or regression models
+          bivariate.partialDependence - Bivariate partial-dependency plot
           logLoss - Calculates Logarithmic loss (logLoss)
           multi.collinear - Multi-collinearity test with matrix permutation.
           occurrence.threshold - A statistical sensitivity test for occurrence probability thresholds
           probability.calibration - Isotonic probability calibration
           rf.class.sensitivity - Random Forests class-level sensitivity analysis
           rf.classBalance - Random Forests Class Balance (Zero Inflation Correction) Model
+          rf.combine - Combine Random Forests Ensembles
           rf.crossValidation - Random Forests classification or regression cross-validation
           rf.effectSize - Random Forests parameter effect size
           rf.imp.freq - Random Forests variable selection frequency
@@ -25,6 +27,7 @@ Available functions in rfUtilities are:
           rf.partial.prob - Random Forest probability scaled partial dependency plots
           rf.regression.fit - Evaluates fit and overfit of random forests regression models
           rf.significance - Significance test for classification or regression random forests models
+          rf.unsupervised - Unsupervised Random Forests
           
 **Bugs**: Users are encouraged to report bugs here. Go to [issues](https://github.com/jeffreyevans/rfUtilities/issues) in the menu above, and press new issue to start a new bug report, documentation correction or feature request. You can direct questions to <jeffrey_evans@tnc.org>.
 
