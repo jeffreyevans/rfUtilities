@@ -96,7 +96,9 @@ accuracy <- function (x, y) {
         k1 <- sum(agree)
       k2 <- sum(prod1 * user1)
     khat <- abs(((N * k1) - k2) / (N^2 - k2))	
-    if( dim(t.xy)[1] == 2 ) { 	
+    if( dim(t.xy)[1] == 2 ) {
+      # TP(1)  FN(3)  
+      # FP(2)  TN(4)  	
       n = sum(t.xy)  # N	
       TP <- t.xy[1]  # True Positives, Power 
 	  FN <- t.xy[3]  # False Negatives, Type-II error 
@@ -119,7 +121,14 @@ accuracy <- function (x, y) {
 	                ( (t.xy[1] + t.xy[2]) * (t.xy[3] + t.xy[4]) )
 	  gain <- precision / ( (t.xy[1] + t.xy[4]) / n )
 	  mcc <- (TP * TN - FP * FN) / sqrt( (TP + FP) * (TP + FN) * 
-			 (TN + FP) * (TN + FN) )	  
+			 (TN + FP) * (TN + FN) )			 
+		confusion <- matrix(c(paste0("True positive(", TP, ")"),
+		         paste0("False positive(", FP, ")"),
+		         paste0("False negative(", FN, ")"),
+		         paste0("True negative(", TN, ")")),
+				 nrow=2, byrow=TRUE)
+          rownames(confusion) <- rownames(t.xy)
+		  colnames(confusion) <- colnames(t.xy)
 	  acc <- list( PCC = (sum(diag(t4))/sum(t4)) * 100,
                 auc = auc, 	
 	        users.accuracy = round(user2 * 100, 1),  
@@ -135,8 +144,8 @@ accuracy <- function (x, y) {
 		gini = gini,
 		f.score = f.score,
 		gain = gain,
-                 matthews = mcc, 				 
-                 confusion = t.xy)	
+                matthews = mcc,
+		confusion = confusion )	
     } else {
 	  acc <- list( PCC = (sum(diag(t4))/sum(t4)) * 100, 
 	             users.accuracy = round(user2 * 100, 1),  
