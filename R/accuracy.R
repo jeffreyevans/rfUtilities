@@ -108,7 +108,7 @@ accuracy <- function (x, y) {
 			    (t.xy[1] + t.xy[2]) * 
 			    (t.xy[4] + t.xy[3]) * 
 			    (t.xy[4] + t.xy[2]) )
-      auc <- (tpr - ( t.xy[3] / ( t.xy[2] +  t.xy[3] ) ) + 1) / 2
+      auc <- (tpr - ( t.xy[3] / ( t.xy[3] +  t.xy[4] ) ) + 1) / 2
 	  acc <- list( PCC = (sum(diag(t4))/sum(t4)) * 100,
                  auc = auc, 	
 	             users.accuracy = round(user2 * 100, 1),  
