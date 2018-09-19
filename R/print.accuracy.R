@@ -36,6 +36,7 @@ print.accuracy <- function(x, ...) {
     cat("Negative Likelihood Ratio:", x$nlr, "\n\n")
     cat("Type I error:", x$typeI.error, "\n\n")
     cat("Type II error:", x$typeII.error, "\n\n")
+	cat("Gini Index:", x$gini, "\n\n")
     cat("F-score:", x$f.score, "\n\n")
 	cat("Matthews correlation coefficient:", x$matthews, "\n\n")
     cat("Confusion matrix", "\n")
