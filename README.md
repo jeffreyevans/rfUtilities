@@ -1,5 +1,9 @@
 rfUtilities
-===========
+
+[![CRAN
+status](http://www.r-pkg.org/badges/version/rfUtilities)](https://cran.r-project.org/package=rfUtilities)
+[![CRAN RStudio mirror
+downloads](http://cranlogs.r-pkg.org/badges/rfUtilities)](https://cran.r-project.org/package=rfUtilities)
 
 *R package for random forests model selection, class balance and validation*
 
