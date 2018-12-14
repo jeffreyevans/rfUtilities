@@ -81,3 +81,9 @@ rfUtilities_2.1-3
 * Added new function "rf.combine" that is an extension of the randomForest::combine function, providing model fit statistics (with associated print and summary methods)
 * Added optional confidence intervals to "rf.partial.prob" function. 
 * Added new function "rf.unsupervised" That performs an unsupervised classification
+
+rfUtilities_2.1-4
+=================
+* Fixed a bug in rf.classBalance so that y in the model object reflects the input y
+* Fixed a bug in rf.crossValidation that threw sample size error when class imbalance data
+
