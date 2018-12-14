@@ -115,6 +115,7 @@ rf.classBalance <- function (ydata, xdata, p=0.005, cbf=3, sf=2, ...)
         test.cov <- stats::cov( test[,names(x)] )
         converge <- CompCov(all.cov, test.cov)  
     }
+    	rf.model$y <- ydata
       bal.mdl <- list( model=rf.model, OOB.error=OOB, confusion=confusion )
     class( bal.mdl ) <- c("rf.balanced", "list")	
   return( bal.mdl )  
