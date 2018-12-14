@@ -1,4 +1,4 @@
-rfUtilities
+rfUtilities 2.1.4
 
 [![CRAN
 status](http://www.r-pkg.org/badges/version/rfUtilities)](https://cran.r-project.org/package=rfUtilities)
