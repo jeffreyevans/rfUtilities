@@ -6,6 +6,7 @@
 #' @param p                  p-value of covariance convergence (do not recommend changing)
 #' @param cbf                Scaling factor to test if problem is imbalanced, default is size of majority class * 3
 #' @param sf                 Majority subsampling factor. If sf=1 then random sample would be perfectly balanced with smallest class [s|0=n|1] whereas; sf=2 provides [s|0=(n|1*2)]
+#' @param seed               Sets random seed in R global environment
 #' @param ...                Additional arguments passed to randomForest
 #'  
 #' @return A rf.balanced object with the following components:
@@ -46,9 +47,10 @@
 #' @seealso \code{\link[randomForest]{randomForest}} for randomForest ... model options
 #'
 #' @export
-rf.classBalance <- function (ydata, xdata, p=0.005, cbf=3, sf=2, ...) 
+rf.classBalance <- function (ydata, xdata, p=0.005, cbf=3, sf=2, seed=NULL, ...) 
  {
   if (  class(ydata) != "factor" ) { ydata <- as.factor(ydata) }
+    if(!is.null(seed)) { set.seed(seed) }
   CompCov <- function(m1, m2, pVal=p) {
        k = 2
         p = 2
@@ -82,12 +84,12 @@ rf.classBalance <- function (ydata, xdata, p=0.005, cbf=3, sf=2, ...)
     min.class <- names(class.ct)[which.min(class.ct)]; min.idx <- which.min(class.ct)  
       if ( ( class.ct[maj.idx] <= class.ct[min.idx] * cbf ) == TRUE) 
         stop("CLASSES ARE BALANCED!")  	 
-        tmp.data <- data.frame(y, x)
-	    majority <- tmp.data[tmp.data[,"y"] == maj.class ,]       
-        minority <- tmp.data[tmp.data[,"y"] == min.class ,]    
+    tmp.data <- data.frame(y, x)
+	  majority <- tmp.data[tmp.data[,"y"] == maj.class ,]       
+      minority <- tmp.data[tmp.data[,"y"] == min.class ,]    
 	    all.cov <- stats::cov(majority[,names(x)])     
-	    test <- as.data.frame(array(0, dim=c( 0, dim(tmp.data)[2] )))
-        names(test) <- names(majority) 
+	      test <- as.data.frame(array(0, dim=c( 0, dim(tmp.data)[2] )))
+    names(test) <- names(majority) 
       if ( !is.na(match("rf.model",ls()))) rm(rf.model)
         n <- dim(minority)[1] * sf                 
     i=0; converge = c("FALSE")
@@ -115,7 +117,7 @@ rf.classBalance <- function (ydata, xdata, p=0.005, cbf=3, sf=2, ...)
         test.cov <- stats::cov( test[,names(x)] )
         converge <- CompCov(all.cov, test.cov)  
     }
-    	rf.model$y <- ydata
+	rf.model$y <- ydata
       bal.mdl <- list( model=rf.model, OOB.error=OOB, confusion=confusion )
     class( bal.mdl ) <- c("rf.balanced", "list")	
   return( bal.mdl )  
