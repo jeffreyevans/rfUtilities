@@ -39,7 +39,7 @@ Available functions in rfUtilities are:
 
 **To install `rfUtilities` in R use install.packages() to download curent stable release from CRAN** 
 
-**or, for the development version, run the following (requires the devtools package):**
-`devtools::install_github("jeffreyevans/rfUtilities")`
+**or, for the development version, run the following (requires the remotes package):**
+`remotes::install_github("jeffreyevans/rfUtilities")`
 
 **Tutorial**: See (http://evansmurphy.wixsite.com/evansspatial/random-forest-sdm).
