@@ -139,7 +139,7 @@ rf.crossValidation <- function(x, xdata, p=0.10, n=99, seed=NULL, normalize = FA
         dat <- data.frame(y=x$y, xdata)
         # Draw random sample		
 	    if(!bootstrap) {
-	      sidx <- sample(1:nrow(dat), sample.sizes[s])   
+	      sidx <- sample(1:nrow(dat), sample.size)   
 	        dat.sub <- dat[-sidx,]                   
             dat.cv <- dat[sidx,]		            
 	    } else {	
