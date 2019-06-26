@@ -3,6 +3,7 @@
 #'    
 #' @param x                 random forest object
 #' @param xdata             x data used in model
+#' @param ydata             optional y data used in model, default is to use x$y from model object
 #' @param p                 Proportion data withhold (default p=0.10)
 #' @param n                 Number of cross validations (default n=99)
 #' @param seed              Sets random seed in R global environment
@@ -89,12 +90,15 @@
 #'
 #' @exportClass rf.cv
 #' @export 	
-rf.crossValidation <- function(x, xdata, p=0.10, n=99, seed=NULL, normalize = FALSE, 
+rf.crossValidation <- function(x, xdata, ydata=NULL, p=0.10, n=99, seed=NULL, normalize = FALSE, 
                                bootstrap = FALSE, trace = FALSE, ...) {
   if(!any(class(x) %in% c("randomForest","list"))) stop("x is not a randomForest object")
+  # add check length of y and dim of x
     if(!is.null(seed)) { set.seed(seed) }
 	  if(bootstrap) cat("Bootstrap sampling is being applied,", paste("p",p,sep="="), "argument is ignored", "\n")
-  if (x$type == "unsupervised") { stop("Unsupervised classification not supported")
+    
+  if (x$type == "unsupervised") { 
+    stop("Unsupervised classification not supported")
 
   ###########################################
   #### Start regression cross-validation ####	   
@@ -132,11 +136,14 @@ rf.crossValidation <- function(x, xdata, p=0.10, n=99, seed=NULL, normalize = FA
 	y.mbe <- vector()
 	model.varExp <- vector()
 	model.mse <- vector()
+	
+	if( is.null(ydata) ) { ydata <- x$y }
+	
     if(bootstrap) boot.sample.size <- vector()	
-      sample.size = round( (length(x$y) * p), digits=0) #population sample size 
+      sample.size = round( (length(ydata) * p), digits=0) #population sample size 
 	  for(i in 1:n) {
 	    if(trace) cat("running iteration:", i, "\n")
-        dat <- data.frame(y=x$y, xdata)
+        dat <- data.frame(y=ydata, xdata)
         # Draw random sample		
 	    if(!bootstrap) {
 	      sidx <- sample(1:nrow(dat), sample.size)   
@@ -146,7 +153,7 @@ rf.crossValidation <- function(x, xdata, p=0.10, n=99, seed=NULL, normalize = FA
 	      dat.sub <- dat[sample(1:nrow(dat), replace=TRUE),]              
           dat.cv <- dat[which(!rownames(dat) %in% rownames(dat.sub)),]	   
         }	
-	     rf.fit <- randomForest::randomForest(y=dat.sub[,"y"], x=dat.sub[,2:ncol(dat.sub)], ...)    
+	     rf.fit <- randomForest::randomForest(y=dat.sub[,"y"], x=dat.sub[,2:ncol(dat.sub)])    
  		   model.mse <- append(model.mse, rf.fit$mse[length(rf.fit$mse)]) 
 	         model.varExp <- append(model.varExp, round(100*rf.fit$rsq[length(rf.fit$rsq)], digits=2) )         
 		       y.rmse <- append(y.rmse, rmse(dat.cv[,"y"], stats::predict(rf.fit, newdata = dat.cv[,2:ncol(dat.cv)]), norm=normalize) )
@@ -168,9 +175,10 @@ rf.crossValidation <- function(x, xdata, p=0.10, n=99, seed=NULL, normalize = FA
    #### Start classification cross-validation ####
    } else if (x$type == "classification") {
       cat("running:", x$type, "cross-validation", "with", n, "iterations", "\n")
+	    if( is.null(ydata) ) { ydata <- x$y }
     if(bootstrap) boot.sample.size <- vector()	
-    classes <- as.vector(levels( x$y ))	
-      sample.size = round( (length(x$y) * p) / length(x$classes), digits=0) 
+    classes <- as.vector(levels( ydata ))	
+      sample.size = round( (length(ydata) * p) / length(x$classes), digits=0) 
 	    cv.ua <- as.data.frame(array(0, dim=c(0,length(classes))))
 	      cv.pa <- as.data.frame(array(0, dim=c(0,length(classes))))
 	      mdl.ua <- as.data.frame(array(0, dim=c(0,length(classes)))) 
@@ -179,11 +187,11 @@ rf.crossValidation <- function(x, xdata, p=0.10, n=99, seed=NULL, normalize = FA
 	cv.oob <- as.data.frame(array(0, dim=c(0,2+length(classes))))	
 	
     # Create class-level sample sizes
-	nclass <- length(unique(x$y)) 
+	nclass <- length(unique(ydata)) 
 	p.class = p / nclass
 	sample.sizes <- vector()
 	  for(s in 1:nclass) { 
-	    sample.sizes[s] <- round(length(x$y[x$y == unique(x$y)[s]]) * 
+	    sample.sizes[s] <- round(length(ydata[ydata == unique(ydata)[s]]) * 
 		                         p.class, digits=0)    
 	  } 
 	
@@ -193,15 +201,15 @@ rf.crossValidation <- function(x, xdata, p=0.10, n=99, seed=NULL, normalize = FA
 	    if(!bootstrap) {
           sidx <- list()				
             for(s in 1:nclass) {
-              sidx[[s]] <- sample(which(x$y %in% unique(x$y)[s]), sample.sizes[s])
+              sidx[[s]] <- sample(which(ydata %in% unique(ydata)[s]), sample.sizes[s])
             }
 			sidx <- unlist(sidx)  
               tx <- xdata[sidx,]
-              ty <- x$y[sidx]
+              ty <- ydata[sidx]
               mx <- xdata[-sidx,]
-              my <- x$y[-sidx]	           
+              my <- ydata[-sidx]	           
 	    } else {	
-          dat <- data.frame(y=x$y, xdata) 	
+          dat <- data.frame(y=ydata, xdata) 	
             tx <- dat[sample(1:nrow(dat), replace=TRUE),]
               ty <- tx$y 
                 tx <- tx[,2:ncol(tx)]
