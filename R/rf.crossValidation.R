@@ -250,4 +250,4 @@ rf.crossValidation <- function(x, xdata, ydata=NULL, p=0.10, n=99, seed=NULL, no
       class(acc) <- c("rf.cv",  "classification", "list")
     return( acc )  							 
     }   
-}  
+}
