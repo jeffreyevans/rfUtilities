@@ -50,23 +50,16 @@ rfUtilities_2.0-1
 
 rfUtilities_2.1-0
 =================
-
 * The rf.crossValidation now supports regression 
-
 * Major changes to the multi.collinear function. Now performs column order and leave-one-out permutation test.
-
 * Print and plot generics support change in rf.crossValidation
-
 * rf.modelSel print generic now returns additional test statistics (test threshold, OOB, class error and number of parameters) and associated, sorted parameters 
 
 rfUtilities_2.1-1
 =================
 * Fixed bug in rf.crossValidation where the rmse for regression was being reported incorrectly (thanks to Patrick Fekety for finding error)
-
 * Added Mean Absolute Error (mae) and Mean Bias Error (mbe) to validation statistics in rf.crossValidation for regression
-
 * Added additional information to print and summary for rf.crossValidation
-
 * Added additional print capacity for "mae" and "mbe" statistics in rf.crossValidation
 
 rfUtilities_2.1-2
@@ -87,3 +80,7 @@ rfUtilities_2.1-4
 * Fixed a bug in rf.classBalance so that y in the model object reflects the input y
 * Fixed a bug in rf.crossValidation that threw sample size error when class imbalance data
 
+rfUtilities_2.1-5
+=================
+* Fixed a bug in rf.crossValidation for sample size in regression
+* Function enhancement in rf.crossValidation, added KS test for regression 
