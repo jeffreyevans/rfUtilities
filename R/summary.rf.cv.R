@@ -48,6 +48,8 @@ summary.rf.cv <- function(object, ...) {
 	cat("Median cross-validation RMSE", "=", stats::median(object[["y.rmse"]]), "\n")
     cat("Median cross-validation MBE", "=", stats::median(object[["y.mbe"]]), "\n")
 	cat("Median cross-validation MAE", "=", stats::median(object[["y.mae"]]), "\n")	
+    cat("Range of ks p-values", "=", range(x[["p.val"]]), "\n")
+    cat("Range of ks D statistic", "=", range(x[["D"]]), "\n")		
 	cat("RMSE cross-validation error variance", "=", stats::var(object[["y.rmse"]]), "\n")
     cat("MBE cross-validation error variance", "=", stats::var(object[["y.mbe"]]), "\n")
 	cat("MAE cross-validation error variance", "=", stats::var(object[["y.mae"]]), "\n")
