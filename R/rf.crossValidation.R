@@ -64,12 +64,12 @@
 #' ( rf.mdl <- randomForest(iris[,1:4], iris[,"Species"], ntree=501) )
 #'   ( rf.cv <- rf.crossValidation(rf.mdl, iris[,1:4], p=0.10, n=99, ntree=501) )
 #'
-#'    # Plot cross validation verses model producers accuracy
+#'    # Plot cross validation versus model producers accuracy
 #'    par(mfrow=c(1,2)) 
 #'      plot(rf.cv, type = "cv", main = "CV producers accuracy")
 #'      plot(rf.cv, type = "model", main = "Model producers accuracy")
 #'
-#'    # Plot cross validation verses model oob
+#'    # Plot cross validation versus model oob
 #'    par(mfrow=c(1,2)) 
 #'      plot(rf.cv, type = "cv", stat = "oob", main = "CV oob error")
 #'      plot(rf.cv, type = "model", stat = "oob", main = "Model oob error")	  
