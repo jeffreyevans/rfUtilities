@@ -9,7 +9,7 @@ downloads](http://cranlogs.r-pkg.org/badges/grand-total/rfUtilities)](https://cr
 
 Random Forests Model Selection, inference, fit and performance evaluation
 
-rfUtilities 2.1.5 (GitHub development release)
+rfUtilities 2.1-5 (GitHub development release)
 
 Release of of "rfUtilities" 2.1-4 includes bug fixes and function enhancement  
 
