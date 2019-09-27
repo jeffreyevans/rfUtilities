@@ -1,7 +1,7 @@
 Package: rfUtilities
 Title: Random Forests Model Selection and Performance Evaluation
-Version: 2.1-4
-Date: 2018-12-14
+Version: 2.1-5
+Date: 2019-09-27
 Authors@R: c(
 	person("Jeffrey S.", "Evans", role = c("cre", "aut"),  email = "jeffrey_evans@tnc.org"),
 	person("Melanie A.", "Murphy", role = "ctb") )
@@ -9,7 +9,7 @@ Description: Utilities for Random Forest model selection, class balance
     correction, significance test, cross validation and partial dependency
     plots.
 Depends:
-    R (>= 3.3)
+    R (>= 3.5)
 Imports:
     randomForest (>= 4.6-12),
     cluster
