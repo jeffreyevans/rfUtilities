@@ -64,3 +64,4 @@ Release of of "rfUtilities" 2.1-2 includes new functions for calculating Log Los
 `remotes::install_github("jeffreyevans/rfUtilities")`
 
 **Tutorial**: See (http://evansmurphy.wixsite.com/evansspatial/random-forest-sdm).
+
