@@ -15,6 +15,7 @@ Imports:
     cluster
 Maintainer: Jeffrey S. Evans <jeffrey_evans@tnc.org>
 License: GPL-3
+URL: https://github.com/jeffreyevans/rfUtilities
 NeedsCompilation: no
 Repository: CRAN
 LazyData: true
