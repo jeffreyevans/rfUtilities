@@ -38,11 +38,12 @@
 #'  x = iris[,1:4]
 #'  
 #'  set.seed(4364)  
-#'  ( rf.mdl <- randomForest(x=x, y=factor(y)) )
+#'  ( rf.mdl1 <- randomForest(x=x, y=factor(y)) )
 #'  
-#'  bvpd <- bivariate.partialDependence(rf.mdl, iris, 
+#'  
+#'  ( bvpd <- bivariate.partialDependence(rf.mdl1, iris, 
 #'                    v1 = "Petal.Length", v2 = "Petal.Width", shade = 0.6,
-#'                    grid.size = 60, ncols=200, border=NA, col.ramp=c("green","blue") )   
+#'                    grid.size = 20, ncols=100, border=NA, col.ramp=c("green","blue") ) ) 
 #'		
 #' @seealso \code{\link[graphics]{persp}} for persp ... plotting options
 #'

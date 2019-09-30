@@ -39,8 +39,8 @@
 #' @export        
 rf.class.sensitivity <- function(x, xdata, d="1", p=0.05, nperm=999, 
                                  plot=TRUE, seed=NULL, ...) {
-  if (!inherits(x, "randomForest")) stop("x is not randomForest class object")
-  if (!x$type == "classification") stop( "x is not a classification object")
+  if(!any(class(x) %in% c("randomForest","list"))) stop("x is not a randomForest object")
+    if (!x$type == "classification") stop( "x is not a classification object")
   if(!is.null(seed)) { set.seed(seed) } else { set.seed(.Random.seed[1]) }
     rmse <- function(o,p) sqrt( mean( (o - p )^2 ) )	
 	values <- as.character(unique(x$y))

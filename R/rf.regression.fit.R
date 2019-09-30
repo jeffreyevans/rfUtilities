@@ -16,7 +16,8 @@
 #'
 #' @export
 rf.regression.fit <- function(x) {
-  if(!x$type == "regression") stop("Classification models not supported")
+  if(!any(class(x) %in% c("randomForest","list"))) stop("x is not a randomForest object")
+    if(!x$type == "regression") stop("Classification models not supported")
   rmse <- sqrt(mean((x$predicted - x$y)^2))        
   r2 <- mean(x$rsq)                                
   f2 <- r2 / (1 - r2)                              

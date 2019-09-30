@@ -106,10 +106,12 @@
 #' }
 #'
 #' @seealso \code{\link[randomForest]{partialPlot}} for ... options
+#' @seealso \code{\link[randomForest]{randomForest}} for randomForest details
 #'
 #' @export
 rf.effectSize <- function(x, y, ...) {
-  if(is.factor(y) == TRUE | is.character(y) == TRUE) stop("factoral or dichotomous variables not supported")
+  if(!any(class(x) %in% c("randomForest","list"))) stop("x is not a randomForest object")
+    if(is.factor(y) == TRUE | is.character(y) == TRUE) stop("factorial or dichotomous variables not supported")
   dots <- as.list(match.call(expand.dots = TRUE)[-1])    
     dots[["x"]] <- x
       if (is.null(dots[["x.var"]]) & "x.var" %in% names(dots) == FALSE) stop("x.var must be defined") 

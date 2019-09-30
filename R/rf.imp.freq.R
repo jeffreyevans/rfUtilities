@@ -28,14 +28,14 @@
 #'
 #' @export
 rf.imp.freq <- function(x, p = 0.60, plot = TRUE) {
-  if (!inherits(x, "randomForest")) stop("x is not randomForest class object")
-  if (x$type == "classification" | x$type == "unsupervised") {
-   if (is.null(x$importanceSD) == TRUE | "MeanDecreaseAccuracy" %in% 
-      names(as.data.frame(x$importance)) == FALSE)
-      stop("randomForest object does not contain importance, please run with importance=TRUE")  
-	} else {
-	  stop("Does not support regression")
-    }	
+  if(!any(class(x) %in% c("randomForest","list"))) stop("x is not a randomForest object")
+    if (x$type == "classification" | x$type == "unsupervised") {
+      if (is.null(x$importanceSD) == TRUE | "MeanDecreaseAccuracy" %in% 
+         names(as.data.frame(x$importance)) == FALSE)
+         stop("randomForest object does not contain importance, please run with importance=TRUE")  
+	   } else {
+	     stop("Does not support regression")
+       }	
   imp.measure <- "MeanDecreaseAccuracy"  
   importance <- x$importance
     for(i in 1:ncol(importance)) { 

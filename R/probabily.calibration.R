@@ -1,7 +1,7 @@
 #' @title Isotonic probability calibration
 #' @description Performs an isotonic regression calibration of posterior probability to minimize log loss.
 #'    
-#' @param y                Binominal response varible used to fit model   
+#' @param y                Binomial response variable used to fit model   
 #' @param p                Estimated probabilities from fit model
 #' @param regularization   (FALSE/TRUE) should regularization be performed on the probabilities? (see notes) 
 #'
@@ -37,7 +37,7 @@
 #'  # Calibrate probabilities
 #'  calibrated.y.hat <- probability.calibration(y, y.hat, regularization = TRUE) 
 #'
-#'  # Plot calibrated aganist origianl probability estimate
+#'  # Plot calibrated against original probability estimate
 #'  plot(density(y.hat), col="red", xlim=c(0,1), ylab="Density", xlab="probabilities",
 #'       main="Calibrated probabilities" )
 #'         lines(density(calibrated.y.hat), col="blue")
@@ -66,7 +66,7 @@ probability.calibration <- function(y, p, regularization = FALSE) {
   isotonic.calibration <- function(iso, x0) {
     o = iso$o
       if (is.null(o))
-        o = 1:length(x)
+        o = 1:length(x0)
         x = iso$x[o]
         y = iso$yf
       ind = cut(x0, breaks = x, labels = FALSE, include.lowest = TRUE)

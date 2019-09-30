@@ -28,7 +28,7 @@
 #'
 #' @export
 rf.partial.ci <- function(m, x, yname, xname, lci=0.25, uci=0.75, delta=FALSE) {
-  if (!inherits(m, "randomForest")) stop("m is not randomForest class object")
+  if(!any(class(m) %in% c("randomForest","list"))) stop("m is not a randomForest object")
   if(m$type != "regression") stop("classification is not supported")
     conf.int <-(uci-lci)*100
     temp <- sort(x[, xname])
@@ -40,9 +40,9 @@ rf.partial.ci <- function(m, x, yname, xname, lci=0.25, uci=0.75, delta=FALSE) {
     x[, xname] <- temp[i]
     y.hat <- stats::predict(m, x)
     if (delta == TRUE){ y.hat <- y.hat - y }
-    y.hat.mean[i] <- stats::weighted.mean(y.hat)
-    y.hat.lb[i] <- stats::quantile(y.hat, lci)
-    y.hat.ub[i] <- stats::quantile(y.hat, uci)
+      y.hat.mean[i] <- stats::weighted.mean(y.hat)
+      y.hat.lb[i] <- stats::quantile(y.hat, lci)
+      y.hat.ub[i] <- stats::quantile(y.hat, uci)
   }
   m.ci <- as.data.frame(cbind(temp, y.hat.mean, y.hat.lb, y.hat.ub))
   names(m.ci) <- c(xname, "y.hat.mean", "lci", "uci")

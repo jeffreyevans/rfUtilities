@@ -11,7 +11,7 @@
 #' @method plot rf.cv 
 #'
 #' @export    	     
-plot.rf.cv <- function(x, type = "cv", stat = "producers.accuracy", ...) {
+plot.rf.cv <- function(x, type = "cv", stat = "kappa", ...) {
   if(class(x)[2] == "classification") {
   plot.class <- function(x, ...) {
     dots <- as.list(match.call(expand.dots = TRUE)[-1])

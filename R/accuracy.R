@@ -101,8 +101,8 @@ accuracy <- function (x, y) {
       # FP(2)  TN(4)  	
       n = sum(t.xy)  # N	
       TP <- t.xy[1]  # True Positives, Power 
-	  FN <- t.xy[3]  # False Negatives, Type-II error 
 	  FP <- t.xy[2]  # False Positives, Type-I error 
+	  FN <- t.xy[3]  # False Negatives, Type-II error 
 	  TN <- t.xy[4]  # True Negatives
       # prevalence <- TP / n
       precision <- TP / (TP + FP)  	  
@@ -130,28 +130,28 @@ accuracy <- function (x, y) {
           rownames(confusion) <- rownames(t.xy)
 		  colnames(confusion) <- colnames(t.xy)
 	  acc <- list( PCC = (sum(diag(t4))/sum(t4)) * 100,
-                auc = auc, 	
-	        users.accuracy = round(user2 * 100, 1),  
-	        producers.accuracy = round(prod2 * 100, 1),
-                kappa = round(khat, 4),
-		true.skill = true.skill, 
-		sensitivity = tpr,
-		specificity = tnr,
-		plr = plr,
-		nlr = nlr,
-		typeI.error = type1.error,
-		typeII.error = type2.error,
-		gini = gini,
-		f.score = f.score,
-		gain = gain,
-                matthews = mcc,
-		confusion = confusion )	
+                   auc = auc, 	
+	               users.accuracy = round(user2 * 100, 1),  
+	               producers.accuracy = round(prod2 * 100, 1),
+                   kappa = round(khat, 4),
+				   true.skill = true.skill, 
+				   sensitivity = tpr,
+				   specificity = tnr,
+				   plr = plr,
+				   nlr = nlr,
+				   typeI.error = type1.error,
+				   typeII.error = type2.error,
+				   gini = gini,
+				   f.score = f.score,
+				   gain = gain,
+                   matthews = mcc,
+				   confusion = confusion )	
     } else {
 	  acc <- list( PCC = (sum(diag(t4))/sum(t4)) * 100, 
 	             users.accuracy = round(user2 * 100, 1),  
 	             producers.accuracy = round(prod2 * 100, 1),
-                     kappa = round(khat, 4),
-                     confusion = t.xy )
+                 kappa = round(khat, 4),
+                 confusion = t.xy )
 	}			 
 	class(acc) <- c("accuracy", "list") 			   
           return( acc )

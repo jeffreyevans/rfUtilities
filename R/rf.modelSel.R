@@ -10,26 +10,32 @@
 #' @param parsimony              Threshold for competing model (0-1)
 #' @param ...                    Additional arguments to pass to randomForest (e.g., ntree=1000, replace=TRUE, proximity=TRUE)
 #'
-#' @return A list class object with the following components:
-#'  @return   rf.final           Final selected model, if final = TRUE(randomForest model object)
-#'  @return   sel.vars           Final selected variables (vector)
-#'  @return   test               Validation parameters used on model selection (data.frame)
-#'  @return   sel.importance     Importance values for selected model (data.frame)
-#'  @return   importance         Importance values for all models (data.frame)
-#'  @return   parameters         Variables used in each tested model (list)
-#'  @return   s                  Type of scaling used for importance
-#'
-#' @details
-#' If you want to run classification, make sure that y is a factor, otherwise the randomForest model runs in regression mode
-#' For classification problems the model selection criteria is: smallest OOB error, smallest maximum within class error, and fewest parameters. 
-#' For regression problems, the model selection criteria is; largest %variation explained, smallest MSE and fewest parameters.
+#' @return \strong{A list class object with the following components:} 
+#' \itemize{  
+#'   \item   {"rf.final"} {Final selected model, if final = TRUE(randomForest model object)}
+#'   \item   {"sel.vars"} {Final selected variables (vector)}
+#'   \item   {"test"} {Validation parameters used on model selection (data.frame)}
+#'   \item   {"sel.importance"} {Importance values for selected model (data.frame)}
+#'   \item   {"importance"} {Importance values for all models (data.frame)}
+#'   \item   {"parameters"} {Variables used in each tested model (list)}
+#'   \item   {"s"} {Type of scaling used for importance}
+#' }
 #' 
 #' @details
-#' The "mir" scale option performs a row standardization and the "se" option performs normalization using the "standard errors" of the permutation-based importance measure. 
+#' If you want to run classification, make sure that y is a factor, otherwise the randomForest model
+#' runs in regression mode For classification problems the model selection criteria is: smallest 
+#' OOB error, smallest maximum within class error, and fewest parameters. For regression problems, 
+#' the model selection criteria is; largest %variation explained, smallest MSE and fewest parameters.
+#' 
+#' @details
+#' The "mir" scale option performs a row standardization and the "se" option performs normalization 
+#' using the "standard errors" of the permutation-based importance measure. 
 #' Both options result in a 0-1 range but, "se" sums to 1.
 #' The scaled importance measures are calculated as: mir = i/max(i) and se = (i / se) / ( sum(i) / se).
-#' The parsimony argument is the percent of allowable error surrounding competing models. For example, if there are two competing models, a selected model with 5 parameters 
-#' and a competing model with 3 parameters, and parsimony = 0.05, if there is +/- 5% error in the fewer parameter model it will be selected at the final model. 
+#' The parsimony argument is the percent of allowable error surrounding competing models. 
+#' For example, if there are two competing models, a selected model with 5 parameters 
+#' and a competing model with 3 parameters, and parsimony = 0.05, if there is +/- 5% error in 
+#' the fewer parameter model it will be selected at the final model. 
 #'
 #' @author Jeffrey S. Evans  <jeffrey_evans@@tnc.org>
 #'

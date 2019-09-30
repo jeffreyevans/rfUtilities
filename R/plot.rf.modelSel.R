@@ -20,9 +20,12 @@ plot.rf.modelSel <- function(x, imp = "sel",  ...) {
     if (is.null(dots[["pch"]]) & "pch" %in% names(dots) == FALSE) dots[["pch"]] <-  20
   	do.call("dotchart", dots)
   }
-    if( imp == "sel" ) { imp = x$sel.importance 
-	  } else if (imp == "all") { imp = x$importance }
-    if (x$s=="mir") {lable = "Row Standardization Variable Importance"} 	
+    if( imp == "sel" ) { 
+	  imp = x$sel.importance 
+	} else if (imp == "all") { 
+	  imp = x$importance 
+	}
+      if (x$s=="mir") {lable = "Row Standardization Variable Importance"} 	
     if (x$s=="se") {lable = "Standardized Error Variable Importance"}
   plot.ms(imp, ...) 
 }
