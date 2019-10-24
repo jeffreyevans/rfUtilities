@@ -7,14 +7,19 @@
 #' @param global       (TRUE/FALSE) return local or global log loss values, if FALSE local values are returned
 #' @param eps          epsilon scaling factor to avoid NaN values
 #'
-#' @return If likelihood TRUE the log likelihood loss will be returned. If global FALSAE, a list with observed (y), probability (p) and log loss (log.loss) otherwise, a vector of global log loss value 
+#' @return If likelihood TRUE the log likelihood loss will be returned. If global FALSE, a list with 
+#'         observed (y), probability (p) and log loss (log.loss) otherwise, a vector of global log loss value 
 #' 
-#' @note The log loss metric, based on cross-entropy, measures the quality of predictions rather than the accuracy.
-#' @note Effectively, the log loss is a measure that gauges additional error comming the estimates as opposed to the true values.
-#' @note As the estimated probability diverges from its observed value the log loss increases with an expected of [0-1] where 0 would be a perferct model.  
-#' @note For a single sample with true value yt in {0,1} and estimated probability yp that yt = 1, the log loss is derived as: -log P(yt | yp) = -(yt log(yp) + (1 - yt) log(1 - yp))
-#' @note eps is used where log loss is undefined for p=0 or p=1, so probabilities are clipped to: max(eps, min(1 - eps, p))
-#' @note If likelihood is output, the eps and local arguments are ignored.  
+#' @note The log loss metric, based on cross-entropy, measures the quality of predictions rather than 
+#'       the accuracy. Effectively, the log loss is a measure that gages additional error coming the 
+#'       estimates as opposed to the true values.
+#'
+#' @note As the estimated probability diverges from its observed value the log loss increases with an 
+#'       expected of [0-1] where 0 would be a perfect model. For a single sample with true value yt 
+#'       in {0,1} and estimated probability yp that yt = 1, the log loss is derived as: 
+#'       -log P(yt | yp) = -(yt log(yp) + (1 - yt) log(1 - yp)) eps is used where log loss is undefined 
+#'       for p=0 or p=1, so probabilities are clipped to: max(eps, min(1 - eps, p)) If likelihood is output, 
+#'       the eps and local arguments are ignored.  
 #'       
 #' @author Jeffrey S. Evans    <jeffrey_evans<at>tnc.org>
 #'

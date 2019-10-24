@@ -7,7 +7,7 @@
 rf.combine(...)
 }
 \arguments{
-\item{...}{two or more randomForest class objects}
+\item{...}{two or more randomForest class objects as individual objects or a list containing models}
 }
 \value{
 An object of class randomForest
@@ -16,9 +16,10 @@ An object of class randomForest
 Combine two more more random forests models into a single ensemble.
 }
 \note{
-The confusion, err.rate, mse and rsq components (as well as the corresponding components in the test component, if exist) are averaged across ensembles
-
-This is a modification of the randomForest \code{\link[randomForest]{combine}} function that returns averaged validation statistics
+The confusion, err.rate, mse and rsq components (as well as the corresponding components in the 
+        test component, if exist) are averaged across ensembles. This is a modification of the 
+        randomForest \code{\link[randomForest]{combine}} function that returns averaged validation 
+        statistics
 }
 \examples{
 library(randomForest)

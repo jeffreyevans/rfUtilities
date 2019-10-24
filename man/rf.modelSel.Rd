@@ -40,15 +40,19 @@ rf.modelSel(xdata, ydata, imp.scale = "mir", r = c(0.25, 0.5, 0.75),
 Implements Murphy et al., (2010) Random Forests model selection approach.
 }
 \details{
-If you want to run classification, make sure that y is a factor, otherwise the randomForest model runs in regression mode
-For classification problems the model selection criteria is: smallest OOB error, smallest maximum within class error, and fewest parameters. 
-For regression problems, the model selection criteria is; largest %variation explained, smallest MSE and fewest parameters.
+If you want to run classification, make sure that y is a factor, otherwise the randomForest model
+runs in regression mode For classification problems the model selection criteria is: smallest 
+OOB error, smallest maximum within class error, and fewest parameters. For regression problems, 
+the model selection criteria is; largest %variation explained, smallest MSE and fewest parameters.
 
-The "mir" scale option performs a row standardization and the "se" option performs normalization using the "standard errors" of the permutation-based importance measure. 
+The "mir" scale option performs a row standardization and the "se" option performs normalization 
+using the "standard errors" of the permutation-based importance measure. 
 Both options result in a 0-1 range but, "se" sums to 1.
 The scaled importance measures are calculated as: mir = i/max(i) and se = (i / se) / ( sum(i) / se).
-The parsimony argument is the percent of allowable error surrounding competing models. For example, if there are two competing models, a selected model with 5 parameters 
-and a competing model with 3 parameters, and parsimony = 0.05, if there is +/- 5% error in the fewer parameter model it will be selected at the final model.
+The parsimony argument is the percent of allowable error surrounding competing models. 
+For example, if there are two competing models, a selected model with 5 parameters 
+and a competing model with 3 parameters, and parsimony = 0.05, if there is +/- 5% error in 
+the fewer parameter model it will be selected at the final model.
 }
 \examples{
 # Classification on iris data

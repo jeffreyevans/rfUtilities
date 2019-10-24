@@ -1,2 +1,4 @@
-Added three new functions and addressed a few minor bugs and help doc modifications.
-Passed CRAN check, using R CMD with --as-cran flag, with no errors, warnings or notes. 
+Passed CRAN (devtools) check with no errors, warnings or notes. 
+Passed win-build with no errors, warnings or notes. 
+Passed R-hub builder, with no errors, warnings or notes. 
+Addressed a few minor bugs and help doc modifications.

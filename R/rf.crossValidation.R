@@ -137,7 +137,7 @@ rf.crossValidation <- function(x, xdata, ydata=NULL, p=0.10, n=99, seed=NULL, no
         }
 	    # Kolmogorov-Smirnov Test (1=D, 2=p.value)
         ks <- function(y, x, s = c(1,2)) {
-		  ks.test(x, ecdf(y))[s[1]]
+		  stats::ks.test(x, stats::ecdf(y))[s[1]]
 		}
     # Define validation vectors
     y.rmse <- rep(NA, n)  

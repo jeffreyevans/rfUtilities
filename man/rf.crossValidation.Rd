@@ -4,13 +4,16 @@
 \alias{rf.crossValidation}
 \title{Random Forest Classification or Regression Model Cross-validation}
 \usage{
-rf.crossValidation(x, xdata, p = 0.1, n = 99, seed = NULL,
-  normalize = FALSE, bootstrap = FALSE, ...)
+rf.crossValidation(x, xdata, ydata = NULL, p = 0.1, n = 99,
+  seed = NULL, normalize = FALSE, bootstrap = FALSE, trace = FALSE,
+  ...)
 }
 \arguments{
 \item{x}{random forest object}
 
 \item{xdata}{x data used in model}
+
+\item{ydata}{optional y data used in model, default is to use x$y from model object}
 
 \item{p}{Proportion data withhold (default p=0.10)}
 
@@ -21,6 +24,8 @@ rf.crossValidation(x, xdata, p = 0.1, n = 99, seed = NULL,
 \item{normalize}{(FALSE/TRUE) For regression, should rmse, mbe and mae be normalized using (max(y) - min(y))}
 
 \item{bootstrap}{(FALSE/TRUE) Should a bootstrap sampling be applied. If FALSE, an n-th percent withold will be conducted}
+
+\item{trace}{Print iterations}
 
 \item{...}{Additional arguments passed to Random Forests}
 }
@@ -40,6 +45,10 @@ For regression a "rf.cv", "regression" class object with the following component
 \item  fit.var.exp    Percent variance explained from specified fit model 
 \item  fit.mse        Mean Squared Error from specified fit model   
 \item  y.rmse         Root Mean Squared Error (observed vs. predicted) from each Bootstrap iteration (cross-validation)    
+\item  y.mbe          Mean Bias Error from each Bootstrapped model
+\item  y.mae          Mean Absolute Error from each Bootstrapped model
+\item  D              Test statistic from Kolmogorov-Smirnov distribution Test (y and estimate)
+\item  p.val          p-value for Kolmogorov-Smirnov distribution Test (y and estimate)
 \item  model.mse      Mean Squared Error from each Bootstrapped model
 \item  model.varExp   Percent variance explained from each Bootstrapped model   
  }
@@ -74,12 +83,12 @@ library(randomForest)
 ( rf.mdl <- randomForest(iris[,1:4], iris[,"Species"], ntree=501) )
   ( rf.cv <- rf.crossValidation(rf.mdl, iris[,1:4], p=0.10, n=99, ntree=501) )
 
-   # Plot cross validation verses model producers accuracy
+   # Plot cross validation versus model producers accuracy
    par(mfrow=c(1,2)) 
      plot(rf.cv, type = "cv", main = "CV producers accuracy")
      plot(rf.cv, type = "model", main = "Model producers accuracy")
 
-   # Plot cross validation verses model oob
+   # Plot cross validation versus model oob
    par(mfrow=c(1,2)) 
      plot(rf.cv, type = "cv", stat = "oob", main = "CV oob error")
      plot(rf.cv, type = "model", stat = "oob", main = "Model oob error")	  
@@ -88,7 +97,8 @@ library(randomForest)
 data(airquality)
 airquality <- na.omit(airquality) 
 rf.mdl <- randomForest(y=airquality[,"Ozone"], x=airquality[,2:4])
-( rf.cv <- rf.crossValidation(rf.mdl, airquality[,2:4], p=0.10, n=99, ntree=501) )
+( rf.cv <- rf.crossValidation(rf.mdl, airquality[,2:4], 
+                              p=0.10, n=99, ntree=501) )
  par(mfrow=c(2,2))
    plot(rf.cv)  
    plot(rf.cv, stat = "mse")

@@ -58,7 +58,7 @@ Release of of "rfUtilities" 2.1-2 includes new functions for calculating Log Los
           
 **Bugs**: Users are encouraged to report bugs here. Go to [issues](https://github.com/jeffreyevans/rfUtilities/issues) in the menu above, and press new issue to start a new bug report, documentation correction or feature request. You can direct questions to <jeffrey_evans@tnc.org>.
 
-**To install `rfUtilities` in R use install.packages() to download curent stable release from CRAN** 
+**To install `rfUtilities` in R use install.packages() to download current stable release from CRAN** 
 
 **or, for the development version, run the following (requires the remotes package):**
 `remotes::install_github("jeffreyevans/rfUtilities")`

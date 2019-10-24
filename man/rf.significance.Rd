@@ -22,28 +22,39 @@ rf.significance(x, xdata, q = 0.99, p = 0.05, nperm = 999, ...)
 \value{
 A list class object with the following components:
 
-\strong{For Regression problems:} 
-\itemize{  
-  \item {"RandRsquare"} {Vector of random R-square values} 
-  \item {"Rsquare"} {The R-square of the "true" model}  
-  \item {"Accept"} {model significant at specified p-value (TRUE/FALSE)}
-  \item {"TestQuantile"} {Quantile threshold used in significance plot}
-  \item {"pValueThreshold"} {Specified p-value}
-  \item {"pValue"} {p-values of randomizations}
-  \item {"nPerm"} {Number of permutations}
- }
+For Regression problems:
 
-\strong{For Classification problems:}
-\itemize{  
-  \item {"RandOOB"} {Vector of random out-of-bag (OOB) values} 
-  \item {"RandMaxError"} {Maximum error of randomizations} 
-  \item {"test.OOB"} {Error if the "true" model}
-  \item {"Accept"} {Is the model significant at specified p-value (TRUE/FALSE)}
-  \item {"TestQuantile"} {Quantile threshold used in significance plot}
-  \item {"pValueThreshold"} {Specified p-value}
-  \item {"pValue"} {p-values of randomizations}
-  \item {"nPerm"} {Number of permutations}
- }
+RandRsquare Vector of random R-square values
+
+Rsquare The R-square of the "true" model
+
+Accept Is the model significant at specified p-value (TRUE/FALSE)
+
+TestQuantile Quantile threshold used in significance plot
+
+pValueThreshold Specified p-value
+
+pValue p-values of randomizations
+
+nPerm Number of permutations
+
+For Classification problems:
+
+RandOOB Vector of random out-of-bag (OOB) values
+
+RandMaxError Maximum error of randomizations
+
+test.OOB Error if the "true" model
+
+Accept Is the model significant at specified p-value (TRUE/FALSE)
+
+TestQuantile Quantile threshold used in significance plot
+
+pValueThreshold Specified p-value
+
+pValue p-values of randomizations
+
+nPerm Number of permutations
 }
 \description{
 Performs significance test for classification and regression Random Forests models.

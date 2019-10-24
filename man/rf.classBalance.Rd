@@ -4,7 +4,8 @@
 \alias{rf.classBalance}
 \title{Random Forest Class Balance (Zero Inflation Correction) Model}
 \usage{
-rf.classBalance(ydata, xdata, p = 0.005, cbf = 3, sf = 2, ...)
+rf.classBalance(ydata, xdata, p = 0.005, cbf = 3, sf = 2,
+  seed = NULL, ...)
 }
 \arguments{
 \item{ydata}{Response variable using index (i.e., [,2] or [,"SPP"] )}
@@ -16,6 +17,8 @@ rf.classBalance(ydata, xdata, p = 0.005, cbf = 3, sf = 2, ...)
 \item{cbf}{Scaling factor to test if problem is imbalanced, default is size of majority class * 3}
 
 \item{sf}{Majority subsampling factor. If sf=1 then random sample would be perfectly balanced with smallest class [s|0=n|1] whereas; sf=2 provides [s|0=(n|1*2)]}
+
+\item{seed}{Sets random seed in R global environment}
 
 \item{...}{Additional arguments passed to randomForest}
 }

@@ -4,14 +4,15 @@
 \alias{plot.rf.cv}
 \title{Plot random forests cross-validation}
 \usage{
-\method{plot}{rf.cv}(x, type = "cv", stat = "producers.accuracy", ...)
+\method{plot}{rf.cv}(x, type = "cv", stat = "kappa", ...)
 }
 \arguments{
 \item{x}{A rf.cv object}
 
 \item{type}{Which result to evaluate c("cv","model")}
 
-\item{stat}{Which statistic to plot: classification: "users.accuracy", "producers.accuracy", "kappa", "oob", regression: "rmse", "mse", "var.exp", "mae", "mbe"}
+\item{stat}{Which statistic to plot: classification: "users.accuracy", "producers.accuracy", 
+"kappa", "oob", regression: "rmse", "mse", "var.exp", "mae", "mbe"}
 
 \item{...}{Additional arguments passed to plot}
 }

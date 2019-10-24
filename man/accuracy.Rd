@@ -25,7 +25,8 @@ A list class object with the following components:
 \item   plr                    Positive Likelihood Ratio   
 \item   nlr                    Negative Likelihood Ratio  
 \item   typeI.error            Type I error (omission)
-\item   typeII.error           Type II error (comission)
+\item   typeII.error           Type II error (commission)
+\item   gini                   Gini entropy index
 \item   f.score                F-score
 \item   gain                   Information gain (aka precision)
 \item   mcc                    Matthew's correlation 
@@ -48,6 +49,8 @@ Classification accuracy measures for pcc, kappa, users accuracy, producers accur
   \item   F-Score = 2 * (precision * recall) / (precision + recall) 
   \item   Hanssen-Kuiper skill score (aka true score statistic) = [(tp * tn) - (fp * fn)] / [(tp + fn) + (fp + tn)], The true skill score has an expected -1 to +1, with 0 representing no discrimination.   
  }
+
+Using the table function matrix positions for a 2x2 confusion matrix are TP(1), FN(3), FP(2), TN(4)
 }
 \examples{
  # Two classes (vector)
