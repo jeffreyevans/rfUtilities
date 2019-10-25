@@ -10,7 +10,7 @@
 #' @param parsimony              Threshold for competing model (0-1)
 #' @param ...                    Additional arguments to pass to randomForest (e.g., ntree=1000, replace=TRUE, proximity=TRUE)
 #'
-#' @return \strong{A list class object with the following components:} 
+#' @return \strong{A rf.modelSel class object with the following components:} 
 #' \itemize{  
 #'   \item   {"rf.final"} {Final selected model, if final = TRUE(randomForest model object)}
 #'   \item   {"sel.vars"} {Final selected variables (vector)}
@@ -25,7 +25,8 @@
 #' If you want to run classification, make sure that y is a factor, otherwise the randomForest model
 #' runs in regression mode For classification problems the model selection criteria is: smallest 
 #' OOB error, smallest maximum within class error, and fewest parameters. For regression problems, 
-#' the model selection criteria is; largest %variation explained, smallest MSE and fewest parameters.
+#' the model selection criteria is largest percent variation explained, smallest MSE and 
+#' fewest parameters.
 #' 
 #' @details
 #' The "mir" scale option performs a row standardization and the "se" option performs normalization 
