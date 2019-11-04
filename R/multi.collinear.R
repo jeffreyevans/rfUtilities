@@ -41,6 +41,8 @@ multi.collinear <- function(x, perm = FALSE, leave.out = FALSE, n = 99, p = 1e-0
     if ( (dim(x)[2] < 2) == TRUE) stop("Need at least two parameters to test")
       if(!inherits(x, "matrix")) x <- as.data.frame(x)
 	    if(na.rm) { x <- stats::na.omit(x) }
+	if(!any(unlist(lapply(x, is.numeric))))
+      stop("All columns in x must be numeric")  	
     qrd <- function(x) {
       x <- as.matrix(x)
       n <- ncol(x)
