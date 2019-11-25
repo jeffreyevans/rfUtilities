@@ -63,10 +63,10 @@ Modified partialPlot function uses distinct X values to construct partial depend
  	                       pred.data = boot.samples,x.var = Temp))
    }        
   se <- function(x) sqrt(var(x, na.rm = TRUE) / length(na.omit(x)))
-    cat("Bootstrap variance for Wind:", var(es.boot.wind), "\\n")
-      cat("Bootstrap standard error for Wind:", se(es.boot.wind), "\\n","\\n")
-    cat("Bootstrap variance for Temp:", var(es.boot.temp), "\\n")
-  cat("Bootstrap standard error for Temp:", se(es.boot.temp), "\\n")
+    cat("Bootstrap variance for Wind:", var(es.boot.wind), "\n")
+      cat("Bootstrap standard error for Wind:", se(es.boot.wind), "\n","\n")
+    cat("Bootstrap variance for Temp:", var(es.boot.temp), "\n")
+  cat("Bootstrap standard error for Temp:", se(es.boot.temp), "\n")
 
  # Confidence intervals of Bootstrap of effect size for Wind
  p=0.95

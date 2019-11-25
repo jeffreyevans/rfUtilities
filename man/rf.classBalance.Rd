@@ -4,8 +4,7 @@
 \alias{rf.classBalance}
 \title{Random Forest Class Balance (Zero Inflation Correction) Model}
 \usage{
-rf.classBalance(ydata, xdata, p = 0.005, cbf = 3, sf = 2,
-  seed = NULL, ...)
+rf.classBalance(ydata, xdata, p = 0.005, cbf = 3, sf = 2, seed = NULL, ...)
 }
 \arguments{
 \item{ydata}{Response variable using index (i.e., [,2] or [,"SPP"] )}

@@ -4,8 +4,7 @@
 \alias{logLoss}
 \title{Logarithmic loss (logLoss)}
 \usage{
-logLoss(y, p, likelihood = FALSE, global = TRUE,
-  eps = 0.000000000000001)
+logLoss(y, p, likelihood = FALSE, global = TRUE, eps = 0.000000000000001)
 }
 \arguments{
 \item{y}{vector of observed binomial values {0,1}}

@@ -4,8 +4,14 @@
 \alias{rf.unsupervised}
 \title{Unsupervised Random Forests}
 \usage{
-rf.unsupervised(x, n = 2, proximity = FALSE, silhouettes = FALSE,
-  clara = FALSE, ...)
+rf.unsupervised(
+  x,
+  n = 2,
+  proximity = FALSE,
+  silhouettes = FALSE,
+  clara = FALSE,
+  ...
+)
 }
 \arguments{
 \item{x}{A matrix/data/frame object to cluster}

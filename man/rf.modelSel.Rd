@@ -4,8 +4,16 @@
 \alias{rf.modelSel}
 \title{Random Forest Model Selection}
 \usage{
-rf.modelSel(xdata, ydata, imp.scale = "mir", r = c(0.25, 0.5, 0.75),
-  final.model = FALSE, seed = NULL, parsimony = NULL, ...)
+rf.modelSel(
+  xdata,
+  ydata,
+  imp.scale = "mir",
+  r = c(0.25, 0.5, 0.75),
+  final.model = FALSE,
+  seed = NULL,
+  parsimony = NULL,
+  ...
+)
 }
 \arguments{
 \item{xdata}{X                Data for model}
@@ -25,7 +33,7 @@ rf.modelSel(xdata, ydata, imp.scale = "mir", r = c(0.25, 0.5, 0.75),
 \item{...}{Additional arguments to pass to randomForest (e.g., ntree=1000, replace=TRUE, proximity=TRUE)}
 }
 \value{
-\strong{A list class object with the following components:} 
+\strong{A rf.modelSel class object with the following components:} 
 \itemize{  
   \item   {"rf.final"} {Final selected model, if final = TRUE(randomForest model object)}
   \item   {"sel.vars"} {Final selected variables (vector)}
@@ -43,7 +51,8 @@ Implements Murphy et al., (2010) Random Forests model selection approach.
 If you want to run classification, make sure that y is a factor, otherwise the randomForest model
 runs in regression mode For classification problems the model selection criteria is: smallest 
 OOB error, smallest maximum within class error, and fewest parameters. For regression problems, 
-the model selection criteria is; largest %variation explained, smallest MSE and fewest parameters.
+the model selection criteria is largest percent variation explained, smallest MSE and 
+fewest parameters.
 
 The "mir" scale option performs a row standardization and the "se" option performs normalization 
 using the "standard errors" of the permutation-based importance measure. 

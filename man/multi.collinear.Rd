@@ -4,8 +4,14 @@
 \alias{multi.collinear}
 \title{Multi-collinearity test}
 \usage{
-multi.collinear(x, perm = FALSE, leave.out = FALSE, n = 99,
-  p = 0.0000001, na.rm = FALSE)
+multi.collinear(
+  x,
+  perm = FALSE,
+  leave.out = FALSE,
+  n = 99,
+  p = 0.0000001,
+  na.rm = FALSE
+)
 }
 \arguments{
 \item{x}{data.frame or matrix object}

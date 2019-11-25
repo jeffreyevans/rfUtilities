@@ -4,9 +4,18 @@
 \alias{rf.crossValidation}
 \title{Random Forest Classification or Regression Model Cross-validation}
 \usage{
-rf.crossValidation(x, xdata, ydata = NULL, p = 0.1, n = 99,
-  seed = NULL, normalize = FALSE, bootstrap = FALSE, trace = FALSE,
-  ...)
+rf.crossValidation(
+  x,
+  xdata,
+  ydata = NULL,
+  p = 0.1,
+  n = 99,
+  seed = NULL,
+  normalize = FALSE,
+  bootstrap = FALSE,
+  trace = FALSE,
+  ...
+)
 }
 \arguments{
 \item{x}{random forest object}

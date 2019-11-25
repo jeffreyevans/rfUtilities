@@ -4,8 +4,16 @@
 \alias{rf.class.sensitivity}
 \title{Random Forests class-level sensitivity analysis}
 \usage{
-rf.class.sensitivity(x, xdata, d = "1", p = 0.05, nperm = 999,
-  plot = TRUE, seed = NULL, ...)
+rf.class.sensitivity(
+  x,
+  xdata,
+  d = "1",
+  p = 0.05,
+  nperm = 999,
+  plot = TRUE,
+  seed = NULL,
+  ...
+)
 }
 \arguments{
 \item{x}{randomForest class object}

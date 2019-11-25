@@ -4,10 +4,26 @@
 \alias{rf.partial.prob}
 \title{Random Forest probability scaled partial dependency plots}
 \usage{
-rf.partial.prob(x, pred.data, xname, which.class, w, prob = TRUE,
-  plot = TRUE, smooth, conf = TRUE, smooth.parm = NULL,
-  pts = FALSE, raw.line = FALSE, rug = FALSE, n.pt, xlab, ylab, main,
-  ...)
+rf.partial.prob(
+  x,
+  pred.data,
+  xname,
+  which.class,
+  w,
+  prob = TRUE,
+  plot = TRUE,
+  smooth,
+  conf = TRUE,
+  smooth.parm = NULL,
+  pts = FALSE,
+  raw.line = FALSE,
+  rug = FALSE,
+  n.pt,
+  xlab,
+  ylab,
+  main,
+  ...
+)
 }
 \arguments{
 \item{x}{Object of class randomForest}

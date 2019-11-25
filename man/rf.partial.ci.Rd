@@ -4,8 +4,7 @@
 \alias{rf.partial.ci}
 \title{Random Forests regression partial dependency plot with confidence intervals}
 \usage{
-rf.partial.ci(m, x, yname, xname, lci = 0.25, uci = 0.75,
-  delta = FALSE)
+rf.partial.ci(m, x, yname, xname, lci = 0.25, uci = 0.75, delta = FALSE)
 }
 \arguments{
 \item{m}{randomForest regression object}

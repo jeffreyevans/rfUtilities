@@ -83,4 +83,5 @@ rfUtilities_2.1-4
 rfUtilities_2.1-5
 =================
 * Fixed a bug in rf.crossValidation for sample size in regression
-* Function enhancement in rf.crossValidation, added KS test for regression 
+* Function enhancement in rf.crossValidation, added KS test for regression distributional equivalence test 
+* Added new function "collinear" for evaluating pair-wise linear correlations in data

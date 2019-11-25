@@ -4,9 +4,18 @@
 \alias{bivariate.partialDependence}
 \title{Bivariate partial-dependency plot}
 \usage{
-bivariate.partialDependence(x, pred.data, v1, v2, grid.size = 20,
-  which.class = 2, plot = TRUE, col.ramp = c("#ffffff", "#2a2a2a"),
-  ncols = 20, ...)
+bivariate.partialDependence(
+  x,
+  pred.data,
+  v1,
+  v2,
+  grid.size = 20,
+  which.class = 2,
+  plot = TRUE,
+  col.ramp = c("#ffffff", "#2a2a2a"),
+  ncols = 20,
+  ...
+)
 }
 \arguments{
 \item{x}{random forest object}

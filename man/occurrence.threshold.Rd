@@ -4,8 +4,13 @@
 \alias{occurrence.threshold}
 \title{Test occurrence probability thresholds}
 \usage{
-occurrence.threshold(x, xdata, class, p = seq(0.1, 0.7, 0.02),
-  type = "delta.ss")
+occurrence.threshold(
+  x,
+  xdata,
+  class,
+  p = seq(0.1, 0.7, 0.02),
+  type = "delta.ss"
+)
 }
 \arguments{
 \item{x}{A classification randomForest model object}
