@@ -23,6 +23,8 @@ Release of of "rfUtilities" 2.1-2 includes new functions for calculating Log Los
                      binomial or regression models
           
 		  bivariate.partialDependence - Bivariate partial-dependency plot
+		  
+		  collinear - Evaluation of pair-wise linear correlations in data
           
 		  logLoss - Calculates Logarithmic loss (logLoss)
           
