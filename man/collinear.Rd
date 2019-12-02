@@ -4,35 +4,51 @@
 \alias{collinear}
 \title{Collinearity test}
 \usage{
-collinear(x, p = 0.85)
+collinear(x, p = 0.85, nonlinear = FALSE, p.value = 0.001)
 }
 \arguments{
-\item{x}{A symmetric correlation matrix}
+\item{x}{A data.frame or matrix containing continuous data}
 
 \item{p}{The correlation cutoff (default is 0.85)}
+
+\item{nonlinear}{A boolean flag for calculating nonlinear correlations (FALSE/TRUE)}
+
+\item{p.value}{If nonlinear is TRUE, the p value to accept as the significance of the correlation}
 }
 \value{
 Messages and a vector of correlated variables
 }
 \description{
-Test for collinearity in data
+Test for linear or nonlinear collinearity/correlation in data
 }
 \note{
-Evaluation of the pairwise correlated variables to remove is accomplished through 
-      calculating the mean correlations of each variable and selecting the 
-      variable with higher mean.
+Evaluation of the pairwise linear correlated variables to remove is accomplished  
+through calculating the mean correlations of each variable and selecting the 
+variable with higher mean.
+
+Nonlinear correlations assume the model form:
+   E(Y_i | X_i) = \alpha + f(X_i) + \varepsilon_i
+With the hypothesis: 
+  H_{0} : f(x) = 0, \ \forall x
 }
 \examples{
-dat <- data.frame(v1=seq(0.1, 5, length=100), 
-                  v2=seq(0.1, 5, length=100), 
-                  v3=dnorm(runif(100)), 
-				     v4=dnorm(runif(100)))
 
-# Evaluate collinearity
-( cor.vars <- collinear(cor(dat), p = 0.80) )
- 			       
+data(cor.data)
+
+# Evaluate linear correlations on linear data
+head( dat <- example.data[[4]] ) 
+pairs(dat, pch=20)
+  ( cor.vars <- collinear( dat ) )
+
 # Remove identified variable(s)
 head( dat[,-which(names(dat) \%in\% cor.vars)] )
+
+plot(example.data[[1]], pch=20)
+  # using linear correlation functions
+  collinear( example.data[[1]], p=0.80 )     
+
+  # using nonlinear correlation functions  
+  collinear(example.data[[1]], p=0.80, nonlinear = TRUE ) 		       
 
 }
 \author{

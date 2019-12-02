@@ -12,7 +12,8 @@ Depends:
     R (>= 3.5)
 Imports:
     randomForest (>= 4.6-12),
-    cluster
+    cluster,
+	mgcv
 Maintainer: Jeffrey S. Evans <jeffrey_evans@tnc.org>
 License: GPL-3
 URL: https://github.com/jeffreyevans/rfUtilities
