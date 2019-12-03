@@ -17,31 +17,27 @@
 #'
 #' @note
 #' Nonlinear correlations assume the model form:
-#'    E(Y_i | X_i) = \alpha + f(X_i) + \varepsilon_i
+#'     \eqn{E(Y_i | X_i) = \alpha + f(X_i) + \varepsilon_i}
 #' With the hypothesis: 
-#'   H_{0} : f(x) = 0, \ \forall x 
+#'     \eqn{H_{0} : f(x) = 0, \ \forall x$$} 
 #' 
 #' @examples
 #' 
 #' data(cor.data)
 #'
 #' # Evaluate linear correlations on linear data
-#' head( dat <- example.data[[4]] ) 
+#' head( dat <- cor.data[[4]] ) 
 #' pairs(dat, pch=20)
 #'   ( cor.vars <- collinear( dat ) )
 #' 
 #' # Remove identified variable(s)
 #' head( dat[,-which(names(dat) %in% cor.vars)] )
 #'
-# Evaluate linear correlations on nonlinear data
-#' plot(example.data[[1]], pch=20)
-#'   # using linear correlation functions
-#'   collinear( example.data[[1]], p=0.80 )     
-#' 
-#'   # using nonlinear correlation functions  
-#'   collinear(example.data[[1]], p=0.80, nonlinear = TRUE ) 		       
-#' 
-#' @import mgcv
+#' # Evaluate linear correlations on nonlinear data
+#' #   using nonlinear correlation function
+#' plot(cor.data[[1]], pch=20) 
+#'   collinear(cor.data[[1]], p=0.80, nonlinear = TRUE ) 		       
+#'
 #' @export collinear
 collinear <- function (x, p = 0.85, nonlinear = FALSE, p.value = 0.001) {
   if(!class(x) == "matrix" && !class(x) == "data.frame")
@@ -85,12 +81,12 @@ collinear <- function (x, p = 0.85, nonlinear = FALSE, p.value = 0.001) {
       if( length(deletecol) < 1 )
         message("No nonlinear correlations found")	 
   } else if(nonlinear == FALSE) {
-    x <- cor(x)  
+    x <- stats::cor(x)  
       diag(x) <- 0
     if (!isTRUE(all.equal(x, t(x)))) 
       stop("correlation matrix is not symmetric")  	
     if (!any(x[!is.na(x)] > p))
-      stop("All correlations are <=", p, "\n")
+      stop("\r All correlations are <=", p, "\n")
     if (dim(x)[1] < 2) 
       stop("There is only one variable")
         x2 <- abs(x)

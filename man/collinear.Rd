@@ -27,28 +27,26 @@ through calculating the mean correlations of each variable and selecting the
 variable with higher mean.
 
 Nonlinear correlations assume the model form:
-   E(Y_i | X_i) = \alpha + f(X_i) + \varepsilon_i
+    \eqn{E(Y_i | X_i) = \alpha + f(X_i) + \varepsilon_i}
 With the hypothesis: 
-  H_{0} : f(x) = 0, \ \forall x
+    \eqn{H_{0} : f(x) = 0, \ \forall x$$}
 }
 \examples{
 
 data(cor.data)
 
 # Evaluate linear correlations on linear data
-head( dat <- example.data[[4]] ) 
+head( dat <- cor.data[[4]] ) 
 pairs(dat, pch=20)
   ( cor.vars <- collinear( dat ) )
 
 # Remove identified variable(s)
 head( dat[,-which(names(dat) \%in\% cor.vars)] )
 
-plot(example.data[[1]], pch=20)
-  # using linear correlation functions
-  collinear( example.data[[1]], p=0.80 )     
-
-  # using nonlinear correlation functions  
-  collinear(example.data[[1]], p=0.80, nonlinear = TRUE ) 		       
+# Evaluate linear correlations on nonlinear data
+#   using nonlinear correlation function
+plot(cor.data[[1]], pch=20) 
+  collinear(cor.data[[1]], p=0.80, nonlinear = TRUE ) 		       
 
 }
 \author{
