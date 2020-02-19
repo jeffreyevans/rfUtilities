@@ -13,8 +13,8 @@ rfUtilities 2.2-0 (GitHub development release)
 
 # Available functions in rfUtilities 2.1-5 are:
 
-          accuracy - A function, called by the rf.crossValidation function or independently, that provides validation statistics for    
-                     binomial or regression models
+		  accuracy - A function, called by the rf.crossValidation function or independently,     
+                     that provides validation statistics for binomial or regression models
           
 		  bivariate.partialDependence - Bivariate partial-dependency plot
 		  
