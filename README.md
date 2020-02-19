@@ -9,12 +9,13 @@ downloads](http://cranlogs.r-pkg.org/badges/grand-total/rfUtilities)](https://cr
 
 Random Forests Model Selection, inference, fit and performance evaluation
 
-rfUtilities 2.2-0 (GitHub development release)
+rfUtilities 2.2-0 (GitHub development release) 
+- added ranger random forests implementation support
 
-# Available functions in rfUtilities 2.1-5 are:
+# Available functions in rfUtilities 2.2-0 are:
 
 		  accuracy - A function, called by the rf.crossValidation function or independently,     
-                     that provides validation statistics for binomial or regression models
+                         that provides validation statistics for binomial or regression models
           
 		  bivariate.partialDependence - Bivariate partial-dependency plot
 		  
