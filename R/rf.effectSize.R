@@ -2,29 +2,37 @@
 #' @description Parameter effect size based on partial dependency (Cafri & Bailey, 2016)
 #'       
 #' @param x      A randomForest model object 
-#' @param y      A vector represent the independent variable of intrests
+#' @param y      A vector represent the independent variable of interest
 #' @param ...    Arguments passed to the partial dependency function, requires x.var, pred.data,  
 #
 #' @return A vector (single value) of the parameter effect size 
 #'
 #' @note
-#' Effect size based on partial dependency and parameter-weighted OLS (does not support factoral or dichotomous variables)  
+#' Effect size based on partial dependency and parameter-weighted OLS (does not support 
+#' factorial or dichotomous variables)  
 #' The algorithm follows:
 #'   1) Grow a forest
 #'   2) Estimate partial dependence (for a single variable).
-#'        a. Create datasets for all observation in the dataset only let them take on one value for the 
-#'             variable of interest while keeping values of all other variables unchanged.
-#'        b. Pass the dataset through each tree and average the predictions over the trees in the forest.
-#'   3) Construct a point estimate of the proposed effect size by fitting a weighted least squares model 
-#'        with response based on the tree-averaged predicted values obtained in Step 2, the explanatory variable 
-#'         corresponding to the value used to generate each tree-averaged prediction, and weight based on the 
-#'         frequency each value the explanatory variable takes on in the original data.
+#'        a. Create datasets for all observation in the dataset only let them take on 
+#'           one value for the variable of interest while keeping values of all other 
+#'           variables unchanged.
+#'        b. Pass the dataset through each tree and average the predictions over the trees 
+#'           in the forest.
+#'   3) Construct a point estimate of the proposed effect size by fitting a weighted least 
+#'      squares model with response based on the tree-averaged predicted values obtained 
+#'      in Step 2, the explanatory variable corresponding to the value used to generate each 
+#'      tree-averaged prediction, and weight based on the frequency each value the explanatory 
+#'      variable takes on in the original data.
 #'   4) For confidence intervals, repeat Steps 1-3 for as many bootstrap samples as desired
-#' Modified partialPlot function uses distinct X values to construct partial dependence for non-factor variables
+#'      Modified partialPlot function uses distinct X values to construct partial dependence  
+#'      for non-factor variables
 #'
-#' @author Jeffrey S. Evans    <jeffrey_evans<at>tnc.org>
+#' @author Jeffrey S. Evans <jeffrey_evans<at>tnc.org>
 #'
-#' @references Cafri, G., B.A. Bailey (2016) Understanding Variable Effects from Black Box Prediction: Quantifying Effects in Tree Ensembles Using Partial Dependence. Journal of Data Science 14:67-96
+#' @references 
+#'   Cafri, G., B.A. Bailey (2016) Understanding Variable Effects from Black Box 
+#'     Prediction: Quantifying Effects in Tree Ensembles Using Partial Dependence. 
+#'     Journal of Data Science 14:67-96
 #'
 #' @examples 
 #'  library(randomForest)
@@ -47,7 +55,7 @@
 #'  es.boot.temp <- vector()
 #'    for(i in 1:B) {
 #'      boot.samples <- airquality[sample(1:nrow(airquality), n, replace = TRUE),]
-#'        fmla <- stats::as.formula(paste(paste("Ozone", "~", sep=""), paste(".", collapse= "")))   
+#'  fmla <- stats::as.formula(paste(paste("Ozone", "~", sep=""), paste(".", collapse= "")))   
 #'          fit <- randomForest(fmla, data = boot.samples)
 #'      es.boot.wind <- append(es.boot.wind, rf.effectSize(fit, y = boot.samples$Wind, 
 #'  	                       pred.data = boot.samples, x.var = Wind))
@@ -110,19 +118,25 @@
 #'
 #' @export
 rf.effectSize <- function(x, y, ...) {
+  if(class(x) == "ranger")
+    stop("Sorry, this function does not currently support ranger objects")
   if(!any(class(x) %in% c("randomForest","list"))) stop("x is not a randomForest object")
-    if(is.factor(y) == TRUE | is.character(y) == TRUE) stop("factorial or dichotomous variables not supported")
+    if(is.factor(y) == TRUE | is.character(y) == TRUE) 
+	  stop("factorial or dichotomous variables not supported")
   dots <- as.list(match.call(expand.dots = TRUE)[-1])    
     dots[["x"]] <- x
-      if (is.null(dots[["x.var"]]) & "x.var" %in% names(dots) == FALSE) stop("x.var must be defined") 
-      if (is.null(dots[["pred.data"]]) & "main" %in% names(dots) == FALSE) stop("pred.data must be defined")
+      if (is.null(dots[["x.var"]]) & "x.var" %in% names(dots) == FALSE) 
+	    stop("x.var must be defined") 
+      if (is.null(dots[["pred.data"]]) & "main" %in% names(dots) == FALSE) 
+	    stop("pred.data must be defined")
       if(x$type == "classification") {	  
         if (is.null(dots[["which.class"]]) & "which.class" %in% names(dots) == FALSE) dots[["which.class"]] <- 1
 	  }
       if (is.null(dots[["plot"]]) & "plot" %in% names(dots) == FALSE) dots[["plot"]] <-  FALSE  
     partialPlot.es <- function (x, pred.data, x.var, which.class, w, plot = FALSE, add = FALSE,
                                 n.pt = min(length(unique(pred.data[, xname])), 51), rug = TRUE,
-                                xlab = deparse(substitute(x.var)), ylab = "", main = paste("Partial Dependence on",
+                                xlab = deparse(substitute(x.var)), ylab = "", 
+								main = paste("Partial Dependence on",
                                 deparse(substitute(x.var))), ...) {
       classRF <- x$type != "regression"
         if (is.null(x$forest)) stop("The randomForest object must contain the forest.\n")
