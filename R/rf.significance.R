@@ -3,7 +3,6 @@
 #'              Random Forests models. 
 #'
 #' @param x              randomForest class object
-#' @param xdata          Independent variables (x) used in model
 #' @param p              p-value to test for significance in regression models
 #' @param q              Quantile threshold to test classification models
 #' @param nperm          Number of permutations
@@ -31,6 +30,11 @@
 #' * rf.type Type of Random Forests
 #' * rand.frac Amortization fraction
 #' @md
+#'
+#' @notes
+#' Please note that previous versions of this function required xdata and "..."  
+#' arguments that are no longer necessary. The model object is now used in 
+#' obtaining the data and arguments used in the original model  
 #'
 #' @details
 #' If the p-value is small, it suggests a near certainty 

@@ -1,4 +1,4 @@
-# rfUtilities (CRAN 2.1-4, development 2.1-5)
+# rfUtilities (CRAN 2.1-5, development 2.2-0)
 
 [![CRAN
 status](http://www.r-pkg.org/badges/version/rfUtilities)](https://cran.r-project.org/package=rfUtilities)
@@ -9,13 +9,7 @@ downloads](http://cranlogs.r-pkg.org/badges/grand-total/rfUtilities)](https://cr
 
 Random Forests Model Selection, inference, fit and performance evaluation
 
-rfUtilities 2.1-5 (GitHub development release)
-
-Release of of "rfUtilities" 2.1-4 includes bug fixes and function enhancement  
-
-Release of of "rfUtilities" 2.1-3 includes new functions for combining random forests ensembles, bivariate partial dependence plots and unsupervised classification using random forests.   
-
-Release of of "rfUtilities" 2.1-2 includes new functions for calculating Log Loss performance evaluation a function implementing an Isotonic regression for calibration of the estimated posterior probabilities of a model. There is also a new function for deriving parameter effect size based on partial dependency (Cafri & Bailey, 2016). The statistics Mean Absolute Error (mae) and Mean Bias Error (mbe) were added to the rf.crossValidation function. 
+rfUtilities 2.2-0 (GitHub development release)
 
 # Available functions in rfUtilities 2.1-5 are:
 
@@ -40,13 +34,14 @@ Release of of "rfUtilities" 2.1-2 includes new functions for calculating Log Los
           
 		  rf.combine - Combine Random Forests Ensembles
           
-		  rf.crossValidation - Random Forests classification or regression cross-validation
+		  rf.crossValidation - Random Forests classification or regression cross-validation,
+		                       simplified arguments and added ranger support
           
 		  rf.effectSize - Random Forests parameter effect size
           
 		  rf.imp.freq - Random Forests variable selection frequency
           
-		  rf.modelSel - Random Forests Model Selection
+		  rf.modelSel - Random Forests Model Selection, simplified arguments and added ranger support
           
 		  rf.partial.ci - Random Forests regression partial dependency plot with confidence intervals
           
@@ -54,7 +49,8 @@ Release of of "rfUtilities" 2.1-2 includes new functions for calculating Log Los
           
 		  rf.regression.fit - Evaluates fit and overfit of random forests regression models
           
-		  rf.significance - Significance test for classification or regression random forests models
+		  rf.significance - Significance test for classification or regression random forests models,
+		                    simplified arguments and added ranger support
           
 		  rf.unsupervised - Unsupervised Random Forests
           

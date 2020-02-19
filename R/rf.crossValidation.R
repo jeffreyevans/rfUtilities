@@ -8,11 +8,12 @@
 #' @param seed              Sets random seed in R global environment
 #' @param normalize         (FALSE/TRUE) For regression, should rmse, mbe and mae be normalized 
 #'                          using (max(y) - min(y))
-#' @param bootstrap         (FALSE/TRUE) Should a bootstrap sampling be applied. If FALSE, an n-th 
-#'                          percent withhold will be conducted
+#' @param bootstrap         (FALSE/TRUE) Should a bootstrap sampling be applied. If FALSE, 
+#'                          an n-th percent withhold will be conducted
 #' @param trace             Print iterations
 #'
-#' @return  For classification a "rf.cv"", "classification" class object with the following components:
+#' @return  For classification a "rf.cv"", "classification" class object with the following 
+#'          components:
 #' \itemize{ 
 #' \item  cross.validation$cv.users.accuracy        Class-level users accuracy for the subset cross validation data   
 #' \item  cross.validation$cv.producers.accuracy    Class-level producers accuracy for the subset cross validation data    
@@ -30,37 +31,46 @@
 #'                       iteration (cross-validation)    
 #' \item  y.mbe          Mean Bias Error from each Bootstrapped model
 #' \item  y.mae          Mean Absolute Error from each Bootstrapped model
-#' \item  D              Test statistic from Kolmogorov-Smirnov distribution Test (y and estimate)
+#' \item  D              Test statistic from Kolmogorov-Smirnov distribution Test (y and 
+#'                       estimate)
 #' \item  p.val          p-value for Kolmogorov-Smirnov distribution Test (y and estimate)
 #' \item  model.mse      Mean Squared Error from each Bootstrapped model
 #' \item  model.varExp   Percent variance explained from each Bootstrapped model   
 #'  }
 #'
+#' @notes
+#' Please note that previous versions of this function required ydata, xdata and   
+#' "..." arguments that are no longer necessary. The model object is now used in 
+#' obtaining the data and arguments used in the original model  
+#'
 #' @details
-#' For classification problems, the cross-validation statistics are based on the prediction error 
-#' on the withheld data: Total observed accuracy represents the percent correctly classified (aka, PCC) 
-#' and is considered as a naive measure of agreement.
+#' For classification problems, the cross-validation statistics are based on the 
+#' prediction error on the withheld data: Total observed accuracy represents the 
+#' percent correctly classified (aka, PCC) and is considered as a naive measure 
+#' of agreement.
 #' 
-#' The diagonal of the confusion matrix represents correctly classified observations where off-diagonals 
-#' represent cross-classification error. The primary issue with this evaluation is that does not reveal 
-#' if error was evenly distributed between classes.
+#' The diagonal of the confusion matrix represents correctly classified observations 
+#' where off-diagonals represent cross-classification error. The primary issue with 
+#' this evaluation is that does not reveal if error was evenly distributed between 
+#' classes.
 #'
-#' To represent the balance of error one can use omission and commission statistics such as estimates of 
-#' users and producers accuracy. User's accuracy corresponds to error of commission (inclusion), 
-#' observations being erroneously included in a given class.
+#' To represent the balance of error one can use omission and commission statistics such 
+#' as estimates of users and producers accuracy. User's accuracy corresponds to error of 
+#' commission (inclusion), observations being erroneously included in a given class.
 #'
-#' The commission errors are represented by row sums of the matrix. Producer's accuracy corresponds to 
-#' error of omission (exclusion), observations being erroneously excluded from a given class. The omission 
-#' errors are represented by column sums of the matrix.
+#' The commission errors are represented by row sums of the matrix. Producer's accuracy 
+#' corresponds to error of omission (exclusion), observations being erroneously excluded 
+#' from a given class. The omission errors are represented by column sums of the matrix.
 #'
-#' None of the previous statistics account for random agreement influencing the accuracy measure. 
-#' The kappa statistic is a chance corrected metric that reflects the difference between observed 
-#' agreement and agreement expected by random chance. A kappa of k=0.85 would indicate that there 
-#' is 85% better agreement than by chance alone.  
+#' None of the previous statistics account for random agreement influencing the accuracy 
+#' measure. The kappa statistic is a chance corrected metric that reflects the difference 
+#' between observed agreement and agreement expected by random chance. A kappa of k=0.85 
+#' would indicate that there is 85% better agreement than by chance alone.  
 #'   \itemize{ 
 #'   \item   pcc = [Number of correct observations / total number of observations] 
 #'   \item   pcc = [Number of correct observations / total number of observations] 
-#'   \item   producers accuracy =  [Number of correct / total number of correct and omission errors] 
+#'   \item   producers accuracy =  [Number of correct / total number of correct and 
+#'                                 omission errors] 
 #'   \item   k = (observed accuracy - chance agreement) / (1 - chance agreement) where; change 
 #'                agreement = sum[product of row and column totals for each class] 
 #'    }
@@ -71,8 +81,8 @@
 #' @author Jeffrey S. Evans <jeffrey_evans<at>tnc.org>
 #'
 #' @references 
-#'   Evans, J.S. and S.A. Cushman (2009) Gradient Modeling of Conifer Species Using Random Forest. 
-#'     Landscape Ecology 5:673-683.
+#'   Evans, J.S. and S.A. Cushman (2009) Gradient Modeling of Conifer Species Using Random 
+#'     Forest. Landscape Ecology 5:673-683.
 #' @references 
 #'   Murphy M.A., J.S. Evans, and A.S. Storfer (2010) Quantify Bufo boreas connectivity in 
 #'     Yellowstone National Park with landscape genetics. Ecology 91:252-261
@@ -345,8 +355,8 @@ rf.crossValidation <- function(x, p=0.10, n=99, seed=NULL, normalize = FALSE,
             rownames(cv.oob) <- 1:nrow(cv.oob)		  
     r.cv <- list(cv.users.accuracy = cv.ua, cv.producers.accuracy=cv.pa, 
 	             cv.oob = cv.oob, model.error = model.error)
-	    if(bootstrap) r.cv[["boot.sample.size"]] <- boot.sample.size						 
-      class(r.cv) <- c("rf.cv",  "classification")  							 
+	    if(bootstrap) r.cv[["boot.sample.size"]] <- boot.sample.size
+      class(r.cv) <- c("rf.cv",  "classification")
   }   
   return( r.cv )
 }  
