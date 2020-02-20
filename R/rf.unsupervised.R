@@ -1,25 +1,37 @@
 #' @title Unsupervised Random Forests
-#' @description Performs an unsupervised Random Forests for returning clustering, based on dissimilarity, and optional neighbor distance. 
+#' @description Performs an unsupervised Random Forests for returning clustering, 
+#'              based on dissimilarity, and optional neighbor distance. 
 #'
 #' @param x                A matrix/data/frame object to cluster
 #' @param n                Number of clusters
-#' @param proximity        (FALSE/TRUE) Return matrix of neighbor distances based on proximity 
+#' @param proximity        (FALSE/TRUE) Return matrix of neighbor distances based 
+#'                          on proximity 
 #' @param silhouettes      (FALSE/TRUE) Return adjusted silhouette values 
 #' @param clara            (FALSE/TRUE) Use clara partitioning, for large data
 #' @param ...              Additional Random Forests arguments 
 #'
-#' @return A vector of clusters or list class object  of class "unsupervised", containing the following components:
-#' @return  distances              Scaled proximity matrix representing dissimilarity neighbor distances  
-#' @return  k                      Vector of cluster labels using adjusted silhouettes  
-#' @return  silhouette.values      Adjusted silhouette cluster labels and silhouette values 
+#' @return A vector of clusters or list class object  of class "unsupervised", 
+#'         containing the following components:
+#'   \itemize{ 
+#'   \item distances = [Scaled proximity matrix representing dissimilarity neighbor distances]  
+#'   \item k = [Vector of cluster labels using adjusted silhouettes]  
+#'   \item silhouette.values = [Adjusted silhouette cluster labels and silhouette values] 
+#' }
 #'
-#' @note Clusters (k) are derived using the random forests proximity matrix, treating it as dissimilarity neighbor distances. 
-#' @note The clusters are identified using a Partitioning Around Medoids where negative silhouette values are assigned to the nearest neighbor. 
+#' @details
+#' Clusters (k) are derived using the random forests proximity matrix, treating it as 
+#' dissimilarity neighbor distances. The clusters are identified using a Partitioning 
+#' Around Medoids where negative silhouette values are assigned to the nearest neighbor. 
 #'
 #' @author Jeffrey S. Evans    <jeffrey_evans<at>tnc.org>
 #'
-#' @references Rand, W.M. (1971) Objective Criteria for the Evaluation of Clustering Methods. Journal of the American Statistical Association, 66:846-850.
-#' @references Shi, T., Seligson, D., Belldegrun, A.S., Palotie, A., and Horvath, Ss (2005) Tumor Classification by Tissue Microarray Profiling: Random Forest Clustering Applied to Renal Cell Carcinoma. Modern Pathology, 18:547-557.  
+#' @references 
+#' Rand, W.M. (1971) Objective Criteria for the Evaluation of Clustering 
+#'   Methods. Journal of the American Statistical Association, 66:846-850.
+#' @references 
+#' Shi, T., Seligson, D., Belldegrun, A.S., Palotie, A., and Horvath, Ss (2005) 
+#'   Tumor Classification by Tissue Microarray Profiling: Random Forest Clustering 
+#'   Applied to Renal Cell Carcinoma. Modern Pathology, 18:547-557.  
 #' 
 #' @examples 
 #'  library(randomForest) 

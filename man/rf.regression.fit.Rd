@@ -7,10 +7,11 @@
 rf.regression.fit(x)
 }
 \arguments{
-\item{x}{randomForest regression object}
+\item{x}{randomForest or ranger regression object}
 }
 \value{
-A list and rf.fit class object with "fit" matrix of fit statistics and "message" indicating overfit risk.
+A list and rf.fit class object with "fit" matrix of fit statistics 
+            and "message" indicating overfit risk.
 }
 \description{
 Evaluates fit and overfit of random forests regression
@@ -20,7 +21,8 @@ Evaluates fit and overfit of random forests regression
   set.seed(131)
   data(airquality)
   airquality <- na.omit(airquality)
-  ( rf.aq <- randomForest(airquality[,1:3], airquality[,"Ozone"]) )	
+  
+  ( rf.aq <- randomForest(airquality[,1:3], airquality[,"Ozone"]) )
   rf.regression.fit(rf.aq)
 
 }

@@ -6,21 +6,17 @@
 \usage{
 rf.class.sensitivity(
   x,
-  xdata,
-  d = "1",
+  class = "1",
   p = 0.05,
   nperm = 999,
   plot = TRUE,
-  seed = NULL,
-  ...
+  seed = NULL
 )
 }
 \arguments{
-\item{x}{randomForest class object}
+\item{x}{randomForest or ranger class object}
 
-\item{xdata}{Independent variables used in model}
-
-\item{d}{Which class to perturb}
+\item{class}{Which class to perturb}
 
 \item{p}{Proportion of class to be randomized}
 
@@ -29,39 +25,54 @@ rf.class.sensitivity(
 \item{plot}{Plot results (TRUE/FALSE)}
 
 \item{seed}{Random seed value}
-
-\item{...}{Additional arguments passed to randomForest}
 }
 \value{
 List object with following components:
-  @return mean.error Mean of RMSE
-  @return sd.error  Standard deviation of RMSE
-  @return rmse  Root mean squared error (RMSE) for each perturbed probability
-  @return probs  data.frame with "true" estimate in first column and perturbed probabilities in subsequent columns.
+\itemize{ 
+\item  mean.error - [Mean of RMSE]
+\item  sd.error - [Standard deviation of RMSE]
+\item  rmse - [Root mean squared error (RMSE) for each perturbed probability]
+\item  probs - [data.frame with "true" estimate in first column and 
+                perturbed probabilities in subsequent columns.]        
+}
 }
 \description{
-Performs a sensitivity analysis on a specified class in a random forests model
+Performs a sensitivity analysis on a specified class 
+             in a random forests model
 }
-\note{
-Wildlife survey data likely decreases the proportion of imperfect detection (false absences or presences) but can still be a source of error. Because of this it is often necessary to test the model sensitivity of a given class (eg., used verses available habitat).
-
-Model sensitivity of false absences is evaluated by randomly assigning a proportion of the specified positive class to the other, refitting the model and estimating the probabilities. Each perturbed estimate is compared against the "true" estimate. Currently only supports binomial models.
+\details{
+Wildlife survey data likely decreases the proportion of imperfect detection 
+(false absences or presences) but can still be a source of error. Because of 
+this it is often necessary to test the model sensitivity of a given class 
+(eg., used verses available habitat). Model sensitivity of false absences is 
+evaluated by randomly assigning a proportion of the specified positive class 
+to the other, refitting the model and estimating the probabilities. Each 
+perturbed estimate is compared against the "true" estimate. Currently only 
+supports binomial models.
 }
 \examples{
-library(randomForest)	
+library(randomForest)
+library(ranger) 
 data(iris)
   y <- as.factor(ifelse(iris$Species == "setosa" | 
                  iris$Species == "virginica", 1, 0) )
     xdata <- iris[,1:4] 
 
 rf.mdl <- randomForest(xdata, y, ntree=501) 
-  ua <- rf.class.sensitivity(rf.mdl, xdata=xdata, nperm=20, ntree=501, plot=TRUE)
-      
+  ua <- rf.class.sensitivity(rf.mdl, nperm=20) 
+  
+rf.mdl <- randomForest(xdata, y, probability=TRUE) 
+  ua <- rf.class.sensitivity(rf.mdl, nperm=20) 
+           
 }
 \references{
-Evans J.S., M.A. Murphy, Z.A. Holden, S.A. Cushman (2011). Modeling species distribution and change using Random Forests CH.8 in Predictive Modeling in Landscape Ecology eds Drew, CA, Huettmann F, Wiersma Y. Springer
+Evans J.S., M.A. Murphy, Z.A. Holden, S.A. Cushman (2011). Modeling species 
+  distribution and change using Random Forests CH.8 in Predictive Modeling 
+  in Landscape Ecology eds Drew, CA, Huettmann F, Wiersma Y. Springer
 
-Gardner, R.H., R.V. O'Neill, M.G. Turner, and V.H. Dale (1989). Quantifying scale-dependent effects of animal movements with simple percolation models. Landscape Ecology 3:217-227.
+Gardner, R.H., R.V. O'Neill, M.G. Turner, and V.H. Dale (1989). Quantifying 
+  scale-dependent effects of animal movements with simple percolation models. 
+  Landscape Ecology 3:217-227.
 }
 \author{
 Jeffrey S. Evans  <jeffrey_evans@tnc.org>

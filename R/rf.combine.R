@@ -1,14 +1,16 @@
 #' @title Combine Random Forests Ensembles
 #' @description Combine two more more random forests models into a single ensemble.
 #'
-#' @param ...  two or more randomForest class objects as individual objects or a list containing models
+#' @param ...  two or more randomForest class objects as individual objects or a list 
+#'             containing models
 #'
 #' @return An object of class randomForest 
 #'
-#' @note The confusion, err.rate, mse and rsq components (as well as the corresponding components in the 
-#'         test component, if exist) are averaged across ensembles. This is a modification of the 
-#'         randomForest \code{\link[randomForest]{combine}} function that returns averaged validation 
-#'         statistics
+#' @details 
+#' The confusion, err.rate, mse and rsq components (as well as the corresponding components 
+#' in the test component, if exist) are averaged across ensembles. This is a modification 
+#' of the randomForest \code{\link[randomForest]{combine}} function that returns averaged 
+#' validation statistics
 #'
 #' @author Jeffrey S. Evans  <jeffrey_evans@@tnc.org>
 #'

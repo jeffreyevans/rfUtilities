@@ -11,20 +11,21 @@ probability.calibration(y, p, regularization = FALSE)
 
 \item{p}{Estimated probabilities from fit model}
 
-\item{regularization}{(FALSE/TRUE) should regularization be performed on the probabilities? (see notes)}
+\item{regularization}{(FALSE/TRUE) should regularization be performed on 
+the probabilities? (see notes)}
 }
 \value{
 a vector of calibrated probabilities
 }
 \description{
-Performs an isotonic regression calibration of posterior probability to minimize log loss.
+Performs an isotonic regression calibration of posterior 
+             probability to minimize log loss.
 }
 \note{
-Isotonic calibration can correct for monotonic distortions.
-
-regularization defines new minimum and maximum bound for the probabilities using:
-
-pmax = ( n1 + 1) / (n1 + 2), pmin = 1 / ( n0 + 2); where n1 = number of prevalence values and n0 = number of null values
+Isotonic calibration can correct for monotonic distortions. Regularization 
+defines new minimum and maximum bound for the probabilities using:
+  pmax = ( n1 + 1) / (n1 + 2), pmin = 1 / ( n0 + 2); 
+    where n1 = number of prevalence values and n0 = number of null values
 }
 \examples{
  library(randomForest)
@@ -56,9 +57,13 @@ pmax = ( n1 + 1) / (n1 + 2), pmin = 1 / ( n0 + 2); where n1 = number of prevalen
   
 }
 \references{
-Platt, J. (1999) Probabilistic outputs for support vector machines and comparison to regularized likelihood methods. Advances in Large Margin Classifiers (pp 61-74).
+Platt, J. (1999) Probabilistic outputs for support vector machines and 
+  comparison to regularized likelihood methods. Advances in Large Margin 
+  Classifiers (pp 61-74).
 
-Niculescu-Mizil, A., & R. Caruana (2005) Obtaining calibrated probabilities from boosting. Proc. 21th Conference on Uncertainty in Artificial Intelligence (UAI 2005). AUAI Press.
+Niculescu-Mizil, A., & R. Caruana (2005) Obtaining calibrated probabilities 
+  from boosting. Proc. 21th Conference on Uncertainty in Artificial 
+  Intelligence (UAI 2005). AUAI Press.
 }
 \author{
 Jeffrey S. Evans    <jeffrey_evans<at>tnc.org>

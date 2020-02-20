@@ -55,9 +55,9 @@ plot.rf.cv <- function(x, stat = "kappa", ...) {
       graphics::legend("bottomright", legend = colnames(x)[1:(ncol(x)-1)],  
   	                   col=1:nrow(x), lty = rep(1,ncol(x)-1), bg="white")   		
   }
-    if(type == "cv" & stat == "users.accuracy") 
+    if(stat == "cv" & stat == "users.accuracy") 
       { dat <- x$cv.users.accuracy 
-    } else if(type == "cv" & stat == "producers.accuracy")
+    } else if(stat == "cv" & stat == "producers.accuracy")
       {  dat <- x$cv.producers.accuracy 
     } else if(stat == "kappa" | stat == "oob")
       {  dat <- x$cv.oob } 	

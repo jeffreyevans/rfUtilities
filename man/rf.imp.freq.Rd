@@ -16,19 +16,24 @@ rf.imp.freq(x, p = 0.6, plot = TRUE)
 \value{
 A list class object with the following components:
  frequency:
-   vars - names of independent variables used in model
-   global - if a variable greater-than/equal-to importance threshold, else NA 
-   column for each class where greater-than/equal-to importance threshold, else NA    
-   var.freq - frequency a variable is selected for global and local importance >= importance threshold
-
- importance: 
-   Standardized importance matrix from randomForest model
+  \itemize{ 
+  \item vars - [names of independent variables used in model]
+  \item global - [if a variable greater-than/equal-to importance threshold, else NA] 
+  \item column - [for each class where greater-than/equal-to importance threshold, else NA]    
+  \item var.freq - [frequency a variable is selected for global and local ]
+  \item importance - [>=importance threshold]
+ }
+ importance: Standardized importance matrix from randomForest model
 }
 \description{
-Evaluates the frequency that an independent variables are selected greater-than/equal-to defined importance threshold
+Evaluates the frequency that an independent variables are 
+             selected greater-than/equal-to defined importance threshold
 }
 \note{
-Evaluates the number of times a variable is selected greater-than/equal-to defined threshold (p) for the global and local (class level) importances. This allow one to evaluate if a given variable is important to the overall model or specific classes.
+Evaluates the number of times a variable is selected greater-than/equal-to 
+defined threshold (p) for the global and local (class level) importances. 
+This allow one to evaluate if a given variable is important to the overall 
+model or specific classes.
 }
 \examples{
  

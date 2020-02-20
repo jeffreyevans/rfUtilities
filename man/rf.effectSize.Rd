@@ -9,30 +9,39 @@ rf.effectSize(x, y, ...)
 \arguments{
 \item{x}{A randomForest model object}
 
-\item{y}{A vector represent the independent variable of intrests}
+\item{y}{A vector represent the independent variable of interest}
 
-\item{...}{Arguments passed to the partial dependency function, requires x.var, pred.data,}
+\item{...}{Arguments passed to the partial dependency function, requires 
+x.var, pred.data,}
 }
 \value{
 A vector (single value) of the parameter effect size
 }
 \description{
-Parameter effect size based on partial dependency (Cafri & Bailey, 2016)
+Parameter effect size based on partial dependency 
+             (Cafri & Bailey, 2016)
 }
-\note{
-Effect size based on partial dependency and parameter-weighted OLS (does not support factoral or dichotomous variables)  
+\details{
+Effect size based on partial dependency and parameter-weighted OLS 
+(does not support factorial or dichotomous variables)  
+
 The algorithm follows:
   1) Grow a forest
   2) Estimate partial dependence (for a single variable).
-       a. Create datasets for all observation in the dataset only let them take on one value for the 
-            variable of interest while keeping values of all other variables unchanged.
-       b. Pass the dataset through each tree and average the predictions over the trees in the forest.
-  3) Construct a point estimate of the proposed effect size by fitting a weighted least squares model 
-       with response based on the tree-averaged predicted values obtained in Step 2, the explanatory variable 
-        corresponding to the value used to generate each tree-averaged prediction, and weight based on the 
-        frequency each value the explanatory variable takes on in the original data.
-  4) For confidence intervals, repeat Steps 1-3 for as many bootstrap samples as desired
-Modified partialPlot function uses distinct X values to construct partial dependence for non-factor variables
+       a. Create datasets for all observation in the dataset only let them take on 
+          one value for the variable of interest while keeping values of all other 
+          variables unchanged.
+       b. Pass the dataset through each tree and average the predictions over 
+          the trees in the forest.
+  3) Construct a point estimate of the proposed effect size by fitting a 
+     weighted least squares model with response based on the tree-averaged 
+     predicted values obtained in Step 2, the explanatory variable 
+     corresponding to the value used to generate each tree-averaged prediction 
+     , and weight based on the frequency each value the explanatory 
+     variable takes on in the original data.
+  4) For confidence intervals, repeat Steps 1-3 for as many bootstrap samples 
+     as desired Modified partialPlot function uses distinct X values to 
+     construct partial dependence for non-factor variables
 }
 \examples{
  library(randomForest)
@@ -55,8 +64,8 @@ Modified partialPlot function uses distinct X values to construct partial depend
  es.boot.temp <- vector()
    for(i in 1:B) {
      boot.samples <- airquality[sample(1:nrow(airquality), n, replace = TRUE),]
-       fmla <- stats::as.formula(paste(paste("Ozone", "~", sep=""), paste(".", collapse= "")))   
-         fit <- randomForest(fmla, data = boot.samples)
+     fmla <- stats::as.formula(paste(paste("Ozone", "~", sep=""), paste(".", collapse= "")))   
+       fit <- randomForest(fmla, data = boot.samples)
      es.boot.wind <- append(es.boot.wind, rf.effectSize(fit, y = boot.samples$Wind, 
  	                       pred.data = boot.samples, x.var = Wind))
      es.boot.temp <- append(es.boot.temp, rf.effectSize(fit, y = boot.samples$Temp, 
@@ -115,7 +124,9 @@ Modified partialPlot function uses distinct X values to construct partial depend
 
 }
 \references{
-Cafri, G., B.A. Bailey (2016) Understanding Variable Effects from Black Box Prediction: Quantifying Effects in Tree Ensembles Using Partial Dependence. Journal of Data Science 14:67-96
+Cafri, G., B.A. Bailey (2016) Understanding Variable Effects from Black Box 
+    Prediction: Quantifying Effects in Tree Ensembles Using Partial Dependence. 
+    Journal of Data Science 14:67-96
 }
 \seealso{
 \code{\link[randomForest]{partialPlot}} for ... options
@@ -123,5 +134,5 @@ Cafri, G., B.A. Bailey (2016) Understanding Variable Effects from Black Box Pred
 \code{\link[randomForest]{randomForest}} for randomForest details
 }
 \author{
-Jeffrey S. Evans    <jeffrey_evans<at>tnc.org>
+Jeffrey S. Evans <jeffrey_evans<at>tnc.org>
 }

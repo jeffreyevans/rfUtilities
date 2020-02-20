@@ -1,13 +1,13 @@
 #' @title Print significance
 #' @description print method for class "significance"
 #' @param x    Object of class significance
-#' @param x    P-value to accept or reject significance
+#' @param p    P-value to accept or reject significance
 #' @param ...  Ignored
 #'
 #' @method print significance
 #'
 #' @export
-print.significance <- function(x, p=0.05, ...) {
+print.significance <- function(x, p = 0.05, ...) {
   cat("Number of permutations: ", x[["nPerm"]], "\n")
   cat("Randomization fraction: ", x[["rand.frac"]], "\n")
     if(tolower(x[["rf.type"]]) == "classification") {

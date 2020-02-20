@@ -19,7 +19,7 @@ rfUtilities 2.2-0 (GitHub development release)
           
 		  bivariate.partialDependence - Bivariate partial-dependency plot
 		  
-		  collinear - Evaluation of pair-wise linear correlations in data
+		  collinear - Evaluation of pair-wise linear or nonlinear correlations in data
           
 		  logLoss - Calculates Logarithmic loss (logLoss)
           

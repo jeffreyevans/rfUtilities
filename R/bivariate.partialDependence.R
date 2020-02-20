@@ -51,8 +51,12 @@
 bivariate.partialDependence <- function(x, pred.data, v1, v2, grid.size = 20, which.class = 2, 
                                         plot = TRUE, col.ramp = c("#ffffff", "#2a2a2a"), 
 										ncols = 20, ...) {
-  if(!any(class(x) %in% c("randomForest","list"))) stop("x is not a randomForest object")
-    	dots <- as.list(match.call(expand.dots = TRUE)[-1])
+ 	if (inherits(x, "ranger"))   
+	  stop("Sorry, ranger objects not yet supported")
+	if (!inherits(x, "randomForest"))   
+      stop("m is not a randomForest object")
+	  
+    dots <- as.list(match.call(expand.dots = TRUE)[-1])
     s1 <- seq(from = min(pred.data[,v1]), to = max(pred.data[,v1]),
                by = (max(pred.data[,v1]) - min(pred.data[,v1]))/(grid.size-1))
     s2 <- seq(from = min(pred.data[,v2]), to = max(pred.data[,v2]),

@@ -14,7 +14,7 @@ print.rf.modelSel <- function(x, ...) {
 	
   for(i in 1:nrow(x$parameters)) {
     cat("Variables in parameter set", i, "\n")
-      cat("\t", na.omit(as.character(x$parameters[i,])), "\n")
+      cat("\t", stats::na.omit(as.character(x$parameters[i,])), "\n")
   	cat("\n")
   }
   

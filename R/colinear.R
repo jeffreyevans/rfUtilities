@@ -1,10 +1,10 @@
 #' @title Collinearity test
 #' @description Test for linear or nonlinear collinearity/correlation in data 
 #'
-#' @param x           A data.frame or matrix containing continuous data     
-#' @param p           The correlation cutoff (default is 0.85)
+#' @param x            A data.frame or matrix containing continuous data     
+#' @param p            The correlation cutoff (default is 0.85)
 #' @param nonlinear    A boolean flag for calculating nonlinear correlations (FALSE/TRUE)
-#' @param p.value     If nonlinear is TRUE, the p value to accept as the significance of the correlation
+#' @param p.value      If nonlinear is TRUE, the p value to accept as the significance of the correlation
 #' 
 #' @return Messages and a vector of correlated variables 
 #'

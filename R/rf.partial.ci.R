@@ -1,5 +1,6 @@
 #' @title Random Forests regression partial dependency plot with confidence intervals
-#' @description Plots the partial dependency, and associated confidence intervals, of a random forests regression model 
+#' @description Plots the partial dependency, and associated confidence intervals, 
+#'              of a random forests regression model 
 #' 
 #' @param m              randomForest regression object
 #' @param x              data.frame or matrix of independent variables used to build model
@@ -7,14 +8,15 @@
 #' @param xname          Name of the independent variable for calculating partial dependence 
 #' @param lci            Percentile of predictions to plot as the lower bound.
 #' @param uci            Percentile of predictions to plot as the upper bound.
-#' @param delta          Plot change in prediction between the independent variable and simulated values (Default = NULL)
+#' @param delta          Plot change in prediction between the independent variable 
+#'                       and simulated values (default delta = NULL)
 #'
-#' @return              recordedplot object to recall plot
+#' @return recordedplot object to recall plot
 #'
 #' @note depends: randomForest
 #'
 #' @author Jeffrey S. Evans  <jeffrey_evans@@tnc.org>
-#'                                                                   
+#'                                                   
 #' @examples 
 #'  library(randomForest)
 #'  data(airquality)
@@ -28,7 +30,10 @@
 #'
 #' @export
 rf.partial.ci <- function(m, x, yname, xname, lci=0.25, uci=0.75, delta=FALSE) {
-  if(!any(class(m) %in% c("randomForest","list"))) stop("m is not a randomForest object")
+	if (inherits(x, "ranger"))   
+	  stop("Sorry, ranger objects not yet supported")
+	if (!inherits(x, "randomForest"))   
+    stop("m is not a randomForest object")
   if(m$type != "regression") stop("classification is not supported")
     conf.int <-(uci-lci)*100
     temp <- sort(x[, xname])

@@ -133,7 +133,7 @@ rf.ImpScale <- function (x, scaling=c("mir","se", "p"), n=99, sort = FALSE) {
                    eval(a[[which(names(a) == "x")]]))	
     i <- ranger::importance_pvalues(x, num.permutations = n, 
                                     method = "altmann", 
-  								    formula = formula(y ~ ., data=xy), 
+  								    formula = stats::formula(y ~ ., data=xy), 
   								    data = xy)
   }  
   # format results

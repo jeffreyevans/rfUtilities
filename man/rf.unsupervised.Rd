@@ -18,7 +18,8 @@ rf.unsupervised(
 
 \item{n}{Number of clusters}
 
-\item{proximity}{(FALSE/TRUE) Return matrix of neighbor distances based on proximity}
+\item{proximity}{(FALSE/TRUE) Return matrix of neighbor distances based 
+on proximity}
 
 \item{silhouettes}{(FALSE/TRUE) Return adjusted silhouette values}
 
@@ -27,21 +28,22 @@ rf.unsupervised(
 \item{...}{Additional Random Forests arguments}
 }
 \value{
-A vector of clusters or list class object  of class "unsupervised", containing the following components:
-
-distances              Scaled proximity matrix representing dissimilarity neighbor distances
-
-k                      Vector of cluster labels using adjusted silhouettes
-
-silhouette.values      Adjusted silhouette cluster labels and silhouette values
+A vector of clusters or list class object  of class "unsupervised", 
+        containing the following components:
+  \itemize{ 
+  \item distances = [Scaled proximity matrix representing dissimilarity neighbor distances]  
+  \item k = [Vector of cluster labels using adjusted silhouettes]  
+  \item silhouette.values = [Adjusted silhouette cluster labels and silhouette values] 
+}
 }
 \description{
-Performs an unsupervised Random Forests for returning clustering, based on dissimilarity, and optional neighbor distance.
+Performs an unsupervised Random Forests for returning clustering, 
+             based on dissimilarity, and optional neighbor distance.
 }
-\note{
-Clusters (k) are derived using the random forests proximity matrix, treating it as dissimilarity neighbor distances.
-
-The clusters are identified using a Partitioning Around Medoids where negative silhouette values are assigned to the nearest neighbor.
+\details{
+Clusters (k) are derived using the random forests proximity matrix, treating it as 
+dissimilarity neighbor distances. The clusters are identified using a Partitioning 
+Around Medoids where negative silhouette values are assigned to the nearest neighbor.
 }
 \examples{
  library(randomForest) 
@@ -62,9 +64,12 @@ The clusters are identified using a Partitioning Around Medoids where negative s
   
 }
 \references{
-Rand, W.M. (1971) Objective Criteria for the Evaluation of Clustering Methods. Journal of the American Statistical Association, 66:846-850.
+Rand, W.M. (1971) Objective Criteria for the Evaluation of Clustering 
+  Methods. Journal of the American Statistical Association, 66:846-850.
 
-Shi, T., Seligson, D., Belldegrun, A.S., Palotie, A., and Horvath, Ss (2005) Tumor Classification by Tissue Microarray Profiling: Random Forest Clustering Applied to Renal Cell Carcinoma. Modern Pathology, 18:547-557.
+Shi, T., Seligson, D., Belldegrun, A.S., Palotie, A., and Horvath, Ss (2005) 
+  Tumor Classification by Tissue Microarray Profiling: Random Forest Clustering 
+  Applied to Renal Cell Carcinoma. Modern Pathology, 18:547-557.
 }
 \seealso{
 \code{\link[randomForest]{randomForest}} for ... options

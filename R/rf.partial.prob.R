@@ -1,36 +1,51 @@
 #' @title Random Forest probability scaled partial dependency plots
-#' @description Produces partial dependency plots with probability distribution based on scaled margin distances.
+#' @description Produces partial dependency plots with probability distribution 
+#'              based on scaled margin distances.
 #'       
 #' @param x              Object of class randomForest 
 #' @param pred.data      Training data.frame used for constructing the plot, 
 #' @param xname          Name of the variable for calculating partial dependence 
 #' @param which.class    The class to focus on
-#' @param w              Weights to be used in averaging (if not supplied, mean is not weighted) 
+#' @param w              Weights to be used in averaging (if not supplied, mean 
+#'                       is not weighted) 
 #' @param prob           Scale distances to probabilities
 #' @param plot           (TRUE/FALSE) Plot results 
 #' @param smooth         c(spline, loess) Apply spline.smooth or loess to 
-#' @param conf           (TRUE/FALSE) Should confidence intervals be calculated for smoothing
-#' @param smooth.parm    An appropriate smoothing parameter passed to loess or smooth.spline
+#' @param conf           (TRUE/FALSE) Should confidence intervals be calculated 
+#'                       for smoothing
+#' @param smooth.parm    An appropriate smoothing parameter passed to loess or 
+#'                       smooth.spline
 #' @param pts            (FALSE/TRUE) Add raw points
 #' @param raw.line       (FALSE/TRUE) Plot raw line (non-smoothed)
 #' @param rug            Draw hash marks on plot representing deciles of x
-#' @param n.pt           Number of points on the grid for evaluating partial dependence.
+#' @param n.pt           Number of points on the grid for evaluating partial 
+#'                       dependence.
 #' @param xlab           x-axis plot label
 #' @param ylab           y-axis plot label
 #' @param main           Plot label for main
 #' @param ...            Additional graphical parameters passed to plot
 #
-#' @return A list class object with fit x,y. If smooth=c("spline","loess") y represents smoothed scaled margin distance values 
+#' @return A list class object with fit x,y. If smooth=c("spline","loess") y 
+#'         represents smoothed scaled margin distance values 
 #'
 #' @author Jeffrey S. Evans    <jeffrey_evans<at>tnc.org>
 #'
-#' @references Evans J.S., M.A. Murphy, Z.A. Holden, S.A. Cushman (2011). Modeling species distribution and change using Random Forests CH.8 in Predictive Modeling in Landscape Ecology eds Drew, CA, Huettmann F, Wiersma Y. Springer 
-#' @references Baruch-Mordo, S., J.S. Evans, J. Severson, J. D. Naugle, J. Kiesecker, J. Maestas, & M.J. Falkowski (2013) Saving sage-grouse from the trees: A proactive solution to reducing a key threat to a candidate species Biological Conservation 167:233-241  
+#' @details
+#' ...
+#'
+#' @references 
+#' Evans J.S., M.A. Murphy, Z.A. Holden, S.A. Cushman (2011). Modeling species 
+#'   distribution and change using Random Forests CH.8 in Predictive Modeling in 
+#'   Landscape Ecology eds Drew, CA, Huettmann F, Wiersma Y. Springer 
+#' @references 
+#' Baruch-Mordo, S., J.S. Evans, J. Severson, J. D. Naugle, J. Kiesecker, J. Maestas, & 
+#'   M.J. Falkowski (2013) Saving sage-grouse from the trees: A proactive solution to 
+#'   reducing a key threat to a candidate species Biological Conservation 167:233-241  
 #'
 #' @examples 
 #'  require(randomForest)
 #'    data(iris)
-#'    iris.rf <- randomForest(iris[,1:4], iris[,5])		
+#'    iris.rf <- randomForest(iris[,1:4], iris[,5])
 #'  	 
 #'  # plot all parameters	 
 #'  par(mfrow=c(2,2))
@@ -55,8 +70,11 @@
 #' @export
 rf.partial.prob <- function(x, pred.data, xname, which.class, w, prob=TRUE, plot=TRUE,
                             smooth, conf = TRUE, smooth.parm = NULL, pts = FALSE, 
-							raw.line = FALSE, rug=FALSE, n.pt, xlab, ylab, main, ...) {  
-    if(!any(class(x) %in% c("randomForest","list"))) stop("x is not a randomForest object")
+							raw.line = FALSE, rug=FALSE, n.pt, xlab, ylab, main, ...) { 
+	if (inherits(x, "ranger"))   
+	  stop("Sorry, ranger objects not yet supported")
+	if (!inherits(x, "randomForest"))   
+	  stop("x is not a randomForest object")	  
 	  if (is.null(x$forest)) stop("Object does not contain an ensemble \n")
 	    if(!x$type != "regression")	stop("Regression not supported \n")	   
 	      if (missing(which.class)) stop("Class name missing \n")

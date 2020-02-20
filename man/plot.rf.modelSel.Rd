@@ -4,7 +4,7 @@
 \alias{plot.rf.modelSel}
 \title{Plot random forests model selection}
 \usage{
-\method{plot}{rf.modelSel}(x, imp = "sel", ...)
+\method{plot}{rf.modelSel}(x, imp = c("all", "sel"), ...)
 }
 \arguments{
 \item{x}{A rf.modelSel object}

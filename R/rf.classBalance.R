@@ -1,26 +1,40 @@
 #' @title Random Forest Class Balance (Zero Inflation Correction) Model
-#' @description Implements Evans & Cushman (2008) Random Forests class-balance (zero inflation) modeling approach. 
+#' @description Implements Evans & Cushman (2008) Random Forests class-balance 
+#'              (zero inflation) modeling approach. 
 #'                                                                                                                                                                                                    
 #' @param ydata              Response variable using index (i.e., [,2] or [,"SPP"] )                        
-#' @param xdata              Independent variables using index (i.e., [,3:14] or [3:ncol(data)] )
+#' @param xdata              Independent variables using index (i.e., [,3:14] or 
+#'                           [3:ncol(data)] )
 #' @param p                  p-value of covariance convergence (do not recommend changing)
-#' @param cbf                Scaling factor to test if problem is imbalanced, default is size of majority class * 3
-#' @param sf                 Majority subsampling factor. If sf=1 then random sample would be perfectly balanced with smallest class [s|0=n|1] whereas; sf=2 provides [s|0=(n|1*2)]
+#' @param cbf                Scaling factor to test if problem is imbalanced, default is 
+#'                           size of majority class * 3
+#' @param sf                 Majority subsampling factor. If sf=1 then random sample would 
+#'                           be perfectly balanced with smallest class [s|0=n|1] whereas; 
+#'                           sf=2 provides [s|0=(n|1*2)]
 #' @param seed               Sets random seed in R global environment
 #' @param ...                Additional arguments passed to randomForest
 #'  
 #' @return A rf.balanced object with the following components:
-#'  @return   model          Final Combined Random Forests ensemble (randomForest object)
-#'  @return   OOB.error      Out-of-bag error for each model (vector)
-#'  @return   confusion      Confusion matrix for each model (list)
+#'   \itemize{ 
+#'   \item model = [Final Combined Random Forests ensemble (randomForest object)]
+#'   \item OOB.error = [averaged out-of-bag error for each model]
+#'   \item confusion = [averaged confusion matrix for each model]
+#'   }
 #'
-#' @note
-#' This approach runs independent Random Forest models using random subsets of the majority class until covariance convergences on full data. The final model is obtained by combining independent ensembles.  
+#' @details
+#' This approach runs independent Random Forest models using random subsets of 
+#' the majority class until covariance convergences on full data. The final model 
+#' is obtained by combining independent ensembles.  
 #'
 #' @author Jeffrey S. Evans   <jeffrey_evans<at>tnc.org>
 #'
-#' @references Evans, J.S. and S.A. Cushman (2009) Gradient Modeling of Conifer Species Using Random Forest. Landscape Ecology 5:673-683.
-#' @references Evans J.S., M.A. Murphy, Z.A. Holden, S.A. Cushman (2011). Modeling species distribution and change using Random Forests CH.8 in Predictive Modeling in Landscape Ecology eds Drew, CA, Huettmann F, Wiersma Y. Springer 
+#' @references 
+#' Evans, J.S. and S.A. Cushman (2009) Gradient Modeling of Conifer Species 
+#'   Using Random Forest. Landscape Ecology 5:673-683.
+#' @references 
+#' Evans J.S., M.A. Murphy, Z.A. Holden, S.A. Cushman (2011). Modeling species 
+#'   distribution and change using Random Forests CH.8 in Predictive Modeling in 
+#'   Landscape Ecology eds Drew, CA, Huettmann F, Wiersma Y. Springer 
 #'                                                                       
 #' @examples 
 #' require(randomForest)
@@ -119,6 +133,6 @@ rf.classBalance <- function (ydata, xdata, p=0.005, cbf=3, sf=2, seed=NULL, ...)
     }
 	rf.model$y <- ydata
       bal.mdl <- list( model=rf.model, OOB.error=OOB, confusion=confusion )
-    class( bal.mdl ) <- c("rf.balanced", "list")	
+    class( bal.mdl ) <- c("rf.balanced")	
   return( bal.mdl )  
 }

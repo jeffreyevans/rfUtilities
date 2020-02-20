@@ -1,20 +1,30 @@
 #' @title Isotonic probability calibration
-#' @description Performs an isotonic regression calibration of posterior probability to minimize log loss.
+#' @description Performs an isotonic regression calibration of posterior 
+#'              probability to minimize log loss.
 #'    
 #' @param y                Binomial response variable used to fit model   
 #' @param p                Estimated probabilities from fit model
-#' @param regularization   (FALSE/TRUE) should regularization be performed on the probabilities? (see notes) 
+#' @param regularization   (FALSE/TRUE) should regularization be performed on 
+#'                         the probabilities? (see notes) 
 #'
 #' @return a vector of calibrated probabilities 
 #' 
-#' @note Isotonic calibration can correct for monotonic distortions. 
-#' @note regularization defines new minimum and maximum bound for the probabilities using:
-#' @note   pmax = ( n1 + 1) / (n1 + 2), pmin = 1 / ( n0 + 2); where n1 = number of prevalence values and n0 = number of null values 
+#' @note 
+#' Isotonic calibration can correct for monotonic distortions. Regularization 
+#' defines new minimum and maximum bound for the probabilities using:
+#'   pmax = ( n1 + 1) / (n1 + 2), pmin = 1 / ( n0 + 2); 
+#'     where n1 = number of prevalence values and n0 = number of null values 
 #'       
 #' @author Jeffrey S. Evans    <jeffrey_evans<at>tnc.org>
 #'
-#' @references Platt, J. (1999) Probabilistic outputs for support vector machines and comparison to regularized likelihood methods. Advances in Large Margin Classifiers (pp 61-74).
-#' @references Niculescu-Mizil, A., & R. Caruana (2005) Obtaining calibrated probabilities from boosting. Proc. 21th Conference on Uncertainty in Artificial Intelligence (UAI 2005). AUAI Press.
+#' @references 
+#' Platt, J. (1999) Probabilistic outputs for support vector machines and 
+#'   comparison to regularized likelihood methods. Advances in Large Margin 
+#'   Classifiers (pp 61-74).
+#' @references 
+#' Niculescu-Mizil, A., & R. Caruana (2005) Obtaining calibrated probabilities 
+#'   from boosting. Proc. 21th Conference on Uncertainty in Artificial 
+#'   Intelligence (UAI 2005). AUAI Press.
 #'
 #' @examples 
 #'  library(randomForest)
@@ -80,15 +90,14 @@ probability.calibration <- function(y, p, regularization = FALSE) {
         else if (x0[i] < min.x) j <- 1
       }
     upper.step.n <- min(which(adjusted.knots > j))
-    upper.step <- adjusted.knots[upper.step.n]
-    lower.step <- ifelse(upper.step.n==1, 1, adjusted.knots[upper.step.n -1] )
-    denom <- x[upper.step] - x[lower.step]
+      upper.step <- adjusted.knots[upper.step.n]
+        lower.step <- ifelse(upper.step.n==1, 1, adjusted.knots[upper.step.n -1] )
+      denom <- x[upper.step] - x[lower.step]
     denom <- ifelse(denom == 0, 1, denom)
     val <- y[lower.step] + (y[upper.step] - y[lower.step]) * (x0[i] - x[lower.step]) / (denom)
     val <- ifelse(val > 1, max.x, val)
       val <- ifelse(val < 0, min.x, val)
         val <- ifelse(is.na(val), max.x, val)
-        val
       })
       return( fits )
     } 

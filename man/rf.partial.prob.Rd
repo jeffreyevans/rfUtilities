@@ -34,7 +34,8 @@ rf.partial.prob(
 
 \item{which.class}{The class to focus on}
 
-\item{w}{Weights to be used in averaging (if not supplied, mean is not weighted)}
+\item{w}{Weights to be used in averaging (if not supplied, mean 
+is not weighted)}
 
 \item{prob}{Scale distances to probabilities}
 
@@ -42,9 +43,11 @@ rf.partial.prob(
 
 \item{smooth}{c(spline, loess) Apply spline.smooth or loess to}
 
-\item{conf}{(TRUE/FALSE) Should confidence intervals be calculated for smoothing}
+\item{conf}{(TRUE/FALSE) Should confidence intervals be calculated 
+for smoothing}
 
-\item{smooth.parm}{An appropriate smoothing parameter passed to loess or smooth.spline}
+\item{smooth.parm}{An appropriate smoothing parameter passed to loess or 
+smooth.spline}
 
 \item{pts}{(FALSE/TRUE) Add raw points}
 
@@ -52,7 +55,8 @@ rf.partial.prob(
 
 \item{rug}{Draw hash marks on plot representing deciles of x}
 
-\item{n.pt}{Number of points on the grid for evaluating partial dependence.}
+\item{n.pt}{Number of points on the grid for evaluating partial 
+dependence.}
 
 \item{xlab}{x-axis plot label}
 
@@ -63,15 +67,20 @@ rf.partial.prob(
 \item{...}{Additional graphical parameters passed to plot}
 }
 \value{
-A list class object with fit x,y. If smooth=c("spline","loess") y represents smoothed scaled margin distance values
+A list class object with fit x,y. If smooth=c("spline","loess") y 
+        represents smoothed scaled margin distance values
 }
 \description{
-Produces partial dependency plots with probability distribution based on scaled margin distances.
+Produces partial dependency plots with probability distribution 
+             based on scaled margin distances.
+}
+\details{
+...
 }
 \examples{
  require(randomForest)
    data(iris)
-   iris.rf <- randomForest(iris[,1:4], iris[,5])		
+   iris.rf <- randomForest(iris[,1:4], iris[,5])
  	 
  # plot all parameters	 
  par(mfrow=c(2,2))
@@ -92,9 +101,13 @@ Produces partial dependency plots with probability distribution based on scaled 
 
 }
 \references{
-Evans J.S., M.A. Murphy, Z.A. Holden, S.A. Cushman (2011). Modeling species distribution and change using Random Forests CH.8 in Predictive Modeling in Landscape Ecology eds Drew, CA, Huettmann F, Wiersma Y. Springer
+Evans J.S., M.A. Murphy, Z.A. Holden, S.A. Cushman (2011). Modeling species 
+  distribution and change using Random Forests CH.8 in Predictive Modeling in 
+  Landscape Ecology eds Drew, CA, Huettmann F, Wiersma Y. Springer
 
-Baruch-Mordo, S., J.S. Evans, J. Severson, J. D. Naugle, J. Kiesecker, J. Maestas, & M.J. Falkowski (2013) Saving sage-grouse from the trees: A proactive solution to reducing a key threat to a candidate species Biological Conservation 167:233-241
+Baruch-Mordo, S., J.S. Evans, J. Severson, J. D. Naugle, J. Kiesecker, J. Maestas, & 
+  M.J. Falkowski (2013) Saving sage-grouse from the trees: A proactive solution to 
+  reducing a key threat to a candidate species Biological Conservation 167:233-241
 }
 \seealso{
 \code{\link[stats]{smooth.spline}} for smooth.spline details on spar smoothing argument

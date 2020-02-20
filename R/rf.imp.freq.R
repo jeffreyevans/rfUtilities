@@ -1,5 +1,6 @@
 #' @title Random Forest variable selection frequency
-#' @description Evaluates the frequency that an independent variables are selected greater-than/equal-to defined importance threshold
+#' @description Evaluates the frequency that an independent variables are 
+#'              selected greater-than/equal-to defined importance threshold
 #'    
 #' @param x random forest object
 #' @param p Threshold of row standardized importance values
@@ -7,16 +8,20 @@
 #' 
 #' @return A list class object with the following components:
 #'  frequency:
-#'    vars - names of independent variables used in model
-#'    global - if a variable greater-than/equal-to importance threshold, else NA 
-#'    column for each class where greater-than/equal-to importance threshold, else NA    
-#'    var.freq - frequency a variable is selected for global and local importance >= importance threshold
-#'
-#'  importance: 
-#'    Standardized importance matrix from randomForest model 
+#'   \itemize{ 
+#'   \item vars - [names of independent variables used in model]
+#'   \item global - [if a variable greater-than/equal-to importance threshold, else NA] 
+#'   \item column - [for each class where greater-than/equal-to importance threshold, else NA]    
+#'   \item var.freq - [frequency a variable is selected for global and local ]
+#'   \item importance - [>=importance threshold]
+#'  }
+#'  importance: Standardized importance matrix from randomForest model 
 #'
 #' @note
-#'   Evaluates the number of times a variable is selected greater-than/equal-to defined threshold (p) for the global and local (class level) importances. This allow one to evaluate if a given variable is important to the overall model or specific classes.  
+#' Evaluates the number of times a variable is selected greater-than/equal-to 
+#' defined threshold (p) for the global and local (class level) importances. 
+#' This allow one to evaluate if a given variable is important to the overall 
+#' model or specific classes.  
 #'
 #' @author Jeffrey S. Evans    <jeffrey_evans<at>tnc.org>
 #'
@@ -28,14 +33,17 @@
 #'
 #' @export
 rf.imp.freq <- function(x, p = 0.60, plot = TRUE) {
-  if(!any(class(x) %in% c("randomForest","list"))) stop("x is not a randomForest object")
-    if (x$type == "classification" | x$type == "unsupervised") {
-      if (is.null(x$importanceSD) == TRUE | "MeanDecreaseAccuracy" %in% 
-         names(as.data.frame(x$importance)) == FALSE)
-         stop("randomForest object does not contain importance, please run with importance=TRUE")  
-	   } else {
-	     stop("Does not support regression")
-       }	
+  if(inherits(x, "ranger")) 
+    stop("Sorry, does not yet support ranger objects")
+  if(!inherits(x, "randomForest")) 
+    stop("x is not a randomForest object")
+  if (x$type == "classification" | x$type == "unsupervised") {
+    if (is.null(x$importanceSD) == TRUE | "MeanDecreaseAccuracy" %in% 
+      names(as.data.frame(x$importance)) == FALSE)
+        stop("object does not contain importance, please run with importance=TRUE")  
+  } else {
+    stop("Does not support regression")
+  }	
   imp.measure <- "MeanDecreaseAccuracy"  
   importance <- x$importance
     for(i in 1:ncol(importance)) { 

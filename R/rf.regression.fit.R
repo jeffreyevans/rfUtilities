@@ -2,7 +2,6 @@
 #' @description Evaluates fit and overfit of random forests regression 
 #' 
 #' @param x    randomForest or ranger regression object
-#' @param y    Vector of dependent variable used in model
 #'
 #' @return     A list and rf.fit class object with "fit" matrix of fit statistics 
 #'             and "message" indicating overfit risk. 
@@ -16,15 +15,19 @@
 #'   airquality <- na.omit(airquality)
 #'   
 #'   ( rf.aq <- randomForest(airquality[,1:3], airquality[,"Ozone"]) )
-#'   rf.regression.fit(rf.aq, airquality[,"Ozone"])
+#'   rf.regression.fit(rf.aq)
 #'
 #' @export
-rf.regression.fit <- function(x, y) {
-  if(!any(class(x) %in% c("randomForest","randomForest.formula","ranger")))
-    stop("x is not a randomForest object")
-  if(missing(y) | missing(x))
-    stop("Both x and x arguments must be provided")
-  if(any(class(x) %in% c("randomForest","randomForest.formula"))) {	
+rf.regression.fit <- function(x) {
+  if (!inherits(x, c("randomForest", "ranger"))) 
+    stop("x is not randomForest class object")	
+  if(missing(x))
+    stop("x argument must be provided using a random forest object")
+  if(length(grep("~", x$call[[2]])) > 0)
+      stop("formula interface not currently supported, please use x, y arguments")
+  a <- as.list(x$call)[-1] 
+    y = eval(a[[which(names(a) == "y")]]) 
+  if(inherits(x, "randomForest")) {	
     if(!x$type == "regression") 
       stop("Classification models not supported")
 	if(length(y) != length(x$predicted))
@@ -35,7 +38,7 @@ rf.regression.fit <- function(x, y) {
           n <- length(y)
         k <- nrow(x$importance) 
       fit.Actuals.pred <- cbind(x$predicted, y)
-  } else if(any(class(x) %in% c("ranger"))) {
+  } else if(inherits(x, "ranger")) {
     if(!x$treetype == "Regression") 
       stop("Classification models not supported") 
 	if(length(y) != length(x$predictions))
@@ -61,6 +64,6 @@ rf.regression.fit <- function(x, y) {
                      	      Accuracy = round(accuracy,3), 
 						      Overfitting.ratio = round(overfit.ratio,3)))
 							  fit <- list(fit = fit.stats, message = msg)
-    class(fit) <- c("rf.fit","list")	
+    class(fit) <- c("rf.fit")	
   return(fit)
 }

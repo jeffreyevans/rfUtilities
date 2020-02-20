@@ -4,86 +4,111 @@
 \alias{rf.significance}
 \title{Random Forest model significance test}
 \usage{
-rf.significance(x, xdata, q = 0.99, p = 0.05, nperm = 999, ...)
+rf.significance(x, nperm = 999, randomization = 1, kappa = FALSE)
 }
 \arguments{
 \item{x}{randomForest class object}
 
-\item{xdata}{Independent variables (x) used in model}
-
-\item{q}{Quantile threshold to test classification models}
-
-\item{p}{p-value to test for significance in regression models}
-
 \item{nperm}{Number of permutations}
 
-\item{...}{Additional Random Forests arguments}
+\item{randomization}{Fraction (0.01-1) of randomization,
+default is 1 (total randomization)}
+
+\item{kappa}{(FALSE/TRUE) In classification, use kappa rather
+than percent correctly classified}
 }
 \value{
 A list class object with the following components:
-
 For Regression problems:
-
-RandRsquare Vector of random R-square values
-
-Rsquare The R-square of the "true" model
-
-Accept Is the model significant at specified p-value (TRUE/FALSE)
-
-TestQuantile Quantile threshold used in significance plot
-
-pValueThreshold Specified p-value
-
-pValue p-values of randomizations
-
-nPerm Number of permutations
+\itemize{
+\item RandR.square Vector of random R-square values
+\item R.square The R-square of the "true" model
+\item p.value p-values of randomizations of R-square
+\item ks.p.value p-value(s) evaluation of Kolmogorov-Smirnov test
+\item nPerm number of permutations
+\item rf.type Type of Random Forests
+\item rand.frac Amortization fraction
+}
 
 For Classification problems:
-
-RandOOB Vector of random out-of-bag (OOB) values
-
-RandMaxError Maximum error of randomizations
-
-test.OOB Error if the "true" model
-
-Accept Is the model significant at specified p-value (TRUE/FALSE)
-
-TestQuantile Quantile threshold used in significance plot
-
-pValueThreshold Specified p-value
-
-pValue p-values of randomizations
-
-nPerm Number of permutations
+\itemize{
+\item RandOOB Vector of random out-of-bag (OOB) values
+\item RandMaxError Maximum error of randomizations
+\item test.OOB Error OOB error of the "true" model
+\item test.MaxError maximum class OOB error of the "true" model
+\item p.value p-value based on Mcnemar's test
+\item oop.p.value p-value based on permutation of OOB error
+\item nPerm Number of permutations
+\item rf.type Type of Random Forests
+\item rand.frac Amortization fraction
+}
 }
 \description{
-Performs significance test for classification and regression Random Forests models.
+Performs significance test for classification and regression
+Random Forests models.
+}
+\details{
+If the p-value is small, it suggests a near certainty
+that the difference between the two populations is
+significant. alternative = c("two.sided", "less", "greater")
+}
+\note{
+Please note that previous versions of this function required xdata and "..."
+arguments that are no longer necessary. The model object is now used in
+obtaining the data and arguments used in the original model
 }
 \examples{
 \dontrun{
-# Regression
-require(randomForest)
+#### Regression
+library(randomForest)
+library(ranger)
+
   set.seed(1234)	
-    data(airquality)
-    airquality <- na.omit(airquality)
- ( rf.mdl <- randomForest(x=airquality[,2:6], y=airquality[,1]) )
-   ( rf.perm <- rf.significance(rf.mdl, airquality[,2:6], nperm=99, ntree=501) )
+  data(airquality)
+  airquality <- na.omit(airquality)
  
-# Classification
-require(randomForest)
+ # randomForest 
+ ( rf.mdl <- randomForest(x=airquality[,2:6], y=airquality[,1]) )
+   ( rf.perm <- rf.significance(rf.mdl, nperm=99) )
+
+ # ranger
+ ( rf.mdl <- ranger(x=airquality[,2:6], y=airquality[,1]) )
+   ( rf.perm <- rf.significance(rf.mdl, nperm=99) )
+
+ 
+#### Classification
+ydata = as.factor(ifelse(airquality[,1] < 40, 0, 1))
+( rf.mdl <- ranger(x = airquality[,2:6], y = ydata) )
+      ( rf.perm <- rf.significance(rf.mdl, nperm=99) )
+   
+( rf.mdl <- randomForest(x = airquality[,2:6], y = ydata) )
+     ( rf.perm <- rf.significance(rf.mdl, nperm=99) )
+
+
   set.seed(1234)	
     data(iris)
       iris$Species <- as.factor(iris$Species) 
- ( rf.mdl <- randomForest(iris[,1:4], iris[,"Species"], ntree=501) )
-   ( rf.perm <- rf.significance(rf.mdl, iris[,1:4], nperm=99, ntree=501) ) 
+
+ 	
+ ( rf.mdl <- randomForest(x=iris[,1:4], y=iris[,"Species"]) )
+   ( rf.perm <- rf.significance(rf.mdl, nperm=99) )
+
+ ( rf.mdl <- ranger(x=iris[,1:4], y=iris[,"Species"]) )
+   ( rf.perm <- rf.significance(rf.mdl, nperm=99) )
+
 }
 
 }
 \references{
-Murphy M.A., J.S. Evans, and A.S. Storfer (2010) Quantify Bufo boreas connectivity in Yellowstone National Park with landscape genetics. Ecology 91:252-261
+Murphy M.A., J.S. Evans, and A.S. Storfer (2010) Quantify Bufo
+boreas connectivity in Yellowstone National Park with landscape
+genetics. Ecology 91:252-261
 
-Evans J.S., M.A. Murphy, Z.A. Holden, S.A. Cushman (2011). Modeling species distribution and change using Random Forests CH.8 in Predictive Modeling in Landscape Ecology eds Drew, CA, Huettmann F, Wiersma Y. Springer
+Evans J.S., M.A. Murphy, Z.A. Holden, S.A. Cushman (2011). Modeling
+species distribution and change using Random Forests CH.8 in
+PredictiveModeling in Landscape Ecology eds Drew, CA,
+Huettmann F, Wiersma Y. Springer
 }
 \author{
-Jeffrey S. Evans    <jeffrey_evans<at>tnc.org>
+Jeffrey S. Evans \href{mailto:jeffrey_evans@tnc.org}{jeffrey_evans@tnc.org}
 }

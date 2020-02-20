@@ -4,10 +4,12 @@
 \alias{print.significance}
 \title{Print significance}
 \usage{
-\method{print}{significance}(x, ...)
+\method{print}{significance}(x, p = 0.05, ...)
 }
 \arguments{
 \item{x}{Object of class significance}
+
+\item{p}{P-value to accept or reject significance}
 
 \item{...}{Ignored}
 }

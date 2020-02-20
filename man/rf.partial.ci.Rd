@@ -19,13 +19,15 @@ rf.partial.ci(m, x, yname, xname, lci = 0.25, uci = 0.75, delta = FALSE)
 
 \item{uci}{Percentile of predictions to plot as the upper bound.}
 
-\item{delta}{Plot change in prediction between the independent variable and simulated values (Default = NULL)}
+\item{delta}{Plot change in prediction between the independent variable 
+and simulated values (default delta = NULL)}
 }
 \value{
 recordedplot object to recall plot
 }
 \description{
-Plots the partial dependency, and associated confidence intervals, of a random forests regression model
+Plots the partial dependency, and associated confidence intervals, 
+             of a random forests regression model
 }
 \note{
 depends: randomForest

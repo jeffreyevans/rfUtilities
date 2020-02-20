@@ -38,7 +38,7 @@
 #' \item  model.varExp   Percent variance explained from each Bootstrapped model   
 #'  }
 #'
-#' @notes
+#' @note
 #' Please note that previous versions of this function required ydata, xdata and   
 #' "..." arguments that are no longer necessary. The model object is now used in 
 #' obtaining the data and arguments used in the original model  
@@ -96,38 +96,38 @@
 #' library(randomForest)
 #' library(ranger)
 #'
-data(airquality)
-airquality <- na.omit(airquality)
-yclass = as.factor(ifelse(airquality[,1] < 40, 0, 1))
-
-# regression with ranger
-rf.mdl <- ranger(x = airquality[,2:6], y = airquality[,1])
-  ( rf.cv <- rf.crossValidation(rf.mdl, p=0.10) )
-
-  # plot results
-  par(mfrow=c(2,2))
-    plot(rf.cv)  
-    plot(rf.cv, stat = "mse")
-    plot(rf.cv, stat = "var.exp")
-    plot(rf.cv, stat = "mae")
-
+#' data(airquality)
+#' airquality <- na.omit(airquality)
+#' yclass = as.factor(ifelse(airquality[,1] < 40, 0, 1))
+#' 
+#' # regression with ranger
+#' rf.mdl <- ranger(x = airquality[,2:6], y = airquality[,1])
+#'   ( rf.cv <- rf.crossValidation(rf.mdl, p=0.10) )
+#' 
+#'   # plot results
+#'   par(mfrow=c(2,2))
+#'     plot(rf.cv)  
+#'     plot(rf.cv, stat = "mse")
+#'     plot(rf.cv, stat = "var.exp")
+#'     plot(rf.cv, stat = "mae")
+#' 
 #' # regression with randomForest
 #' rf.mdl <- randomForest(airquality[,2:6], airquality[,1])
 #'   ( rf.cv <- rf.crossValidation(rf.mdl, p=0.10) )
-
-# classification with ranger
-rf.mdl <- ranger(x = airquality[,2:6], y = yclass)
-  ( rf.cv <- rf.crossValidation(rf.mdl, p=0.10) )
-
-    # Plot cross validation versus model producers accuracy
-    par(mfrow=c(1,2)) 
-      plot(rf.cv, type = "cv", main = "CV producers accuracy")
-      plot(rf.cv, type = "model", main = "Model producers accuracy")
-    
-    # Plot cross validation versus model oob
-    par(mfrow=c(1,2)) 
-      plot(rf.cv, type = "cv", stat = "oob", main = "CV oob error")
-      plot(rf.cv, type = "model", stat = "oob", main = "Model oob error")	 
+#' 
+#' # classification with ranger
+#' rf.mdl <- ranger(x = airquality[,2:6], y = yclass)
+#'   ( rf.cv <- rf.crossValidation(rf.mdl, p=0.10) )
+#' 
+#'     # Plot cross validation versus model producers accuracy
+#'     par(mfrow=c(1,2)) 
+#'       plot(rf.cv, type = "cv", main = "CV producers accuracy")
+#'       plot(rf.cv, type = "model", main = "Model producers accuracy")
+#'     
+#'     # Plot cross validation versus model oob
+#'     par(mfrow=c(1,2)) 
+#'       plot(rf.cv, type = "cv", stat = "oob", main = "CV oob error")
+#'       plot(rf.cv, type = "model", stat = "oob", main = "Model oob error")	 
 #' 
 #' # classification with randomForest
 #' rf.mdl <- randomForest(x = airquality[,2:6], y = yclass)
@@ -148,7 +148,6 @@ rf.mdl <- ranger(x = airquality[,2:6], y = yclass)
 #' @export 	
 rf.crossValidation <- function(x, p=0.10, n=99, seed=NULL, normalize = FALSE, 
                                bootstrap = FALSE, trace = FALSE) {
-							      
   if (!inherits(x, c("randomForest", "ranger"))) 
     stop("x is not randomForest class object")
   if(length(grep("~", x$call[[2]])) > 0)
@@ -315,7 +314,7 @@ rf.crossValidation <- function(x, p=0.10, n=99, seed=NULL, normalize = FALSE,
               tx <- xdata[sidx,]
               ty <- ydata[sidx]
               mx <- xdata[-sidx,]
-              my <- ydata[-sidx]	           
+              my <- ydata[-sidx]
 	    } else {		
           tx <- dat[sample(1:nrow(dat), replace=TRUE),]
             ty <- tx$y 

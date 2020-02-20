@@ -7,30 +7,47 @@
 rf.modelSel(
   xdata,
   ydata,
-  imp.scale = "mir",
+  imp.scale = c("mir", "se"),
   r = c(0.25, 0.5, 0.75),
   final.model = FALSE,
   seed = NULL,
   parsimony = NULL,
+  kappa = FALSE,
+  method = c("Breiman", "Wright"),
+  pvalue = NULL,
+  nperm = 99,
   ...
 )
 }
 \arguments{
-\item{xdata}{X                Data for model}
+\item{xdata}{X               Data for model}
 
 \item{ydata}{Y Data for model}
 
-\item{imp.scale}{Type of scaling for importance values (mir or se), default is mir}
+\item{imp.scale}{Type of scaling for importance values (mir or se), 
+default is mir}
 
-\item{r}{Vector of importance percentiles to test i.e., c(0.1, 0.2, 0.5, 0.7, 0.9)}
+\item{r}{Vector of importance percentiles to test i.e., 
+seq(0,1,0.2)[2:5]}
 
 \item{final.model}{Run final model with selected variables (TRUE/FALSE)}
 
-\item{seed}{Sets random seed in the R global environment. This is highly suggested.}
+\item{seed}{Sets random seed in the R global environment. 
+This is highly suggested.}
 
 \item{parsimony}{Threshold for competing model (0-1)}
 
-\item{...}{Additional arguments to pass to randomForest (e.g., ntree=1000, replace=TRUE, proximity=TRUE)}
+\item{kappa}{Use the chance corrected kappa statistic rather than PCC}
+
+\item{method}{Use the fast C++ ranger implementation "Wright" or
+original "Breiman" Fortran code}
+
+\item{pvalue}{Calculate a p-value and filter parameters with this threshold}
+
+\item{nperm}{Number of permutations to calculate p-value}
+
+\item{...}{Additional arguments to pass to randomForest or ranger 
+(e.g., ntree=1000, replace=TRUE, proximity=TRUE)}
 }
 \value{
 \strong{A rf.modelSel class object with the following components:} 
@@ -41,11 +58,12 @@ rf.modelSel(
   \item   {"sel.importance"} {Importance values for selected model (data.frame)}
   \item   {"importance"} {Importance values for all models (data.frame)}
   \item   {"parameters"} {Variables used in each tested model (list)}
-  \item   {"s"} {Type of scaling used for importance}
+  \item   {"scaling"} {Type of scaling used for importance}
 }
 }
 \description{
-Implements Murphy et al., (2010) Random Forests model selection approach.
+Implements Murphy et al., (2010) Random Forests model selection 
+             approach.
 }
 \details{
 If you want to run classification, make sure that y is a factor, otherwise the randomForest model
@@ -54,57 +72,82 @@ OOB error, smallest maximum within class error, and fewest parameters. For regre
 the model selection criteria is largest percent variation explained, smallest MSE and 
 fewest parameters.
 
-The "mir" scale option performs a row standardization and the "se" option performs normalization 
-using the "standard errors" of the permutation-based importance measure. 
-Both options result in a 0-1 range but, "se" sums to 1.
-The scaled importance measures are calculated as: mir = i/max(i) and se = (i / se) / ( sum(i) / se).
-The parsimony argument is the percent of allowable error surrounding competing models. 
-For example, if there are two competing models, a selected model with 5 parameters 
-and a competing model with 3 parameters, and parsimony = 0.05, if there is +/- 5% error in 
-the fewer parameter model it will be selected at the final model.
+The "mir" scale option performs a row standardization and the "se" option 
+performs normalization using the "standard errors" of the permutation-based 
+importance measure. Both options result in a 0-1 range but, "se" sums to 1.
+The scaled importance measures are calculated as: 
+  mir = i/max(i) and se = (i / se) / ( sum(i) / se).
+
+The parsimony argument is the percent of allowable error surrounding 
+competing models. For example, if there are two competing models, 
+a selected model with 5 parameters and a competing model with 3 parameters, 
+and parsimony = 0.05, if there is +/- 5% error in the fewer 
+parameter model it will be selected at the final model.
 }
 \examples{
-# Classification on iris data
 require(randomForest)
-data(iris)
-  iris$Species <- as.factor(iris$Species)
-( rf.class <- rf.modelSel(iris[,1:4], iris[,"Species"], seed=1234, imp.scale="mir") )
-( rf.class <- rf.modelSel(iris[,1:4], iris[,"Species"], seed=1234, imp.scale="mir", 
-                          parsimony=0.03) )
-
-   plot(rf.class)              # plot importance for selected variables
-   plot(rf.class, imp = "all") # plot importance for all variables 
-
- vars <- rf.class$selvars
- ( rf.fit <- randomForest(x=iris[,vars], y=iris[,"Species"]) )
-
-# Regression on airquality data
-data(airquality)
+  data(airquality)
   airquality <- na.omit(airquality)
-( rf.regress <- rf.modelSel(airquality[,2:6], airquality[,1], imp.scale="se") )
-( rf.regress <- rf.modelSel(airquality[,2:6], airquality[,1], imp.scale="se", parsimony=0.03) )
 
-   plot(rf.regress)              # plot importance for selected variables
-   plot(rf.regress, imp = "all") # plot importance for all variables 
+  xdata = airquality[,2:6]
+  ydata = airquality[,1]
 
-# To use parameters from competing model
-vars <- rf.regress$parameters[[3]]
+ #### Regression example
+ 
+ #### Using Breiman's original Fortran code from randomForest package
+ ( rf.regress <- rf.modelSel(airquality[,2:6], airquality[,1], 
+                             imp.scale="se") )
+ 
+ #### Using Wright's C++ code from ranger package
+ ( rf.regress <- rf.modelSel(airquality[,2:6], airquality[,1], 
+                             method="Wright") )
 
-# To use parameters from selected model
-vars <- rf.regress$selvars 
+ #### Classification example
+ ydata = as.factor(ifelse(ydata < 40, 0, 1))
+ 
+  #### Using Breiman's original Fortran code from randomForest package
+  ( rf.class <- rf.modelSel(xdata, ydata, ntree=1000) )
+  
+     # Use selected variables (same as final.model = TRUE
+  vars <- rf.class$selvars
+     ( rf.fit <- randomForest(x=iris[,vars], y=iris[,"Species"]) )
+  
+     # Use results to select competing model
+  vars <- na.omit(as.character(rf.class$parameters[2,]))
+     ( rf.fit <- randomForest(x=xdata[,vars], y=ydata) )   
+  
+  #### Using Wright's C++ code from ranger package
+  ( rf.class <- rf.modelSel(xdata, ydata, method="Wright") )	
+  	
+\dontrun{
+   # Using ranger package, filter p-values for classification
+   ( rf.class <- rf.modelSel(xdata, ydata, method="Wright", 
+                             pvalue=0.1, nperm=99, num.trees=1000) )
 
-( rf.fit <- randomForest(x=airquality[,vars], y=airquality[,1]) )
+  # Using ranger package, filter p-values for regression
+  ( rf.class <- rf.modelSel(airquality[,1], ydata, method="Wright", 
+                            pvalue=0.1, num.trees=1000) )
+}
 
 }
 \references{
-Evans, J.S. and S.A. Cushman (2009) Gradient Modeling of Conifer Species Using Random Forest. Landscape Ecology 5:673-683.
+Evans, J.S. and S.A. Cushman (2009) Gradient Modeling of Conifer Species 
+              Using Random Forest. Landscape Ecology 5:673-683.
 
-Murphy M.A., J.S. Evans, and A.S. Storfer (2010) Quantify Bufo boreas connectivity in Yellowstone National Park with landscape genetics. Ecology 91:252-261
+Murphy M.A., J.S. Evans, and A.S. Storfer (2010) Quantify Bufo boreas 
+              connectivity in Yellowstone National Park with landscape genetics. 
+              Ecology 91:252-261
 
-Evans J.S., M.A. Murphy, Z.A. Holden, S.A. Cushman (2011). Modeling species distribution and change using Random Forests CH.8 in Predictive Modeling in Landscape Ecology eds Drew, CA, Huettmann F, Wiersma Y. Springer
+Evans J.S., M.A. Murphy, Z.A. Holden, S.A. Cushman (2011). Modeling species 
+              distribution and change using Random Forests CH.8 in Predictive Modeling 
+              in Landscape Ecology eds Drew, CA, Huettmann F, Wiersma Y. Springer
 }
 \seealso{
-\code{\link[randomForest]{randomForest}} for randomForest ... model options
+\code{\link[randomForest]{randomForest}} for randomForest ... model options when method = "Breiman"
+
+\code{\link[ranger]{ranger}} for ranger ... model options when method = "Wright"
+
+\code{\link[rfUtilities]{rf.ImpScale}} details on p-values
 }
 \author{
 Jeffrey S. Evans  <jeffrey_evans@tnc.org>

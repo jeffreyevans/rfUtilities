@@ -4,27 +4,21 @@
 \alias{occurrence.threshold}
 \title{Test occurrence probability thresholds}
 \usage{
-occurrence.threshold(
-  x,
-  xdata,
-  class,
-  p = seq(0.1, 0.7, 0.02),
-  type = "delta.ss"
-)
+occurrence.threshold(x, class, p = seq(0.1, 0.9, 0.05), type = "delta.ss")
 }
 \arguments{
 \item{x}{A classification randomForest model object}
 
-\item{xdata}{Independent data used to build model}
-
-\item{class}{What class to test}
+\item{class}{What class to test, quoted}
 
 \item{p}{Vector of probability thresholds}
 
-\item{type}{What statistic to use in evaluation ("delta.ss", "sum.ss", "kappa")}
+\item{type}{What statistic to use in evaluation ("delta.ss", "sum.ss", 
+"kappa")}
 }
 \value{
-An "occurrence.threshold" class object containing a "thresholds" vector object with evaluation statistic and probability thresholds as names.
+An "occurrence.threshold" class object containing a "thresholds" vector 
+        object with evaluation statistic and probability thresholds as names.
 }
 \description{
 A statistical sensitivity test for occurrence probability thresholds
@@ -32,36 +26,46 @@ A statistical sensitivity test for occurrence probability thresholds
 \details{
 Available threshold evaluation statistics:
 \itemize{
-\item   kappa - The Kappa statistic is maximized
-\item   sum.ss - The sum of sensitivity and specificity is maximized
-\item   delta.ss - The absolute value of the difference between sensitivity and specificity is minimized
+\item kappa - [The Kappa statistic is maximized]
+\item sum.ss - [The sum of sensitivity and specificity is maximized]
+\item delta.ss - [The absolute value of the difference between sensitivity and 
+                  specificity is minimized]
  }
 }
 \examples{
 library(randomForest)
+
  data(imports85)
   imp85 <- imports85[,-2] 
   imp85 <- imp85[complete.cases(imp85), ]
   imp85[] <- lapply(imp85, function(x) if (is.factor(x)) x[, drop=TRUE] else x)
-
-y <- ifelse( imp85$numOfDoors != "four", "0", "1")   
+  y <- ifelse( imp85$numOfDoors != "four", "0", "1")   
+  
 ( rf.mdl <- randomForest(y = as.factor(y), x = imp85[,-5]) )
-   ( delta.ss.t <- occurrence.threshold(rf.mdl, imp85[,-5], class = "1") )
-   ( sum.ss.t <- occurrence.threshold(rf.mdl, imp85[,-5], class = "1", 
-                                      type = "sum.ss") ) 
-   ( kappa.ss.t <- occurrence.threshold(rf.mdl, imp85[,-5], class = "1",
-                                      type = "kappa") )
+  ( delta.ss.t <- occurrence.threshold(rf.mdl, class = "1") )
+  ( sum.ss.t <- occurrence.threshold(rf.mdl, class = "1", type = "sum.ss") ) 
+  ( kappa.ss.t <- occurrence.threshold(rf.mdl, class = "1", type = "kappa") )
   
-par(mfrow=c(2,2))
-  plot(sum.ss.t)
-  plot(delta.ss.t)
-  plot(kappa.ss.t)   
-  
+  par(mfrow=c(2,2))
+    plot(sum.ss.t)
+    plot(delta.ss.t)
+    plot(kappa.ss.t)   
+
+# using ranger
+library(ranger) 
+( rf.mdl <- ranger(y = as.factor(y), x = imp85[,-5], probability = TRUE) )
+ ( kappa.ss.t <- occurrence.threshold(rf.mdl, class = "1", type = "kappa") )
+  plot(kappa.ss.t) 
+
 }
 \references{
-Jimenez-Valverde, A., & J.M. Lobo (2007). Threshold criteria for conversion of probability of species presence to either-or presence-absence. Acta Oecologica 31(3):361-369
+Jimenez-Valverde, A., & J.M. Lobo (2007). Threshold criteria for 
+  conversion of probability of species presence to either-or 
+  presence-absence. Acta Oecologica 31(3):361-369
 
-Liu, C., P.M. Berry, T.P. Dawson, R.G. Pearson (2005). Selecting thresholds of occurrence in the prediction of species distributions. Ecography 28:385-393.
+Liu, C., P.M. Berry, T.P. Dawson, R.G. Pearson (2005). Selecting 
+  thresholds of occurrence in the prediction of species distributions. 
+  Ecography 28:385-393.
 }
 \author{
 Jeffrey S. Evans    <jeffrey_evans<at>tnc.org>
