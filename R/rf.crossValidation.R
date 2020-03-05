@@ -361,7 +361,8 @@ rf.crossValidation <- function(x, p=0.10, n=99, seed=NULL, normalize = FALSE,
       names(cv.pa)  <- c(classes)
         cv.oob <- as.data.frame(cv.oob)	  
           names(cv.oob) <- c("Model.PCC", "CV.PCC", "CV.kappa")
-            rownames(cv.oob) <- 1:nrow(cv.oob)		  
+		    cv.oob <- cv.oob[-1,]
+              rownames(cv.oob) <- 1:nrow(cv.oob)		  
     r.cv <- list(cv.users.accuracy = cv.ua, cv.producers.accuracy=cv.pa, 
 	             cv.oob = cv.oob, model.error = model.error)
 	    if(bootstrap) r.cv[["boot.sample.size"]] <- boot.sample.size
