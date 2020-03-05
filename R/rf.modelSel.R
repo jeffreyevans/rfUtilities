@@ -125,6 +125,7 @@ rf.modelSel <- function(xdata, ydata, imp.scale = c("mir", "se"), r = c(0.25, 0.
     warning("ranger does not support standard error importance, defaulting to mir") 
       imp.scale == "mir"
    }
+  dots <- as.list(match.call(expand.dots = TRUE)[-1]) 
   #if(exists(sel.vars)) { remove(sel.vars) }   
   RFtype <- is.factor(ydata) 
   ## classification ##
@@ -147,8 +148,14 @@ rf.modelSel <- function(xdata, ydata, imp.scale = c("mir", "se"), r = c(0.25, 0.
              }			  
 		}
 	  model.vars[[ln <- ln + 1]] <- names(rf.all$variable.importance)
-        cm <- accuracy(rf.all$confusion.matrix)	  
+		if("probability" %in% names(dots)) {
+		  cmat <- table(y, ifelse(rf.all$predictions[,2] < 0.50, 0, 1)) 
+		} else {  
+          cmat <- rf.all$confusion.matrix
+		}
+		cm <- accuracy(cmat)	  
     }
+	
     if(kappa) {
       class.errors <- data.frame(1-t(c(cm$kappa, (cm$producers.accuracy/100))))
         names(class.errors)[1] <- "kappa"

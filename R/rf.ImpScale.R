@@ -105,7 +105,8 @@ rf.ImpScale <- function (x, scaling=c("mir","se", "p"), n=99, sort = FALSE) {
       rf.imp <- x$importance[,"%IncMSE"]
     }  	
   # classification 	
-  } else if(mtype == "classification" | mtype == "unsupervised") {
+  } else if(any( mtype %in% c("classification", "unsupervised", 
+            "Probability estimation"))) {
     if(class(x) == "ranger") {  
       if (x$importance == "none")
         stop("ranger object does not contain importance") 

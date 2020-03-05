@@ -10,6 +10,7 @@
 #'                          using (max(y) - min(y))
 #' @param bootstrap         (FALSE/TRUE) Should a bootstrap sampling be applied. If FALSE, 
 #'                          an n-th percent withhold will be conducted
+#' @param p.threshold       If ranger probability forest, threshold to use in validation 
 #' @param trace             Print iterations
 #'
 #' @return  For classification a "rf.cv"", "classification" class object with the following 
@@ -147,7 +148,8 @@
 #' @exportClass rf.cv
 #' @export 	
 rf.crossValidation <- function(x, p=0.10, n=99, seed=NULL, normalize = FALSE, 
-                               bootstrap = FALSE, trace = FALSE) {
+                               bootstrap = FALSE, p.threshold = 0.60, 
+							   trace = FALSE) {
   if (!inherits(x, c("randomForest", "ranger"))) 
     stop("x is not randomForest class object")
   if(length(grep("~", x$call[[2]])) > 0)
@@ -264,11 +266,16 @@ rf.crossValidation <- function(x, p=0.10, n=99, seed=NULL, normalize = FALSE,
       class(r.cv) <- c("rf.cv", "regression")
 	  
     #*********************************	
-    } else if(mtype == "classification") {
-    #*********************************	
+    } else if(any(mtype %in% c("classification","probability estimation"))) {
+    #*********************************		
     cat("running:", mtype, "cross-validation", "with", n, "iterations", "\n")
-		if(inherits(x, "ranger")) {   	
-	      cm <- accuracy(ydata, x$predictions)
+		if(inherits(x, "ranger")) { 
+		  if("probability estimation" == mtype) {  
+		    ppred <- ifelse(x$predictions[,2] < p.threshold, 0, 1)
+	      } else {
+		    ppred <- x$predictions 
+		  }
+		  cm <- accuracy(ydata, ppred) 
         } else if(inherits(x,"randomForest")) {
 		  cm <- accuracy(ydata, x$predicted)
 		}
@@ -279,7 +286,6 @@ rf.crossValidation <- function(x, p=0.10, n=99, seed=NULL, normalize = FALSE,
 	  model.error = data.frame(model.users.accuracy = mdl.ua, 
 	                           model.producers.accuracy=mdl.pa, 
 			                   model.oob=mdl.oob, model.kappa=mdl.kappa) 
-
     if(bootstrap) boot.sample.size <- vector()	
     classes <- as.vector(levels( ydata ))	
       sample.size = round( (length(ydata) * p) / length(x$classes), digits=0) 
@@ -323,15 +329,19 @@ rf.crossValidation <- function(x, p=0.10, n=99, seed=NULL, normalize = FALSE,
             my <- mx$y
           mx <- mx[,2:ncol(mx)] 
        }
+	   
 	   	dat.sub <- data.frame(y=my, mx)
         dat.cv <- data.frame(y=ty, tx) 
 		a[["y"]] <- dat.sub[,"y"]
 		a[["x"]] <- dat.sub[,2:ncol(dat.sub)]
 		if(inherits(x, "ranger")) {    
           rf.fit <- do.call(ranger::ranger, a)
-            prd <- stats::predict(rf.fit,data = dat.cv[,2:ncol(dat.cv)])$predictions
+		    prd <- stats::predict(rf.fit,data = dat.cv[,2:ncol(dat.cv)])$predictions
+		      if("probability estimation" == mtype) {	
+                prd <- ifelse(prd[,2] < p.threshold, 0, 1)
+			  } 
 			cv.acc <- accuracy(prd,  ty)
-			mdl.oob <- rf.fit$prediction.error
+	        mdl.oob <- rf.fit$prediction.error
         } else if(inherits(x,"randomForest")) {
           rf.fit <- do.call(randomForest::randomForest, a)
             prd <- stats::predict(rf.fit, newdata = dat.cv[,2:ncol(dat.cv)])
