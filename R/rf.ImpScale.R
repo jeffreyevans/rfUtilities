@@ -38,7 +38,7 @@
 #' @references 
 #'   Janitza, S., E. Celik, and A.-L. Boulesteix (2018). A computationally fast variable 
 #'     importance test for random forests for high-dimensional data. 
-#'     Advances in Data Analysis and Classification 12(4):885–915
+#'     Advances in Data Analysis and Classification 12(4):885-915
 #'
 #' @examples
 #' library(randomForest)
