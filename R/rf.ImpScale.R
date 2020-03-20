@@ -129,10 +129,12 @@ rf.ImpScale <- function (x, scaling=c("mir","se", "p"), n=99, sort = FALSE) {
         rf.impSD[rf.impSD == 0] <- 0.000000001
       i <- ( rf.imp / rf.impSD ) / sum(rf.imp / rf.impSD, na.rm=TRUE)
   } else if(scaling[1] == "p") {
-    a <- as.list(x$call)[-1]
+    
+	a <- as.list(x$call)[-1]
     xy <- data.frame(y=eval(a[[which(names(a) == "y")]]), 
                    eval(a[[which(names(a) == "x")]]))	
-    i <- ranger::importance_pvalues(x, num.permutations = n, 
+    
+	i <- ranger::importance_pvalues(x, num.permutations = n, 
                                     method = "altmann", 
   								    formula = stats::formula(y ~ ., data=xy), 
   								    data = xy)

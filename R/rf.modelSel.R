@@ -125,26 +125,44 @@ rf.modelSel <- function(xdata, ydata, imp.scale = c("mir", "se"), r = c(0.25, 0.
     warning("ranger does not support standard error importance, defaulting to mir") 
       imp.scale == "mir"
    }
-  dots <- as.list(match.call(expand.dots = TRUE)[-1]) 
-  #if(exists(sel.vars)) { remove(sel.vars) }   
+  dots <- as.list(match.call(expand.dots = TRUE)[-1])
+  rm.idx <- names(dots) %in% c("expand.dots", "xdata", "ydata", "imp.scale",   
+                                "r", "final.model", "seed", "parsimony",  
+                                "kappa","method", "pvalue", "nperm")   
+    dots <- dots[!rm.idx]
+    if (!"y" %in% names(dots)) 
+      dots[["y"]] <- ydata
+    if (!"x" %in% names(dots))	  
+	  dots[["x"]] <- xdata
+    if(method[1] == "Breiman") {
+      if (!"importance" %in% names(dots))
+        dots[["importance"]] <- TRUE 
+    } else if(method[1] == "Wright") {
+      if (!"importance" %in% names(dots))  
+       dots[["importance"]] <- "permutation"
+    }
+  
   RFtype <- is.factor(ydata) 
+
   ## classification ##
-  if (RFtype == "TRUE") {
+  if (RFtype == TRUE) {
     model.vars <- list()
     ln <- 0
     if(method[1] == "Breiman") {
-	  rf.all <- randomForest::randomForest(x=xdata, y=ydata, importance=TRUE, ...)
+	  print(names(dots))
+	  rf.all <- do.call(randomForest::randomForest, dots)
 	    model.vars[[ln <- ln + 1]] <- rownames(rf.all$importance)
           cm <- accuracy(rf.all$confusion[,1:(ncol(rf.all$confusion)-1)])
     } else if(method[1] == "Wright") {
-      rf.all <- ranger::ranger(x=xdata, y=ydata, importance="permutation", ...)
+      rf.all <- do.call(ranger::ranger, dots)
 	    if(!is.null(pvalue)) {
 		  imp_pval <- rf.ImpScale(rf.all, scaling="p", n=nperm)
 		    dropped <- imp_pval[which(imp_pval$pvalue > pvalue),]$parameter
-			if(length(dropped) > 0) {
+			if((length(dropped) > 0) == TRUE) {
 			  cat("\n", "The following parameter(s) did not meet p-value threshold: ", dropped, "\n")
-		      xdata <- xdata[,imp_pval[which(imp_pval$pvalue <= pvalue),]$parameter]
-		      rf.all <- ranger::ranger(x=xdata, y=ydata, importance="permutation", ...)
+		          xdata <- xdata[,which(!names(xdata) %in% dropped)]
+		       dots[["x"]] <- xdata
+             rf.all <- do.call(ranger::ranger, dots)
              }			  
 		}
 	  model.vars[[ln <- ln + 1]] <- names(rf.all$variable.importance)
@@ -187,17 +205,21 @@ rf.modelSel <- function(xdata, ydata, imp.scale = c("mir", "se"), r = c(0.25, 0.
 		   }		  
         sel.vars <- sel.imp$parameter
 		np = length(sel.vars)
-      if (length(sel.vars) > 1) {    
+      if (length(sel.vars) > 1) {
+        dots[["x"]] <- xdata[,sel.vars]	  
         if(method[1] == "Breiman") {
-          rf.model <- randomForest::randomForest(x=xdata[,sel.vars], y=ydata, 
-		                                         importance=TRUE, ...)
+          rf.model <- do.call(randomForest::randomForest, dots)
             model.vars[[ln <- ln + 1]] <- rownames(rf.model$importance)
               cm <- accuracy(rf.model$confusion[,1:(ncol(rf.model$confusion)-1)])
           } else if(method[1] == "Wright") {
-            rf.model <- ranger::ranger(x=xdata[,sel.vars], y=ydata, 
-			                           importance="permutation", ...)
-              model.vars[[ln <- ln + 1]] <- names(rf.model$variable.importance)  
-                cm <- accuracy(rf.model$confusion.matrix)
+            rf.model <- do.call(ranger::ranger, dots)
+              model.vars[[ln <- ln + 1]] <- names(rf.model$variable.importance)
+	        if("probability" %in% names(dots)) {
+	        	  cmat <- table(y, ifelse(rf.all$predictions[,2] < 0.50, 0, 1)) 
+	        	} else {  
+                  cmat <- rf.model$confusion.matrix
+	        	}
+	        	cm <- accuracy(cmat)	
           }
             if(kappa) {
               e <- data.frame(1-t(c(cm$kappa, (cm$producers.accuracy/100))))
@@ -219,6 +241,7 @@ rf.modelSel <- function(xdata, ydata, imp.scale = c("mir", "se"), r = c(0.25, 0.
           warning(paste0("The ", r[p], " threshold has <= 1 parameter and cannot be evaluated") )  
         }		
       } 
+	  
       n <- max(unlist(lapply(model.vars,FUN=length)))
         for(l in 1:length(model.vars)){
           x <- model.vars[[l]]
@@ -344,10 +367,13 @@ rf.modelSel <- function(xdata, ydata, imp.scale = c("mir", "se"), r = c(0.25, 0.
   } # end of regression
 
     if (final.model == TRUE) {
+	  dots[["x"]] <- xdata[,sel.vars] 
       if(method[1] == "Breiman") {
-        rf.final <- randomForest::randomForest(x=xdata[,sel.vars], y=ydata, importance=TRUE, ...)
+	    print(names(dots))
+        rf.final <- do.call(randomForest::randomForest, dots)
       } else if(method[1] == "Wright") {
-	    rf.final <- ranger::ranger(x=xdata[,sel.vars], y=ydata, importance="permutation", ...)
+	    print(names(dots))
+	    rf.final <- do.call(ranger::ranger, dots)
 	  }
       mdl.sel <- list(rf.final = rf.final, selvars = sel.vars, test = errors, importance = imp, 
 	                  sel.importance = sel.imp, parameters = model.vars, scaling = imp.scale)      
