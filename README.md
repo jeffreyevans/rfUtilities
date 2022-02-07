@@ -24,6 +24,7 @@ rfUtilities 2.2-0 (GitHub development release)
 | `multi.collinear`              | Multi-collinearity test with matrix permutation.
 | `occurrence.threshold`         | A statistical sensitivity test for occurrence probability thresholds
 | `probability.calibration`      | Isotonic probability calibration
+| `ranger.proximity`             | Derives a proximity matrix for a ranger object
 | `rf.class.sensitivity`         | Random Forests class-level sensitivity analysis
 | `rf.classBalance`              | Random Forests Class Balance (Zero Inflation Correction) Model with covariance convergence
 | `rf.combine`                   | Combine Random Forests Ensembles 
