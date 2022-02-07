@@ -12,17 +12,21 @@
 #' @param seed                  Sets random seed in the R global environment. 
 #'                              This is highly suggested.
 #' @param parsimony             Threshold for competing model (0-1)
-#' @param kappa                 Use the chance corrected kappa statistic rather than PCC
+#' @param kappa                 Use the chance corrected kappa statistic rather 
+#'                              than PCC
 #' @param method                Use the fast C++ ranger implementation "Wright" or
 #'                              original "Breiman" Fortran code  
-#' @param pvalue                Calculate a p-value and filter parameters with this threshold
+#' @param pvalue                Calculate a p-value and filter parameters with this 
+#'                              threshold
+
 #' @param nperm                 Number of permutations to calculate p-value  
 #' @param ...                   Additional arguments to pass to randomForest or ranger 
 #'                              (e.g., ntree=1000, replace=TRUE, proximity=TRUE)
 #'
 #' @return \strong{A rf.modelSel class object with the following components:} 
 #' \itemize{  
-#'   \item   {"rf.final"} {Final selected model, if final = TRUE(randomForest model object)}
+#'   \item   {"rf.final"} {Final selected model, if final = TRUE(randomForest 
+#'                         model object)}
 #'   \item   {"sel.vars"} {Final selected variables (vector)}
 #'   \item   {"test"} {Validation parameters used on model selection (data.frame)}
 #'   \item   {"sel.importance"} {Importance values for selected model (data.frame)}
@@ -32,11 +36,11 @@
 #' }
 #' 
 #' @details
-#' If you want to run classification, make sure that y is a factor, otherwise the randomForest model
-#' runs in regression mode For classification problems the model selection criteria is: smallest 
-#' OOB error, smallest maximum within class error, and fewest parameters. For regression problems, 
-#' the model selection criteria is largest percent variation explained, smallest MSE and 
-#' fewest parameters.
+#' If you want to run classification, make sure that y is a factor, otherwise the 
+#' randomForest model runs in regression mode For classification problems the model 
+#' selection criteria is: smallest OOB error, smallest maximum within class error, 
+#' and fewest parameters. For regression problems, the model selection criteria is 
+#' largest percent variation explained, smallest MSE and fewest parameters.
 #' 
 #' @details
 #' The "mir" scale option performs a row standardization and the "se" option 
@@ -44,23 +48,39 @@
 #' importance measure. Both options result in a 0-1 range but, "se" sums to 1.
 #' The scaled importance measures are calculated as: 
 #'   mir = i/max(i) and se = (i / se) / ( sum(i) / se).
-#'
+#' @details
 #' The parsimony argument is the percent of allowable error surrounding 
 #' competing models. For example, if there are two competing models, 
 #' a selected model with 5 parameters and a competing model with 3 parameters, 
 #' and parsimony = 0.05, if there is +/- 5% error in the fewer 
 #' parameter model it will be selected at the final model. 
-#'
+#' @details
+#' If you specify the pvalue and nperm arguments then a permutation test is 
+#' applied and parameters that do not meet the specified significance are removed 
+#' before the model selection process. Please note that the p-value will be a  
+#' function of the number of permutations. So a pvlaue=0.10 would be adequate for
+#' nperm=99. 
+#' @details
+#' Using the kappa = TRUE argument will base error optimization on the kappa
+#' rather than percent correctly classified (PCC). This will correct the PCC
+#' for random agreement. The method = "Breiman" specifies the
+#' use of the original Breiman Fortran code whereas "Wright" uses the C++ 
+#' implementation from the ranger package (which exhibits a considerable 
+#' improvement in speed).    
+#' 
 #' @author Jeffrey S. Evans  <jeffrey_evans@@tnc.org>
 #'
-#' @references Evans, J.S. and S.A. Cushman (2009) Gradient Modeling of Conifer Species 
-#'               Using Random Forest. Landscape Ecology 5:673-683.
-#' @references Murphy M.A., J.S. Evans, and A.S. Storfer (2010) Quantify Bufo boreas 
-#'               connectivity in Yellowstone National Park with landscape genetics. 
-#'               Ecology 91:252-261
-#' @references Evans J.S., M.A. Murphy, Z.A. Holden, S.A. Cushman (2011). Modeling species 
-#'               distribution and change using Random Forests CH.8 in Predictive Modeling 
-#'               in Landscape Ecology eds Drew, CA, Huettmann F, Wiersma Y. Springer
+#' @references 
+#' Evans, J.S. and S.A. Cushman (2009) Gradient Modeling of Conifer Species 
+#'   Using Random Forest. Landscape Ecology 5:673-683.
+#' @references 
+#' Murphy M.A., J.S. Evans, and A.S. Storfer (2010) Quantify Bufo boreas 
+#'   connectivity in Yellowstone National Park with landscape genetics. 
+#'   Ecology 91:252-261
+#' @references 
+#' Evans J.S., M.A. Murphy, Z.A. Holden, S.A. Cushman (2011). Modeling species 
+#'   distribution and change using Random Forests CH.8 in Predictive Modeling 
+#'   in Landscape Ecology eds Drew, CA, Huettmann F, Wiersma Y. Springer
 #'
 #' @examples
 #' require(randomForest)
@@ -125,11 +145,15 @@ rf.modelSel <- function(xdata, ydata, imp.scale = c("mir", "se"), r = c(0.25, 0.
     warning("ranger does not support standard error importance, defaulting to mir") 
       imp.scale == "mir"
    }
+  r <- unique(c(0,r,1)) 
+    expected <- seq(0,1,0.01)
+      range.idx <- findInterval(expected, r, all.inside = TRUE) 
+  			  
+  # format ellipse ... 
   dots <- as.list(match.call(expand.dots = TRUE)[-1])
   rm.idx <- names(dots) %in% c("expand.dots", "xdata", "ydata", "imp.scale",   
-                                "r", "final.model", "seed", "parsimony",  
-                                "kappa","method", "pvalue", "nperm")   
-    dots <- dots[!rm.idx]
+    "r", "final.model", "seed", "parsimony", "kappa","method", "pvalue", "nperm")   
+    if(length(rm.idx > 0 ) dots <- dots[!rm.idx]
     if (!"y" %in% names(dots)) 
       dots[["y"]] <- ydata
     if (!"x" %in% names(dots))	  
@@ -159,7 +183,8 @@ rf.modelSel <- function(xdata, ydata, imp.scale = c("mir", "se"), r = c(0.25, 0.
 		  imp_pval <- rf.ImpScale(rf.all, scaling="p", n=nperm)
 		    dropped <- imp_pval[which(imp_pval$pvalue > pvalue),]$parameter
 			if((length(dropped) > 0) == TRUE) {
-			  cat("\n", "The following parameter(s) did not meet p-value threshold: ", dropped, "\n")
+			  cat("\n", "The following parameter(s) did not meet p-value threshold: ", 
+			      dropped, "\n")
 		          xdata <- xdata[,which(!names(xdata) %in% dropped)]
 		       dots[["x"]] <- xdata
              rf.all <- do.call(ranger::ranger, dots)
@@ -171,9 +196,9 @@ rf.modelSel <- function(xdata, ydata, imp.scale = c("mir", "se"), r = c(0.25, 0.
 		} else {  
           cmat <- rf.all$confusion.matrix
 		}
-		cm <- accuracy(cmat)	  
+      cm <- accuracy(cmat)	  
     }
-	
+
     if(kappa) {
       class.errors <- data.frame(1-t(c(cm$kappa, (cm$producers.accuracy/100))))
         names(class.errors)[1] <- "kappa"
@@ -191,16 +216,31 @@ rf.modelSel <- function(xdata, ydata, imp.scale = c("mir", "se"), r = c(0.25, 0.
 	    if(length(nan.idx) > 0) errors[1,][nan.idx] <- 1
       inf.idx <- which(is.infinite(errors))
 	    if(length(inf.idx) > 0) errors[1,][inf.idx] <- 0
+		
+	# build importance 	
 	  imp <- rf.ImpScale(rf.all, scaling = imp.scale)
-	
-      for (p in 1:length(r) ) {
-        thres = stats::quantile(imp[,2], probs=r[p])
-		sel.imp <- imp[which( imp[,"importance"] >= thres),]
+        if(imp.scale == "se") imp[,2] <- imp[,2] / max(imp[,2])
+          imp <- imp[order(imp$importance),]
+            imp$p <- findInterval(imp[,2], r, all.inside = TRUE)   
+		miss.idx <- which(!sort(unique(findInterval(expected, r, all.inside=TRUE))) %in% 
+		                  sort(unique(imp$p)))
+		  if(miss.idx > 0) {
+		    miss.range <- tapply(expected, findInterval(expected, r, 
+		                         all.inside = TRUE), range)[miss.idx] 
+		  					   
+		    miss.range <- paste0("Missing importance ranges; ", unlist(lapply(miss.range, 
+		                         FUN=function(x) paste0(x[1],"-",x[2]))))					   
+              for(i in miss.range) message(i)
+            }
+		 )
+	  }	
+      for (p in unique(imp$p)) {
+		sel.imp <- imp[imp$p == p,]
 		  if(!exists("sel.vars")) {
 		    sel.vars <- imp$parameter
 		  }    
 		   if(!any((sel.vars %in% sel.imp$parameter) == FALSE)) {
-		     cat("\n", "Parameters match last threshold, skipping threshold", r[p] , "\n")
+		     cat("\n", "Parameters match last threshold, skipping threshold set", p, "\n")
 		     next
 		   }		  
         sel.vars <- sel.imp$parameter
@@ -238,8 +278,10 @@ rf.modelSel <- function(xdata, ydata, imp.scale = c("mir", "se"), r = c(0.25, 0.
 	          if(length(inf.idx) > 0) e[1,][inf.idx] <- 0
             errors <- rbind(errors, e)
         } else {
-          warning(paste0("The ", r[p], " threshold has <= 1 parameter and cannot be evaluated") )  
-        }		
+          warning(paste0("The ", min(expected[which(range.idx %in% p)]), "-",  
+		          max(expected[which(range.idx %in% p)]), 
+				  " threshold has <= 1 parameter and cannot be evaluated") )
+		}		 
       } 
 	  
       n <- max(unlist(lapply(model.vars,FUN=length)))
@@ -301,10 +343,26 @@ rf.modelSel <- function(xdata, ydata, imp.scale = c("mir", "se"), r = c(0.25, 0.
                          mse = e[2],
     					 threshold = 1, 
     					 nparameters = ncol(xdata))	
-    imp <- rf.ImpScale(rf.all, scaling = imp.scale)
-      for (p in 1:length(r) ) {
-        thres = stats::quantile(imp[,2], probs=r[p])
-		sel.imp <- imp[which( imp[,"importance"] >= thres),]
+					
+	# build importance 	
+	imp <- rf.ImpScale(rf.all, scaling = imp.scale)
+      if(imp.scale == "se") imp[,2] <- imp[,2] / max(imp[,2])
+        imp <- imp[order(imp$importance),]
+          imp$p <- findInterval(imp[,2], r, all.inside = TRUE)   
+	    miss.idx <- which(!sort(unique(findInterval(seq(0,1,0.01), r, all.inside=TRUE))) %in% 
+	                      sort(unique(imp$p)))
+	    if(miss.idx > 0) {
+	      expected <- seq(0,1,0.01)
+	      miss.range <- tapply(expected, findInterval(expected, r, 
+	                           all.inside = TRUE), range)[miss.idx] 
+	  					   
+	      miss.range <- paste0("Missing importance ranges; ", unlist(lapply(miss.range, 
+	                           FUN=function(x) paste0(x[1],"-",x[2]))))
+          for(i in miss.range) message(i)
+        }
+
+      for (p in unique(imp$p)) {
+		sel.imp <- imp[imp$p == p,]
 		  if(!exists("sel.vars")) {
 		    sel.vars <- imp$parameter
 		  }    
@@ -332,7 +390,9 @@ rf.modelSel <- function(xdata, ydata, imp.scale = c("mir", "se"), r = c(0.25, 0.
     					    nparameters = np)
             errors <- rbind(errors, e)
         } else {
-          warning(paste0("The ", r[p], " threshold has <= 1 parameter and cannot be evaluated") )  
+          warning(paste0("The ", min(expected[which(range.idx %in% p)]), "-",  
+		          max(expected[which(range.idx %in% p)]), 
+				  " threshold has <= 1 parameter and cannot be evaluated") )  
         }		
       } 
       n <- max(unlist(lapply(model.vars,FUN=length)))

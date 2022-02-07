@@ -14,6 +14,12 @@ plot.occurrence.threshold <- function(x, ...) {
       }
     else if (x$statistic == "kappa") {
       mdl.lab = "Kappa"  
+      }
+    else if (x$statistic == "youden") {
+      mdl.lab = "Youden'-J index"  
+      }
+    else if (x$statistic == "logloss") {
+      mdl.lab = "Logarithmic Loss"  	  
   }	  
   dots <- as.list(match.call(expand.dots = TRUE)[-1])
   dots[["x"]] <- names(x$thresholds)

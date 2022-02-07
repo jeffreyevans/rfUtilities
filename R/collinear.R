@@ -10,8 +10,6 @@
 #' 
 #' @return Messages and a vector of correlated variables 
 #'
-#' @author Jeffrey S. Evans  <jeffrey_evans<at>tnc.org>
-#'
 #' @note 
 #' Evaluation of the pairwise linear correlated variables to remove is accomplished  
 #' through calculating the mean correlations of each variable and selecting the 
@@ -23,6 +21,8 @@
 #' With the hypothesis: 
 #'     \eqn{H_{0} : f(x) = 0, \ \forall x$$} 
 #' 
+#' @author Jeffrey S. Evans  <jeffrey_evans<at>tnc.org>
+#'
 #' @examples
 #' 
 #' data(cor.data)
