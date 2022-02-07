@@ -4,7 +4,12 @@
 \alias{occurrence.threshold}
 \title{Test occurrence probability thresholds}
 \usage{
-occurrence.threshold(x, class, p = seq(0.1, 0.9, 0.05), type = "delta.ss")
+occurrence.threshold(
+  x,
+  class,
+  p = seq(0.1, 0.9, 0.05),
+  type = c("delta.ss", "sum.ss", "kappa", "youden", "logloss")
+)
 }
 \arguments{
 \item{x}{A classification randomForest model object}
@@ -14,11 +19,12 @@ occurrence.threshold(x, class, p = seq(0.1, 0.9, 0.05), type = "delta.ss")
 \item{p}{Vector of probability thresholds}
 
 \item{type}{What statistic to use in evaluation ("delta.ss", "sum.ss", 
-"kappa")}
+"kappa", "youden", "logloss")}
 }
 \value{
-An "occurrence.threshold" class object containing a "thresholds" vector 
-        object with evaluation statistic and probability thresholds as names.
+An "occurrence.threshold" class object containing a "thresholds" vector,
+object with evaluation statistic and probability thresholds as names,  
+the probability threshold "prob.threshold" and the test statistic
 }
 \description{
 A statistical sensitivity test for occurrence probability thresholds
@@ -28,13 +34,14 @@ Available threshold evaluation statistics:
 \itemize{
 \item kappa - [The Kappa statistic is maximized]
 \item sum.ss - [The sum of sensitivity and specificity is maximized]
-\item delta.ss - [The absolute value of the difference between sensitivity and 
-                  specificity is minimized]
+\item delta.ss - [The absolute value of the difference between sensitivity
+                  and specificity is minimized]
+\item youden - [Youden’s J index (sensitivity + specificity) - 1]
+\item logloss - [Optimizes on Log Loss]
  }
 }
 \examples{
 library(randomForest)
-
  data(imports85)
   imp85 <- imports85[,-2] 
   imp85 <- imp85[complete.cases(imp85), ]
@@ -42,20 +49,25 @@ library(randomForest)
   y <- ifelse( imp85$numOfDoors != "four", "0", "1")   
   
 ( rf.mdl <- randomForest(y = as.factor(y), x = imp85[,-5]) )
-  ( delta.ss.t <- occurrence.threshold(rf.mdl, class = "1") )
-  ( sum.ss.t <- occurrence.threshold(rf.mdl, class = "1", type = "sum.ss") ) 
-  ( kappa.ss.t <- occurrence.threshold(rf.mdl, class = "1", type = "kappa") )
-  
-  par(mfrow=c(2,2))
-    plot(sum.ss.t)
-    plot(delta.ss.t)
-    plot(kappa.ss.t)   
-
-# using ranger
+  ( delta.ss <- occurrence.threshold(rf.mdl, class = "1", , type = "delta.ss") )
+  ( sum.ss <- occurrence.threshold(rf.mdl, class = "1", type = "sum.ss") ) 
+  ( kappa.ss <- occurrence.threshold(rf.mdl, class = "1", type = "kappa") )
+  ( logloss.ss <- occurrence.threshold(rf.mdl, class = "1", type = "logloss") )
+  ( youden.ss <- occurrence.threshold(rf.mdl, class = "1", type = "youden") )
+ opar <- par  
+   par(mfrow=c(2,2))
+     plot(sum.ss)
+     plot(delta.ss)
+     plot(kappa.ss)   
+     plot(logloss.ss)
+ par <- opar
+ 
+#### using ranger
 library(ranger) 
 ( rf.mdl <- ranger(y = as.factor(y), x = imp85[,-5], probability = TRUE) )
- ( kappa.ss.t <- occurrence.threshold(rf.mdl, class = "1", type = "kappa") )
-  plot(kappa.ss.t) 
+ ( kappa.ss <- occurrence.threshold(rf.mdl, class = "1", type = "kappa") )
+ ( youden.ss <- occurrence.threshold(rf.mdl, class = "1", type = "youden") )
+  plot(kappa.ss) 
 
 }
 \references{
@@ -66,6 +78,9 @@ Jimenez-Valverde, A., & J.M. Lobo (2007). Threshold criteria for
 Liu, C., P.M. Berry, T.P. Dawson, R.G. Pearson (2005). Selecting 
   thresholds of occurrence in the prediction of species distributions. 
   Ecography 28:385-393.
+
+Youden, W.J. (1950). Index for rating diagnostic tests. 
+  Cancer. 3:2-35.
 }
 \author{
 Jeffrey S. Evans    <jeffrey_evans<at>tnc.org>

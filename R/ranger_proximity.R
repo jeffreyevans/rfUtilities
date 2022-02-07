@@ -12,7 +12,7 @@
 #'
 #' @author Jeffrey S. Evans  <jeffrey_evans<at>tnc.org
 #'
-#' @example
+#' @examples
 #' library(ranger)
 #' fit <- ranger(Species ~ ., iris, keep.inbag = TRUE)
 #' p <- ranger_proximity(fit, iris[,-5]) 

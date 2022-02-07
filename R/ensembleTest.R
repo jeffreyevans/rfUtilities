@@ -1,12 +1,12 @@
 #' Tests the correlation across a Bootstrap ensemble to ensure
 #' a quasi-independent sample and uncorrelated ensemble. 
 #'
-#' @parm x            A matrix or data.frame of the data to test
-#' @parm perm         Number of Bootstraps (eg., same as random forests ntree)        
-#' @parm n            Sample proportion
-#' @parm p            Accept/Reject p-value
-#' @parm type         Type of matrix similarity statistic
-#' @parm replacement  (TRUE/FALSE) Sample with replacement 
+#' @param x            A matrix or data.frame of the data to test
+#' @param perm         Number of Bootstraps (eg., same as random forests ntree)        
+#' @param n            Sample proportion
+#' @param p            Accept/Reject p-value
+#' @param type         Type of matrix similarity statistic
+#' @param replacement  (TRUE/FALSE) Sample with replacement 
 #'
 #' @return 
 #'

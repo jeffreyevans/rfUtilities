@@ -27,6 +27,7 @@
 #'   Res 15:1625-1651.
 #'
 #' @examples
+#' \dontrun{
 #' library(randomForest)
 #' library(raster)
 #' library(ranger)
@@ -63,7 +64,8 @@
 #'   e <- predict(vars, rfm, fun=rf.predict, progress="window")
 #' 
 #' ( ci <- spatial.uncertainty(rfm, e, r) )
-#' 
+#' } 
+#'
 #' @export spatial.uncertainty
 spatial.uncertainty <- function(x, y, vars, b = 99, seed=NULL, 
                                 out.raster=NULL, ...) {

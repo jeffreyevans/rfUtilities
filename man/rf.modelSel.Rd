@@ -37,12 +37,14 @@ This is highly suggested.}
 
 \item{parsimony}{Threshold for competing model (0-1)}
 
-\item{kappa}{Use the chance corrected kappa statistic rather than PCC}
+\item{kappa}{Use the chance corrected kappa statistic rather 
+than PCC}
 
 \item{method}{Use the fast C++ ranger implementation "Wright" or
 original "Breiman" Fortran code}
 
-\item{pvalue}{Calculate a p-value and filter parameters with this threshold}
+\item{pvalue}{Calculate a p-value and filter parameters with this 
+threshold}
 
 \item{nperm}{Number of permutations to calculate p-value}
 
@@ -52,7 +54,8 @@ original "Breiman" Fortran code}
 \value{
 \strong{A rf.modelSel class object with the following components:} 
 \itemize{  
-  \item   {"rf.final"} {Final selected model, if final = TRUE(randomForest model object)}
+  \item   {"rf.final"} {Final selected model, if final = TRUE(randomForest 
+                        model object)}
   \item   {"sel.vars"} {Final selected variables (vector)}
   \item   {"test"} {Validation parameters used on model selection (data.frame)}
   \item   {"sel.importance"} {Importance values for selected model (data.frame)}
@@ -66,11 +69,11 @@ Implements Murphy et al., (2010) Random Forests model selection
              approach.
 }
 \details{
-If you want to run classification, make sure that y is a factor, otherwise the randomForest model
-runs in regression mode For classification problems the model selection criteria is: smallest 
-OOB error, smallest maximum within class error, and fewest parameters. For regression problems, 
-the model selection criteria is largest percent variation explained, smallest MSE and 
-fewest parameters.
+If you want to run classification, make sure that y is a factor, otherwise the 
+randomForest model runs in regression mode For classification problems the model 
+selection criteria is: smallest OOB error, smallest maximum within class error, 
+and fewest parameters. For regression problems, the model selection criteria is 
+largest percent variation explained, smallest MSE and fewest parameters.
 
 The "mir" scale option performs a row standardization and the "se" option 
 performs normalization using the "standard errors" of the permutation-based 
@@ -83,6 +86,19 @@ competing models. For example, if there are two competing models,
 a selected model with 5 parameters and a competing model with 3 parameters, 
 and parsimony = 0.05, if there is +/- 5% error in the fewer 
 parameter model it will be selected at the final model.
+
+If you specify the pvalue and nperm arguments then a permutation test is 
+applied and parameters that do not meet the specified significance are removed 
+before the model selection process. Please note that the p-value will be a  
+function of the number of permutations. So a pvlaue=0.10 would be adequate for
+nperm=99.
+
+Using the kappa = TRUE argument will base error optimization on the kappa
+rather than percent correctly classified (PCC). This will correct the PCC
+for random agreement. The method = "Breiman" specifies the
+use of the original Breiman Fortran code whereas "Wright" uses the C++ 
+implementation from the ranger package (which exhibits a considerable 
+improvement in speed).
 }
 \examples{
 require(randomForest)
@@ -132,15 +148,15 @@ require(randomForest)
 }
 \references{
 Evans, J.S. and S.A. Cushman (2009) Gradient Modeling of Conifer Species 
-              Using Random Forest. Landscape Ecology 5:673-683.
+  Using Random Forest. Landscape Ecology 5:673-683.
 
 Murphy M.A., J.S. Evans, and A.S. Storfer (2010) Quantify Bufo boreas 
-              connectivity in Yellowstone National Park with landscape genetics. 
-              Ecology 91:252-261
+  connectivity in Yellowstone National Park with landscape genetics. 
+  Ecology 91:252-261
 
 Evans J.S., M.A. Murphy, Z.A. Holden, S.A. Cushman (2011). Modeling species 
-              distribution and change using Random Forests CH.8 in Predictive Modeling 
-              in Landscape Ecology eds Drew, CA, Huettmann F, Wiersma Y. Springer
+  distribution and change using Random Forests CH.8 in Predictive Modeling 
+  in Landscape Ecology eds Drew, CA, Huettmann F, Wiersma Y. Springer
 }
 \seealso{
 \code{\link[randomForest]{randomForest}} for randomForest ... model options when method = "Breiman"

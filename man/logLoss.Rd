@@ -11,33 +11,36 @@ logLoss(y, p, likelihood = FALSE, global = TRUE, eps = 0.000000000000001)
 
 \item{p}{vector of predicted probabilities {0-1}}
 
-\item{likelihood}{(FALSE/TRUE) return log likelihood loss, default is (FALSE) for log loss}
+\item{likelihood}{(FALSE/TRUE) return log likelihood loss, default is (FALSE) 
+for log loss}
 
-\item{global}{(TRUE/FALSE) return local or global log loss values, if FALSE local values are returned}
+\item{global}{(TRUE/FALSE) return local or global log loss values, 
+if FALSE local values are returned}
 
 \item{eps}{epsilon scaling factor to avoid NaN values}
 }
 \value{
-If likelihood TRUE the log likelihood loss will be returned. If global FALSE, a list with 
-        observed (y), probability (p) and log loss (log.loss) otherwise, a vector of global log loss value
+If likelihood TRUE the log likelihood loss will be returned. If global FALSE, a list 
+with observed (y), probability (p) and log loss (log.loss) otherwise, a vector of 
+global log loss value
 }
 \description{
-Evaluation of estimate quality in binomial models using cross-entropy or log likelihood loss
-}
-\note{
-The log loss metric, based on cross-entropy, measures the quality of predictions rather than 
-      the accuracy. Effectively, the log loss is a measure that gages additional error coming the 
-      estimates as opposed to the true values.
+Evaluation of estimate quality in binomial models using cross-entropy 
+             or log likelihood loss
 
-As the estimated probability diverges from its observed value the log loss increases with an 
-      expected of [0-1] where 0 would be a perfect model. For a single sample with true value yt 
-      in {0,1} and estimated probability yp that yt = 1, the log loss is derived as: 
-      -log P(yt | yp) = -(yt log(yp) + (1 - yt) log(1 - yp)) eps is used where log loss is undefined 
-      for p=0 or p=1, so probabilities are clipped to: max(eps, min(1 - eps, p)) If likelihood is output, 
-      the eps and local arguments are ignored.
+The Logarithmic loss metric, based on cross-entropy, measures the quality of predictions 
+rather than the accuracy. Effectively, the log loss is a measure that gages 
+additional error coming from the estimates as opposed to the true values.
+
+As the estimated probability diverges from its observed value the log loss increases 
+with an expected of [0-1] where 0 would be a perfect model. For a single sample with 
+true value yt in {0,1} and estimated probability yp that yt = 1, the log loss is 
+derived as: -log P(yt | yp) = -(yt log(yp) + (1 - yt) log(1 - yp)) 
+eps is used where log loss is undefined for p=0 or p=1, so probabilities are 
+clipped to: max(eps, min(1 - eps, p)) If likelihood is output, the eps and local 
+arguments are ignored.
 }
 \examples{
-
   require(randomForest)
     data(iris)
     iris$Species <- ifelse( iris$Species == "versicolor", 1, 0 ) 

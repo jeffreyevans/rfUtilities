@@ -11,6 +11,7 @@ rf.crossValidation(
   seed = NULL,
   normalize = FALSE,
   bootstrap = FALSE,
+  p.threshold = 0.6,
   trace = FALSE
 )
 }
@@ -28,6 +29,8 @@ using (max(y) - min(y))}
 
 \item{bootstrap}{(FALSE/TRUE) Should a bootstrap sampling be applied. If FALSE, 
 an n-th percent withhold will be conducted}
+
+\item{p.threshold}{If ranger probability forest, threshold to use in validation}
 
 \item{trace}{Print iterations}
 }
