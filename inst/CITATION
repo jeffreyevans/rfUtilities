@@ -9,7 +9,7 @@ citHeader("To cite rfUtilities package in publications please use:")
      year = "2020",
      note = "R package version 2.2-0",
 	 url = "https://cran.r-project.org/package=rfUtilities",
-     key = "rfUtilities-package"
+     keywords = "rfUtilities-package"
    )
 
 citHeader("citation for class balance Evans & Cushman 2009")   
@@ -21,7 +21,7 @@ citHeader("citation for class balance Evans & Cushman 2009")
 	number = "5",
 	pages="673-683",
     year = "2009",
-	key = "class balance",
+	keywords = "class balance",
    )   
    
 citHeader("citation for model selection and significance test Murphy et al., 2010")   
@@ -33,7 +33,7 @@ citHeader("citation for model selection and significance test Murphy et al., 201
 	number = "71",
 	pages="252-261",
     year = "2010",
-	key = "model selection",
+	keywords = "model selection",
    )
 
 citHeader("citation for other methods Evans et al., 2011")  
@@ -50,5 +50,5 @@ citHeader("citation for other methods Evans et al., 2011")
     publisher = "Springer",
     address = "New York",
     isbn = "978-1-4419-7390-0",
-	key = "general methods",
+	keywords = "general methods",
    )
