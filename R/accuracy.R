@@ -1,8 +1,8 @@
 #' @title Accuracy
 #' @description Classification accuracy measures for pcc, kappa, users accuracy, producers accuracy
 #'    
-#' @param x   vector of predicted data or table/matrix contingency table
-#' @param y   vector of observed data, if x is not table/matrix contingency table 
+#' @param x   vector of observed data or table/matrix contingency table
+#' @param y   vector of predicted data, if x is not table/matrix contingency table 
 #'
 #' @return A list class object with the following components:
 #' \itemize{ 
@@ -120,9 +120,7 @@ accuracy <- function (x, y) {
 	  true.skill <- ( (t.xy[1] * t.xy[4]) - (t.xy[3] * t.xy[2]) ) / 
 	                ( (t.xy[1] + t.xy[2]) * (t.xy[3] + t.xy[4]) )
 	  gain <- precision / ( (t.xy[1] + t.xy[4]) / n )
-	  #mcc <- (TP * TN - FP * FN) / sqrt( (TP + FP) * (TP + FN) * 
-	  #	 (TN + FP) * (TN + FN) )
-      mcc=NA	  
+	  mcc <- (TP * TN - FP * FN) / sqrt(prod(c((TP + FP),(TP + FN),(TN + FP),(TN + FN))))  
 		confusion <- matrix(c(paste0("True positive(", TP, ")"),
 		         paste0("False positive(", FP, ")"),
 		         paste0("False negative(", FN, ")"),

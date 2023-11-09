@@ -24,8 +24,8 @@
 #'   3) Construct a point estimate of the proposed effect size by fitting a 
 #'      weighted least squares model with response based on the tree-averaged 
 #'      predicted values obtained in Step 2, the explanatory variable 
-#'      corresponding to the value used to generate each tree-averaged prediction 
-#'      , and weight based on the frequency each value the explanatory 
+#'      corresponding to the value used to generate each tree-averaged prediction, 
+#'      and weight based on the frequency each value the explanatory 
 #'      variable takes on in the original data.
 #'   4) For confidence intervals, repeat Steps 1-3 for as many bootstrap samples 
 #'      as desired Modified partialPlot function uses distinct X values to 

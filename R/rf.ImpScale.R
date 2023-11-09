@@ -33,17 +33,17 @@
 #' Altmann, A., Tolosi, L., Sander, O. & Lengauer, T. (2010). Permutation importance: 
 #'   a corrected feature importance measure, Bioinformatics 26:1340-1347. 
 #' @references 
-#'   Murphy M.A., J.S. Evans, and A.S. Storfer (2010) Quantify Bufo boreas 
-#'     connectivity in Yellowstone National Park with landscape genetics. 
-#'     Ecology 91:252-261
+#' Murphy M.A., J.S. Evans, and A.S. Storfer (2010) Quantify Bufo boreas 
+#'  connectivity in Yellowstone National Park with landscape genetics. 
+#'  Ecology 91:252-261
 #' @references 
-#'   Evans J.S., M.A. Murphy, Z.A. Holden, S.A. Cushman (2011). Modeling species 
-#'     distribution and change using Random Forests CH.8 in Predictive Modeling 
-#'     in Landscape Ecology eds Drew, CA, Huettmann F, Wiersma Y. Springer
+#' Evans J.S., M.A. Murphy, Z.A. Holden, S.A. Cushman (2011). Modeling species 
+#'  distribution and change using Random Forests CH.8 in Predictive Modeling 
+#'  in Landscape Ecology eds Drew, CA, Huettmann F, Wiersma Y. Springer
 #' @references 
-#'   Janitza, S., E. Celik, and A.-L. Boulesteix (2018). A computationally fast 
-#'     variable  importance test for random forests for high-dimensional data. 
-#'     Advances in Data Analysis and Classification 12(4):885-915
+#' Janitza, S., E. Celik, and A.-L. Boulesteix (2018). A computationally fast 
+#'  variable  importance test for random forests for high-dimensional data. 
+#'  Advances in Data Analysis and Classification 12(4):885-915
 #'
 #' @examples
 #' library(randomForest)
@@ -93,9 +93,9 @@ rf.ImpScale <- function (x, scaling=c("mir","se", "p"), n=99, sort = FALSE) {
 	#        please use x, y arguments")
 	if(scaling[1] == "se")
 	  stop("Ranger does not support standard error scaling")
-  if( x$importance.mode != "permutation")
+  if(x$importance.mode != "permutation")
      warning("It is highly recommend that you use the permuted importance")
-	mtype = tolower(x$treetype)  
+	   mtype = tolower(x$treetype)  
   } else if(any(sort(class(x))[1] == "randomForest")) {
     mtype = tolower(x$type)
     #if( length(grep("~", x$call[[2]])) > 0 )
@@ -107,7 +107,7 @@ rf.ImpScale <- function (x, scaling=c("mir","se", "p"), n=99, sort = FALSE) {
   # regression 
   if (mtype == "regression") {   
     if(sort(class(x))[1] == "ranger") {  
-      if (x$variable.importance == "none")
+      if (any(x$variable.importance == "none"))
         stop("ranger object does not contain importance") 
 	  rf.imp <- x$variable.importance 
     } else if(sort(class(x))[1] == "randomForest") {	
@@ -119,7 +119,7 @@ rf.ImpScale <- function (x, scaling=c("mir","se", "p"), n=99, sort = FALSE) {
   } else if(any( mtype %in% c("classification", "unsupervised", 
                               "probability estimation"))) {
     if(sort(class(x))[1] == "ranger") {  
-      if (x$importance == "none")
+      if(any(x$importance == "none"))
         stop("ranger object does not contain importance") 
 	  rf.imp <- x$variable.importance 
     } else if(sort(class(x))[1] == "randomForest") {	

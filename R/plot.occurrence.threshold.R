@@ -8,19 +8,17 @@
 plot.occurrence.threshold <- function(x, ...) {
   if(x$statistic == "delta.ss") { 	
     mdl.lab = "abs-difference of sensitivity-specificity"
-	  } 
-	else if (x$statistic == "sum.ss") {
+	  } else if(x$statistic == "sum.ss") {
       mdl.lab = "sum of sensitivity-specificity"
-      }
-    else if (x$statistic == "kappa") {
+      } else if(x$statistic == "kappa") {
       mdl.lab = "Kappa"  
-      }
-    else if (x$statistic == "youden") {
+      } else if(x$statistic == "youden") {
       mdl.lab = "Youden'-J index"  
-      }
-    else if (x$statistic == "logloss") {
+      } else if(x$statistic == "logloss") {
       mdl.lab = "Logarithmic Loss"  	  
-  }	  
+     } else {
+       stop("Not a supported statistic")
+     }	 b
   dots <- as.list(match.call(expand.dots = TRUE)[-1])
   dots[["x"]] <- names(x$thresholds)
   dots[["y"]] <- x$thresholds

@@ -1,4 +1,4 @@
-#' @title Test occurrence probability thresholds
+b#' @title Test occurrence probability thresholds
 #' @description 
 #' A statistical sensitivity test for occurrence probability thresholds 
 #'       
@@ -81,7 +81,7 @@ occurrence.threshold <- function(x, class, p = seq(0.10, 0.9, 0.05),
       stop("x is not randomForest class object")
     if(length(grep("~", x$call[[2]])) > 0)
       stop("does not support a formula interface, please use x, y arguments")
-    # formating call and pulling data
+	# formating call and pulling data
     a <- as.list(x$call)[-1] 
       xdata = eval(a[[which(names(a) == "x")]]) 
       y = eval(a[[which(names(a) == "y")]]) 	  
