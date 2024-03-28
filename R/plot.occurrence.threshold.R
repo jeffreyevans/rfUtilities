@@ -18,7 +18,7 @@ plot.occurrence.threshold <- function(x, ...) {
       mdl.lab = "Logarithmic Loss"  	  
      } else {
        stop("Not a supported statistic")
-     }	 b
+     }
   dots <- as.list(match.call(expand.dots = TRUE)[-1])
   dots[["x"]] <- names(x$thresholds)
   dots[["y"]] <- x$thresholds
