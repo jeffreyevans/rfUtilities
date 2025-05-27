@@ -57,7 +57,7 @@
 #' 			    type="prob")[,2], likelihood = TRUE) 
 #' 				   
 #' @export 
-logLoss <- function(y, p, likelihood = FALSE, global = TRUE, eps = 1e-15) {
+logLoss <- function(y, p, likelihood = FALSE, w = NULL, global = TRUE, eps = 1e-15) {
   if( length(p) != length(y) ) stop("Error: y and p are not the same length")
     if( min(p) < 0 | max(p) > 1) stop("p is out of {0-1} probability range")
       if( !is.numeric(y) ) y <- as.numeric(as.character(y))
@@ -70,12 +70,18 @@ logLoss <- function(y, p, likelihood = FALSE, global = TRUE, eps = 1e-15) {
       hess <- x * (y - x)
       return(hess)
     }
-  if( likelihood == FALSE) {	
+  if(likelihood == FALSE) {	
     if( global == TRUE) { 
       p <- matrix(sapply(p, function(x) max(eps, x)), nrow = length(p))
         p <- matrix(sapply(p, function(x) min(1 - eps, x)), nrow = length(p))
-        ll <- sum(y * log(p) + (1 - y) * log(1 - p)) 
-      ll <- ll * -1 / length(y)
+		if(is.null(w)) {
+          ll <- sum(y * log(p) + (1 - y) * log(1 - p))
+		} else if(!is.null(w)){
+          if(!is.numeric(w))
+            stop("Weight must be numeric")		  
+          ll <- w[1] * sum(y * log(p) + (1 - y) * log(1 - p)) 
+	    }
+	  ll <- ll * -1 / length(y)
 	  class(ll) <- "global.log.loss"
     } else {
     ll <- vector()  
